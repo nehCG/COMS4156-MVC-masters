@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <!-- Database driver path: Find the mysql driver in External Libraries
+         in the project sidebar on the left, right-click and select copy path -->
+    <classPathEntry
+            location="/Users/chenguan/.m2/repository/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar"/>
+
+    <!-- context is the main configuration information for reverse engineering -->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+
+        <!-- optional, refers to controlling annotations when creating a class -->
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!-- Database address and password -->
+        <jdbcConnection
+                driverClass="com.mysql.cj.jdbc.Driver"
+                connectionURL="jdbc:mysql://127.0.0.1:3306/ems"
+                userId="root"
+                password="dbuserdbuser">
+        </jdbcConnection>
+
+        <!--
+             Java type resolver
+             Used to process types in DB to types in Java. JavaTypeResolverDefaultImpl is used by default;
+             true: Use BigDecimal to correspond to DECIMAL and NUMERIC data types
+             false: By default, JDBC DECIMAL and NUMERIC types are parsed into Integer
+        -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+
+        <!-- Generate Model class storage location -->
+        <javaModelGenerator targetPackage="com.mvcmasters.ems.vo" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+
+        <!-- Generate mapping file storage location -->
+        <sqlMapGenerator targetPackage="mappers" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+
+        <!-- Generate Dao class storage location -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.mvcmasters.ems.repository" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+
+        <!--
+            The table name of the database and the name of the corresponding entity class,
+            tableName is the table name in the database,
+            domainObjectName is the generated JAVA model name
+        -->
+        <table tableName="t_user" domainObjectName="User"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>
+
+    </context>
+</generatorConfiguration>
