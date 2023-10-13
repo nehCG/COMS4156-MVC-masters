@@ -6,6 +6,7 @@ import com.mvcmasters.ems.exceptions.ParamsException;
 import com.mvcmasters.ems.model.UserModel;
 import com.mvcmasters.ems.query.UserQuery;
 import com.mvcmasters.ems.service.UserService;
+import com.mvcmasters.ems.vo.User;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +48,13 @@ public class UserController extends BaseController {
     @ResponseBody
     public Map<String, Object> selectByParams(UserQuery userQuery) {
         return userService.queryByParamsForTable(userQuery);
+    }
+
+    @PostMapping("add")
+    @ResponseBody
+    public ResultInfo addUser(User user) {
+        userService.addUser(user);
+        return success("User added successfully!");
     }
 
 }
