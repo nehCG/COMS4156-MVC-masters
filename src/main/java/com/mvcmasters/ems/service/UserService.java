@@ -73,18 +73,27 @@ public class UserService extends BaseService<User, Integer> {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void addUser(User user) {
-        checkUserParams(user.getUserName(), user.getEmail(), user.getPhone());
+        checkUserParams(user.getUserName(), user.getEmail(), user.getPhone(), null);
 
         user.setUserPwd(Md5Util.encode("123456"));
 
         AssertUtil.isTrue(userMapper.insertSelective(user) != 1, "Failed to add a new user");
     }
 
-    private void checkUserParams(String userName, String email, String phone) {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateUser(User user) {
+        AssertUtil.isTrue(null == user.getId(), "User to be updated does not exist!");
+        User temp = userMapper.selectByPrimaryKey(user.getId());
+        AssertUtil.isTrue(null == temp, "User to be updated does not exist!");
+        checkUserParams(user.getUserName(), user.getEmail(), user.getPhone(), user.getId());
+        AssertUtil.isTrue(userMapper.updateByPrimaryKeySelective(user) != 1, "Failed to update user records!");
+    }
+
+    private void checkUserParams(String userName, String email, String phone, Integer userId) {
         AssertUtil.isTrue(StringUtils.isBlank(userName), "Username cannot be empty!");
         User temp = userMapper.queryUserByName(userName);
-        AssertUtil.isTrue(null != temp, "Username already exists. Please try another one!");
-        AssertUtil.isTrue(StringUtils.isBlank(email), "User email cannot be empty");
-        AssertUtil.isTrue(StringUtils.isBlank(phone), "User phone cannot be empty");
+        AssertUtil.isTrue(null != temp && !(temp.getId().equals(userId)), "Username already exists. Please try another one!");
+        AssertUtil.isTrue(StringUtils.isBlank(email), "User email cannot be empty!");
+        AssertUtil.isTrue(StringUtils.isBlank(phone), "User phone cannot be empty!");
     }
 }

@@ -57,4 +57,11 @@ public class UserController extends BaseController {
         return success("User added successfully!");
     }
 
+    @PostMapping("update")
+    @ResponseBody
+    public ResultInfo updateUser(User user) {
+        userService.updateUser(user);
+        return success("User records updated successfully!");
+    }
+
 }
