@@ -1,5 +1,6 @@
 package com.mvcmasters.ems.service;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.mvcmasters.ems.base.BaseService;
 import com.mvcmasters.ems.vo.User;
 import com.mvcmasters.ems.repository.UserMapper;
@@ -68,5 +69,22 @@ public class UserService extends BaseService<User, Integer> {
         AssertUtil.isTrue(oldPwd.equals(newPwd), "New password cannot be same as old password!");
         AssertUtil.isTrue(StringUtils.isBlank(repeatPwd), "Repeated password cannot be empty!");
         AssertUtil.isTrue(!newPwd.equals(repeatPwd), "Repeated password is inconsistent with new password!");
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void addUser(User user) {
+        checkUserParams(user.getUserName(), user.getEmail(), user.getPhone());
+
+        user.setUserPwd(Md5Util.encode("123456"));
+
+        AssertUtil.isTrue(userMapper.insertSelective(user) != 1, "Failed to add a new user");
+    }
+
+    private void checkUserParams(String userName, String email, String phone) {
+        AssertUtil.isTrue(StringUtils.isBlank(userName), "Username cannot be empty!");
+        User temp = userMapper.queryUserByName(userName);
+        AssertUtil.isTrue(null != temp, "Username already exists. Please try another one!");
+        AssertUtil.isTrue(StringUtils.isBlank(email), "User email cannot be empty");
+        AssertUtil.isTrue(StringUtils.isBlank(phone), "User phone cannot be empty");
     }
 }

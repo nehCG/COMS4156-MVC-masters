@@ -14,4 +14,6 @@ public interface BaseMapper<T,ID> {
 
     public Integer updateByPrimaryKeySelective(T entity) throws DataAccessException;
 
+    public Integer insertSelective(T entity) throws DataAccessException;
+
 }
