@@ -10,4 +10,8 @@ import java.util.List;
 public interface BaseMapper<T,ID> {
     public List<T> selectByParams(BaseQuery baseQuery) throws DataAccessException;
 
+    public T selectByPrimaryKey(ID id) throws DataAccessException;
+
+    public Integer updateByPrimaryKeySelective(T entity) throws DataAccessException;
+
 }

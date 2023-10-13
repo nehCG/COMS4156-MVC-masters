@@ -9,6 +9,8 @@ import com.mvcmasters.ems.utils.Md5Util;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService extends BaseService<User, Integer> {
@@ -27,6 +29,20 @@ public class UserService extends BaseService<User, Integer> {
         return buildUserInfo(user);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updatePassWord(Integer userId, String oldPwd, String newPwd, String repeatPwd) {
+        User user = userMapper.selectByPrimaryKey(userId);
+
+        AssertUtil.isTrue(null == user, "Record to be updated does not exist!");
+
+        checkPasswordParams(user, oldPwd, newPwd, repeatPwd);
+
+        user.setUserPwd(Md5Util.encode(newPwd));
+
+        AssertUtil.isTrue(userMapper.updateByPrimaryKeySelective(user) < 1, "Failed to change password!");
+
+    }
+
     private void checkLoginParams(String userName, String userPwd) {
         AssertUtil.isTrue(StringUtils.isBlank(userName), "Username cannot be empty!");
         AssertUtil.isTrue(StringUtils.isBlank(userPwd), "Password cannot be empty!");
@@ -43,5 +59,14 @@ public class UserService extends BaseService<User, Integer> {
         userModel.setUserName(user.getUserName());
         userModel.setTrueName(user.getTrueName());
         return userModel;
+    }
+
+    private void checkPasswordParams(User user, String oldPwd, String newPwd, String repeatPwd) {
+        AssertUtil.isTrue(StringUtils.isBlank(oldPwd), "Original password cannot be empty!");
+        AssertUtil.isTrue(!user.getUserPwd().equals(Md5Util.encode(oldPwd)), "Incorrect original password!");
+        AssertUtil.isTrue(StringUtils.isBlank(newPwd), "New password cannot be empty!");
+        AssertUtil.isTrue(oldPwd.equals(newPwd), "New password cannot be same as old password!");
+        AssertUtil.isTrue(StringUtils.isBlank(repeatPwd), "Repeated password cannot be empty!");
+        AssertUtil.isTrue(!newPwd.equals(repeatPwd), "Repeated password is inconsistent with new password!");
     }
 }
