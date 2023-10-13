@@ -16,4 +16,6 @@ public interface BaseMapper<T,ID> {
 
     public Integer insertSelective(T entity) throws DataAccessException;
 
+    public Integer deleteBatch(ID[] ids) throws DataAccessException;
+
 }

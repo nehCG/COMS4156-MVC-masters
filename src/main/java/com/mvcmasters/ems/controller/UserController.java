@@ -64,4 +64,11 @@ public class UserController extends BaseController {
         return success("User records updated successfully!");
     }
 
+    @PostMapping("delete")
+    @ResponseBody
+    public ResultInfo deleteUser(Integer[] ids) {
+        userService.deleteByIds(ids);
+        return success("User deleted successfully!");
+    }
+
 }
