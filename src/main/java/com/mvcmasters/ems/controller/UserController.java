@@ -23,17 +23,9 @@ public class UserController extends BaseController {
 
         ResultInfo resultInfo = new ResultInfo();
 
-        try {
-            UserModel userModel = userService.userLogin(userName, userPwd);
-            resultInfo.setResult(userModel);
-        } catch (ParamsException p) {
-            resultInfo.setCode(p.getCode());
-            resultInfo.setMsg(p.getMsg());
-            p.printStackTrace();
-        } catch (Exception e) {
-            resultInfo.setCode(500);
-            resultInfo.setMsg("Login Failed!");
-        }
+        UserModel userModel = userService.userLogin(userName, userPwd);
+
+        resultInfo.setResult(userModel);
 
         return resultInfo;
     }
@@ -43,17 +35,7 @@ public class UserController extends BaseController {
     public ResultInfo updateUserPassword(Integer userId, String oldPassword, String newPassword, String repeatPassword) {
         ResultInfo resultInfo = new ResultInfo();
 
-        try {
-            userService.updatePassWord(userId, oldPassword, newPassword, repeatPassword);
-        } catch (ParamsException p) {
-            resultInfo.setCode(p.getCode());
-            resultInfo.setMsg(p.getMsg());
-            p.printStackTrace();
-        } catch (Exception e) {
-            resultInfo.setCode(500);
-            resultInfo.setMsg("Failed to change password!");
-            e.printStackTrace();
-        }
+        userService.updatePassWord(userId, oldPassword, newPassword, repeatPassword);
 
         return resultInfo;
     }
