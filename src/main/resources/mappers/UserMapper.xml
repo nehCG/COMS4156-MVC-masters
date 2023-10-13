@@ -8,9 +8,10 @@
     <result column="true_name" jdbcType="VARCHAR" property="trueName" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="is_valid" jdbcType="INTEGER" property="isValid" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_name, user_pwd, true_name, email, phone
+    id, user_name, user_pwd, true_name, email, phone, is_valid
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,10 +25,10 @@
   </delete>
   <insert id="insert" parameterType="com.mvcmasters.ems.vo.User">
     insert into t_user (id, user_name, user_pwd, 
-      true_name, email, phone
+      true_name, email, phone, isvalid
       )
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
-      #{trueName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}
+      #{trueName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.mvcmasters.ems.vo.User">
@@ -51,6 +52,9 @@
       <if test="phone != null">
         phone,
       </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -70,6 +74,9 @@
       </if>
       <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -91,6 +98,9 @@
       <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
       </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -100,7 +110,8 @@
       user_pwd = #{userPwd,jdbcType=VARCHAR},
       true_name = #{trueName,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR}
+      phone = #{phone,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="queryUserByName" parameterType="string" resultType="com.mvcmasters.ems.vo.User">
@@ -112,6 +123,7 @@
     select <include refid="Base_Column_List"></include>
     from t_user
     <where>
+    is_valid = 1
     <if test="null != userName and userName != '' ">
       and user_name like concat('%', #{userName}, '%')
     </if>
@@ -123,4 +135,13 @@
     </if>
     </where>
   </select>
+  <update id="deleteBatch">
+    update t_user
+    set is_valid = 0
+    where id
+    in
+      <foreach collection="array" item="id" open="(" close=")" separator=",">
+        #{id}
+      </foreach>
+  </update>
 </mapper>

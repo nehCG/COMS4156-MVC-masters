@@ -75,6 +75,8 @@ public class UserService extends BaseService<User, Integer> {
     public void addUser(User user) {
         checkUserParams(user.getUserName(), user.getEmail(), user.getPhone(), null);
 
+        user.setIsValid(1);
+
         user.setUserPwd(Md5Util.encode("123456"));
 
         AssertUtil.isTrue(userMapper.insertSelective(user) != 1, "Failed to add a new user");
@@ -95,5 +97,11 @@ public class UserService extends BaseService<User, Integer> {
         AssertUtil.isTrue(null != temp && !(temp.getId().equals(userId)), "Username already exists. Please try another one!");
         AssertUtil.isTrue(StringUtils.isBlank(email), "User email cannot be empty!");
         AssertUtil.isTrue(StringUtils.isBlank(phone), "User phone cannot be empty!");
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void deleteByIds(Integer[] ids) {
+        AssertUtil.isTrue(ids == null || ids.length == 0, "Records to be deleted do not exist!");
+        AssertUtil.isTrue(userMapper.deleteBatch(ids) != ids.length, "Failed to delete users!");
     }
 }
