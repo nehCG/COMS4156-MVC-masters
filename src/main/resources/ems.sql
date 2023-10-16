@@ -42,6 +42,6 @@ CREATE TABLE `t_sharedSpace` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of t_user
+-- Records of t_sharedSpace
 -- ----------------------------
 INSERT INTO `t_sharedSpace` VALUES (1, 1, 1, 'First shared space!', TIMESTAMP('2022-05-08 14:30:45'), TIMESTAMP('2022-05-08 14:30:45'));
