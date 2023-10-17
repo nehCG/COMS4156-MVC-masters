@@ -35,6 +35,7 @@ CREATE TABLE `t_sharedSpace` (
                           `id` int NOT NULL AUTO_INCREMENT,
                           `uid` int DEFAULT NULL REFERENCES t_user(id),
                           `last_modified_by` int DEFAULT NULL REFERENCES t_user(id),
+                          `subject` varchar(50) DEFAULT NULL,
                           `content` varchar(200) DEFAULT NULL,
                           `created_time` timestamp DEFAULT NULL,
                           `modified_time` timestamp DEFAULT NULL,
@@ -44,4 +45,4 @@ CREATE TABLE `t_sharedSpace` (
 -- ----------------------------
 -- Records of t_sharedSpace
 -- ----------------------------
-INSERT INTO `t_sharedSpace` VALUES (1, 1, 1, 'First shared space!', TIMESTAMP('2022-05-08 14:30:45'), TIMESTAMP('2022-05-08 14:30:45'));
+INSERT INTO `t_sharedSpace` VALUES (1, 1, 1, 'First Subject', 'First shared space!', TIMESTAMP('2022-05-08 14:30:45'), TIMESTAMP('2022-05-08 14:30:45'));
