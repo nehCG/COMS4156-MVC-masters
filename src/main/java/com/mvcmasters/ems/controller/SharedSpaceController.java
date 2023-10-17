@@ -35,16 +35,16 @@ public class SharedSpaceController extends BaseController {
         return new ResponseEntity<>(sharedDataList, HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<String> updateSharedData(@RequestBody SharedDataModel sharedData) {
-        sharedDataService.updateSharedData(sharedData);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateSharedData(@PathVariable Integer id, @RequestBody SharedDataModel sharedData) {
+        sharedDataService.updateSharedData(id, sharedData);
         return new ResponseEntity<>("Shared data updated successfully!", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteSharedDataById(@PathVariable Integer id) {
         sharedDataService.deleteSharedDataById(id);
-        return new ResponseEntity<>("Shared data deleted successfully!", HttpStatus.OK);
+        return new ResponseEntity<>("Shared data deleted successfully!", HttpStatus.NO_CONTENT);
     }
 
 }
