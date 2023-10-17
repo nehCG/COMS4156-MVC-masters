@@ -59,7 +59,7 @@ public class GlobalExceptionResolverTest {
 
         assertNull(modelAndView);
 
-        assertEquals(200, response.getStatus());
+        assertEquals(400, response.getStatus());
         assertEquals("application/json;charset=UTF-8", response.getHeader("Content-Type"));
 
         ResultInfo resultInfo = new ResultInfo();
