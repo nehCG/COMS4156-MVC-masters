@@ -1,14 +1,14 @@
 package com.mvcmasters.ems.model;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class SharedDataModel {
     private Integer id;
     private Integer uid;
     private String subject;
     private String content;
-    private Date created_time;
+    private LocalDateTime created_time;
     private Integer last_modified_by;
-    private Date modified_time;
+    private LocalDateTime modified_time;
 
 
     public Integer getId() {
@@ -51,19 +51,19 @@ public class SharedDataModel {
         return last_modified_by;
     }
 
-    public void setCreatedTime(Date time) {
+    public void setCreatedTime(LocalDateTime time) {
         this.created_time = time;
     }
 
-    public Date getCreatedTime() {
+    public LocalDateTime getCreatedTime() {
         return created_time;
     }
 
-    public void setLastModifiedTime(Date time) {
+    public void setLastModifiedTime(LocalDateTime time) {
         this.modified_time = time;
     }
 
-    public Date getLastModifiedTime() {
+    public LocalDateTime getLastModifiedTime() {
         return modified_time;
     }
 }

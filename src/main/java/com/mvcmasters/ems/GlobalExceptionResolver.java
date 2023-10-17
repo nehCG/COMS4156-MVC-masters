@@ -47,6 +47,9 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
                 if (ex instanceof ParamsException p) {
                     resultInfo.setCode(p.getCode());
                     resultInfo.setMsg(p.getMessage());
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 }
 
                 response.setContentType("application/json;charset=UTF-8");

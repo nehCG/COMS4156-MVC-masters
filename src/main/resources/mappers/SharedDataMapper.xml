@@ -22,7 +22,14 @@
   <!-- Update shared data -->
   <update id="updateSharedData" parameterType="com.mvcmasters.ems.model.SharedDataModel">
     UPDATE t_sharedSpace
-    SET uid = #{uid}, subject = #{subject}, content = #{content}, created_time = #{created_time}, last_modified_by = #{last_modified_by}, modified_time = #{modified_time}
+    <set>
+      <if test="uid != null">uid = #{uid},</if>
+      <if test="subject != null">subject = #{subject},</if>
+      <if test="content != null">content = #{content},</if>
+      <if test="created_time != null">created_time = #{created_time},</if>
+      <if test="last_modified_by != null">last_modified_by = #{last_modified_by},</if>
+      <if test="modified_time != null">modified_time = #{modified_time}</if>
+    </set>
     WHERE id = #{id}
   </update>
 
