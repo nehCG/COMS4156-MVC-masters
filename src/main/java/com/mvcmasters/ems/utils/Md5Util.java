@@ -6,6 +6,10 @@ import java.util.Base64;
 public class Md5Util {
 
     public static String encode(String msg) {
+        if (msg == null) {
+            return null;
+        }
+
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("md5");
             return Base64.getEncoder().encodeToString(messageDigest.digest(msg.getBytes()));
