@@ -40,14 +40,16 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
 
     // Update a shared data entry by its id
     public void updateSharedData(Integer id, SharedDataModel newData) {
-        if (newData == null) {
-            throw new CustomException("Updates can not be null", HttpStatus.BAD_REQUEST);
-        }
         SharedDataModel existingData = sharedDataMapper.selectSharedDataById(id);
         if (existingData == null) {
             throw new CustomException("Record ID does not exist", HttpStatus.BAD_REQUEST);
         }
-        newData.setLastModifiedTime(LocalDateTime.now());
+
+        if (newData.getContent() == null && newData.getSubject() == null) {
+            throw new CustomException("Updates can not be null", HttpStatus.BAD_REQUEST);
+        }
+
+        newData.setModifiedTime(LocalDateTime.now());
         newData.setId(id);
         sharedDataMapper.updateSharedData(newData);
 
@@ -66,7 +68,7 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
         // may need to add check for data owner or only admin can delete
     }
 
-    void validateSharedData(SharedDataModel sharedData){
+    public void validateSharedData(SharedDataModel sharedData){
         // Check if the sharedData object itself is not null
         if (sharedData == null) {
             throw new CustomException("Shared data cannot be null", HttpStatus.BAD_REQUEST);

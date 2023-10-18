@@ -76,8 +76,8 @@ public class SharedDataModelTest {
 
         LocalDateTime now = LocalDateTime.now();
 
-        sharedData.setLastModifiedTime(now);
+        sharedData.setModifiedTime(now);
 
-        assertEquals(now, sharedData.getLastModifiedTime());
+        assertEquals(now, sharedData.getModifiedTime());
     }
 }

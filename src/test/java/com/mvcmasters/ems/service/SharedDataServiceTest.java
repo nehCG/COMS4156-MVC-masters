@@ -105,8 +105,14 @@ public class SharedDataServiceTest {
 
     @Test
     public void testUpdateSharedDataWithNullData() {
+        // Arrange
+        int id = 1;
+        SharedDataModel existingData = new SharedDataModel();
+        when(sharedDataMapper.selectSharedDataById(id)).thenReturn(existingData);
+
+        // Act and Assert
         CustomException thrown = assertThrows(CustomException.class, () -> {
-            sharedDataService.updateSharedData(1, null);
+            sharedDataService.updateSharedData(id, new SharedDataModel());
         });
 
         assertEquals("Updates can not be null", thrown.getMessage());
@@ -117,8 +123,12 @@ public class SharedDataServiceTest {
         Integer id = 10000;
         when(sharedDataMapper.selectSharedDataById(id)).thenReturn(null);
 
+        SharedDataModel newData = new SharedDataModel();
+        newData.setSubject("New Subject");
+        newData.setContent("New Content");
+
         CustomException thrown = assertThrows(CustomException.class, () -> {
-            sharedDataService.updateSharedData(id, new SharedDataModel());
+            sharedDataService.updateSharedData(id, newData);
         });
 
         assertEquals("Record ID does not exist", thrown.getMessage());
