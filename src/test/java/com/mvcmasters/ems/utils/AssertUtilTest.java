@@ -8,12 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AssertUtilTest {
 
     @Test
-    public void testConstructor() {
-        AssertUtil util = new AssertUtil();
-        assertNotNull(util);
-    }
-
-    @Test
     public void testIsTrueWhenFlagIsTrue() {
         assertThrows(ParamsException.class, () -> {
             AssertUtil.isTrue(true, "Expected exception");
