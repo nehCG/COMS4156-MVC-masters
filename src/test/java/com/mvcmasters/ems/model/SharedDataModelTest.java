@@ -19,6 +19,20 @@ public class SharedDataModelTest {
     }
 
     @Test
+    public void testUserIdGetterSetter() {
+        // Arrange
+        SharedDataModel model = new SharedDataModel();
+        Integer expectedUserId = 456;
+
+        // Act
+        model.setUserId(expectedUserId);
+        Integer actualUserId = model.getUserID();
+
+        // Assert
+        assertEquals(expectedUserId, actualUserId);
+    }
+
+    @Test
     public void testSubjectGetterSetter() {
         SharedDataModel sharedData = new SharedDataModel();
 

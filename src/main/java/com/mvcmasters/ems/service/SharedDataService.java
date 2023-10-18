@@ -28,7 +28,7 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
     public SharedDataModel getSharedDataById(Integer id) {
         SharedDataModel data = sharedDataMapper.selectSharedDataById(id);
         if (data == null) {
-            throw new CustomException("Record ID does not exist!", HttpStatus.BAD_REQUEST);
+            throw new CustomException("Record ID does not exist", HttpStatus.BAD_REQUEST);
         }
         return data;
     }
@@ -59,7 +59,7 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
         SharedDataModel data = sharedDataMapper.selectSharedDataById(id);
         // check if id exists in database
         if (data == null) {
-            throw new CustomException("Record ID does not exist!", HttpStatus.BAD_REQUEST);
+            throw new CustomException("Record ID does not exist", HttpStatus.BAD_REQUEST);
         }
         sharedDataMapper.deleteSharedDataById(id);
 
