@@ -1,20 +1,17 @@
 package com.mvcmasters.ems.utils;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Base64;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class Md5UtilTest {
-
-    @Test
-    public void testConstructor() {
-        Md5Util util = new Md5Util();
-        assertNotNull(util);
-    }
 
     @Test
     public void testEncode() {
@@ -60,5 +57,19 @@ public class Md5UtilTest {
         String expectedHash = Md5Util.encode("123456");
 
         assertEquals(expectedHash, printedResult);
+    }
+
+    @Test
+    public void testEncodeThrowsException() throws NoSuchAlgorithmException {
+        try (MockedStatic<MessageDigest> mockedMessageDigest = Mockito.mockStatic(MessageDigest.class)) {
+            // Make the MessageDigest's getInstance method throw an exception
+            mockedMessageDigest.when(() -> MessageDigest.getInstance("MD5")).thenThrow(new RuntimeException("Mocked exception"));
+
+            // Call the encode method
+            String result = Md5Util.encode("test");
+
+            // Assert the result is null and the exception is handled
+            assertNull(result);
+        }
     }
 }
