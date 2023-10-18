@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserModelTest {
 
+    /**
+     * Test the getUserId and setUserId methods of UserModel.
+     */
     @Test
     public void testUserIdGetterSetter() {
         UserModel user = new UserModel();
@@ -15,6 +18,9 @@ public class UserModelTest {
         assertEquals(1, user.getUserId());
     }
 
+    /**
+     * Test the getUserName and setUserName methods of UserModel.
+     */
     @Test
     public void testUserNameGetterSetter() {
         UserModel user = new UserModel();
@@ -24,6 +30,9 @@ public class UserModelTest {
         assertEquals("JohnDoe", user.getUserName());
     }
 
+    /**
+     * Test the getTrueName and setTrueName methods of UserModel.
+     */
     @Test
     public void testTrueNameGetterSetter() {
         UserModel user = new UserModel();
