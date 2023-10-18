@@ -66,7 +66,7 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
         // may need to add check for data owner or only admin can delete
     }
 
-    private void validateSharedData(SharedDataModel sharedData){
+    void validateSharedData(SharedDataModel sharedData){
         // Check if the sharedData object itself is not null
         if (sharedData == null) {
             throw new CustomException("Shared data cannot be null", HttpStatus.BAD_REQUEST);
