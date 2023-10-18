@@ -10,7 +10,7 @@ public class SharedDataModel {
     private Integer last_modified_by;
     private LocalDateTime modified_time;
 
-
+    // Getter and Setter functions for the attributes
     public Integer getId() {
         return id;
     }

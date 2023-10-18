@@ -17,12 +17,14 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
     @Autowired
     private SharedDataMapper sharedDataMapper;
 
+    // Add a new shared data entry
     public void addSharedData(SharedDataModel sharedData) {
         sharedData.setCreatedTime(LocalDateTime.now());
         validateSharedData(sharedData);
         sharedDataMapper.insertSharedData(sharedData);
     }
 
+    // Get a shared data entry by its id
     public SharedDataModel getSharedDataById(Integer id) {
         SharedDataModel data = sharedDataMapper.selectSharedDataById(id);
         if (data == null) {
@@ -31,10 +33,12 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
         return data;
     }
 
+    // View all shared data entries
     public List<SharedDataModel> getAllSharedData() {
         return sharedDataMapper.selectAllSharedData();
     }
 
+    // Update a shared data entry by its id
     public void updateSharedData(Integer id, SharedDataModel newData) {
         if (newData == null) {
             throw new CustomException("Updates can not be null", HttpStatus.BAD_REQUEST);
@@ -50,6 +54,7 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
         // may need to add check for data owner match current logged-in user
     }
 
+    // Delete a shared data entry by its id
     public void deleteSharedDataById(Integer id) {
         SharedDataModel data = sharedDataMapper.selectSharedDataById(id);
         // check if id exists in database
