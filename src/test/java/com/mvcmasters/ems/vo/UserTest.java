@@ -6,15 +6,27 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+/**
+ * This class contains unit tests for the User class.
+ */
 public class UserTest {
 
+    /**
+     * The User instance used for testing in the UserTest class.
+     */
     private User user;
 
+    /**
+     * Initializes a new User instance before each test.
+     */
     @BeforeEach
     public void setUp() {
         user = new User();
     }
 
+    /**
+     * Tests getters and setters for the User class.
+     */
     @Test
     public void testGettersAndSetters() {
         // Set values using setters
@@ -36,6 +48,9 @@ public class UserTest {
         assertEquals(1, user.getIsValid());
     }
 
+    /**
+     * Tests setters with null values for the User class.
+     */
     @Test
     public void testSettersWithNull() {
         // Set values using setters with null values
@@ -47,6 +62,9 @@ public class UserTest {
         assertNull(user.getEmail());
     }
 
+    /**
+     * Tests setters with leading and trailing spaces for the User class.
+     */
     @Test
     public void testSettersWithTrim() {
         // Set values with leading and trailing spaces
@@ -58,6 +76,9 @@ public class UserTest {
         assertEquals("John Doe", user.getTrueName());
     }
 
+    /**
+     * Tests setUserPwd with a null value for the User class.
+     */
     @Test
     public void testSetUserPwdWithNull() {
         user.setUserPwd(null);
@@ -66,6 +87,9 @@ public class UserTest {
         assertNull(user.getUserPwd());
     }
 
+    /**
+     * Tests setTrueName with a null value for the User class.
+     */
     @Test
     public void testSetTrueNameWithNull() {
         user.setTrueName(null);
@@ -74,6 +98,9 @@ public class UserTest {
         assertNull(user.getTrueName());
     }
 
+    /**
+     * Tests setPhone with a null value for the User class.
+     */
     @Test
     public void testSetPhoneWithNull() {
         user.setPhone(null);
@@ -82,6 +109,9 @@ public class UserTest {
         assertNull(user.getPhone());
     }
 
+    /**
+     * Tests setUserPwd with leading and trailing spaces for the User class.
+     */
     @Test
     public void testSetUserPwdWithTrim() {
         user.setUserPwd("  password123  ");
@@ -90,6 +120,9 @@ public class UserTest {
         assertEquals("password123", user.getUserPwd());
     }
 
+    /**
+     * Tests setTrueName with leading and trailing spaces for the User class.
+     */
     @Test
     public void testSetTrueNameWithTrim() {
         user.setTrueName("  John Doe  ");
@@ -98,6 +131,9 @@ public class UserTest {
         assertEquals("John Doe", user.getTrueName());
     }
 
+    /**
+     * Tests setPhone with leading and trailing spaces for the User class.
+     */
     @Test
     public void testSetPhoneWithTrim() {
         user.setPhone("  123-456-7890  ");

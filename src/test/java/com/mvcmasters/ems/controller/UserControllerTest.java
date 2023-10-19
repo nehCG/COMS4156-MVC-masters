@@ -15,21 +15,53 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.doNothing;
 
+/**
+ * This class represents a test for the UserController class.
+ */
 public class UserControllerTest {
+    /**
+     * Constant representing ID value 1.
+     */
+    private static final int ID1 = 1;
 
+    /**
+     * Constant representing ID value 2.
+     */
+    private static final int ID2 = 2;
+
+    /**
+     * Constant representing ID value 3.
+     */
+    private static final int ID3 = 3;
+
+    /**
+     * Mocked UserService for testing UserController.
+     */
     @Mock
     private UserService userService;
 
+    /**
+     * The UserController instance to be tested.
+     */
     @InjectMocks
     private UserController userController;
 
+    /**
+     * Set up the test by initializing Mockito annotations.
+     */
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
+    /**
+     * Test the userLogin method.
+     */
     @Test
     public void testUserLogin() {
         String userName = "john_doe";
@@ -43,6 +75,9 @@ public class UserControllerTest {
         verify(userService, times(1)).userLogin(userName, userPwd);
     }
 
+    /**
+     * Test the updateUserPassword method.
+     */
     @Test
     public void testUpdateUserPassword() {
         Integer userId = 1;
@@ -50,16 +85,24 @@ public class UserControllerTest {
         String newPassword = "newPassword";
         String repeatPassword = "newPassword";
 
-        userController.updateUserPassword(userId, oldPassword, newPassword, repeatPassword);
+        userController.
+                updateUserPassword(userId, oldPassword,
+                        newPassword, repeatPassword);
 
-        verify(userService, times(1)).updatePassWord(userId, oldPassword, newPassword, repeatPassword);
+        verify(userService, times(1)).
+                updatePassWord(userId, oldPassword,
+                        newPassword, repeatPassword);
     }
 
+    /**
+     * Test the selectByParams method.
+     */
     @Test
     public void testSelectByParams() {
         UserQuery userQuery = new UserQuery();
         Map<String, Object> expectedResult = new HashMap<>();
-        when(userService.queryByParamsForTable(userQuery)).thenReturn(expectedResult);
+        when(userService.queryByParamsForTable(userQuery)).
+                thenReturn(expectedResult);
 
         Map<String, Object> result = userController.selectByParams(userQuery);
 
@@ -67,6 +110,9 @@ public class UserControllerTest {
         verify(userService, times(1)).queryByParamsForTable(userQuery);
     }
 
+    /**
+     * Test the addUser method.
+     */
     @Test
     public void testAddUser() {
         User user = new User();
@@ -78,6 +124,9 @@ public class UserControllerTest {
         verify(userService, times(1)).addUser(user);
     }
 
+    /**
+     * Test the updateUser method.
+     */
     @Test
     public void testUpdateUser() {
         User user = new User();
@@ -89,9 +138,12 @@ public class UserControllerTest {
         verify(userService, times(1)).updateUser(user);
     }
 
+    /**
+     * Test the deleteUser method.
+     */
     @Test
     public void testDeleteUser() {
-        Integer[] ids = {1, 2, 3};
+        Integer[] ids = {ID1, ID2, ID3};
         doNothing().when(userService).deleteByIds(ids);
 
         ResultInfo resultInfo = userController.deleteUser(ids);
