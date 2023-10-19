@@ -24,11 +24,11 @@ public class SharedData {
         this.id = id;
     }
 
-    public Integer getUserID() {
+    public Integer getUid() {
         return uid;
     }
 
-    public void setUserId(Integer uid) {
+    public void setUid(Integer uid) {
         this.uid = uid;
     }
 
@@ -48,11 +48,11 @@ public class SharedData {
         return content;
     }
 
-    public void setLastModifiedUserID(Integer uid) {
+    public void setLastModifiedBy(Integer uid) {
         this.last_modified_by = uid;
     }
 
-    public Integer getLastModifiedUserID() {
+    public Integer getLastModifiedBy() {
         return last_modified_by;
     }
 

@@ -49,6 +49,11 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
             throw new CustomException("Updates can not be null", HttpStatus.BAD_REQUEST);
         }
 
+        // Check if the user ID is not null
+        if (newData.getUid() == null) {
+            throw new CustomException("User ID cannot be null", HttpStatus.BAD_REQUEST);
+        }
+
         newData.setModifiedTime(LocalDateTime.now());
         newData.setId(id);
         sharedDataMapper.updateSharedData(newData);
@@ -72,6 +77,17 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
         // Check if the sharedData object itself is not null
         if (sharedData == null) {
             throw new CustomException("Shared data cannot be null", HttpStatus.BAD_REQUEST);
+        }
+
+        // Check if the shared data object has a ID, which should be empty as the service
+        // will automatically assign ID
+        if (sharedData.getId() != null) {
+            throw new CustomException("ID will be automatically assigned", HttpStatus.BAD_REQUEST);
+        }
+
+        // Check if the user ID is not null
+        if (sharedData.getUid() == null) {
+            throw new CustomException("User ID cannot be null", HttpStatus.BAD_REQUEST);
         }
 
         // Check if the 'subject' field is not null

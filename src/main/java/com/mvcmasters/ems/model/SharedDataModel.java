@@ -19,11 +19,11 @@ public class SharedDataModel {
         this.id = id;
     }
 
-    public Integer getUserID() {
+    public Integer getUid() {
         return uid;
     }
 
-    public void setUserId(Integer uid) {
+    public void setUid(Integer uid) {
         this.uid = uid;
     }
 
@@ -43,11 +43,11 @@ public class SharedDataModel {
         return content;
     }
 
-    public void setLastModifiedUserID(Integer uid) {
+    public void setLastModifiedBy(Integer uid) {
         this.lastModifiedBy = uid;
     }
 
-    public Integer getLastModifiedUserID() {
+    public Integer getLastModifiedBy() {
         return lastModifiedBy;
     }
 

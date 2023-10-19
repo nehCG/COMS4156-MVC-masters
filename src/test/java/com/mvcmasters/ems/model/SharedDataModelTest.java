@@ -25,8 +25,8 @@ public class SharedDataModelTest {
         Integer expectedUserId = 456;
 
         // Act
-        model.setUserId(expectedUserId);
-        Integer actualUserId = model.getUserID();
+        model.setUid(expectedUserId);
+        Integer actualUserId = model.getUid();
 
         // Assert
         assertEquals(expectedUserId, actualUserId);
@@ -54,9 +54,9 @@ public class SharedDataModelTest {
     public void testLastModifiedUserIDGetterSetter() {
         SharedDataModel sharedData = new SharedDataModel();
 
-        sharedData.setLastModifiedUserID(1);
+        sharedData.setLastModifiedBy(1);
 
-        assertEquals(1, sharedData.getLastModifiedUserID());
+        assertEquals(1, sharedData.getLastModifiedBy());
     }
 
     @Test
