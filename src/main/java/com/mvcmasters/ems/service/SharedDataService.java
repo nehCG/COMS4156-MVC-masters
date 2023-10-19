@@ -52,7 +52,7 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
         // with a Bad Request status
         if (data == null) {
             throw new CustomException("Record ID does not exist",
-                                      HttpStatus.BAD_REQUEST);
+                    HttpStatus.BAD_REQUEST);
         }
 
         // Return the retrieved shared data
@@ -165,6 +165,4 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
                     HttpStatus.BAD_REQUEST);
         }
     }
-
-
 }

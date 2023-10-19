@@ -131,5 +131,4 @@ public class SharedSpaceControllerTest {
         assertEquals(expectedResponse, responseEntity);
         verify(sharedDataService, times(1)).deleteSharedDataById(id);
     }
-
 }
