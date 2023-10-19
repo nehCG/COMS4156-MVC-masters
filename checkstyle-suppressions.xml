@@ -7,4 +7,6 @@
     <!-- Suppress the "UtilityClass" warning for EmsApplication -->
     <suppress checks="HideUtilityClassConstructor"
               files="com/mvcmasters/ems/EmsApplication.java"/>
+    <!-- Suppress JavadocPackage warnings for missing package-info.java -->
+    <suppress checks="JavadocPackage" files=".*" />
 </suppressions>
