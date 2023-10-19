@@ -17,11 +17,11 @@ public final class AssertUtil {
      *
      * @param flag The flag to check.
      * @param msg  The message for the exception.
+     * @throws ParamsException if the provided flag is true.
      */
     public static void isTrue(final Boolean flag, final String msg) {
         if (flag) {
             throw new ParamsException(msg);
         }
     }
-
 }

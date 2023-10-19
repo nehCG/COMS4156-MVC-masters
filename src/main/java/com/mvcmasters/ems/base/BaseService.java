@@ -44,11 +44,19 @@ public abstract class BaseService<T, ID> {
     public Map<String, Object> queryByParamsForTable(final
                                                      BaseQuery baseQuery) {
         Map<String, Object> result = new HashMap<>();
+        // Initialize the pagination mechanism using the page number and limit
         PageHelper.startPage(baseQuery.getPage(), baseQuery.getLimit());
+
+        // Fetch the paginated results and organize them
+        // into a PageInfo structure
         PageInfo<T> pageInfo = new PageInfo<>(selectByParams(baseQuery));
+
+        // Populate the results map with relevant information for table display
         result.put("count", pageInfo.getTotal());
         result.put("data", pageInfo.getList());
+        // Code 0 typically signifies a successful operation
         result.put("code", 0);
+        // Placeholder for any potential messages, left empty here
         result.put("msg", "");
         return result;
     }

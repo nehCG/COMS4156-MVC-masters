@@ -16,6 +16,7 @@ public class BaseController {
      */
     @ModelAttribute
     public void preHandler(final HttpServletRequest request) {
+        // Set the application's context path as an attribute in the request.
         request.setAttribute("ctx", request.getContextPath());
     }
 
@@ -25,7 +26,7 @@ public class BaseController {
      * @return A ResultInfo object indicating success.
      */
     public ResultInfo success() {
-        return new ResultInfo();
+        return new ResultInfo(); // Return a default success ResultInfo.
     }
 
     /**
@@ -36,7 +37,7 @@ public class BaseController {
      */
     public ResultInfo success(final String msg) {
         ResultInfo resultInfo = new ResultInfo();
-        resultInfo.setMsg(msg);
+        resultInfo.setMsg(msg); // Set the success message.
         return resultInfo;
     }
 
@@ -49,8 +50,8 @@ public class BaseController {
      */
     public ResultInfo success(final String msg, final Object result) {
         ResultInfo resultInfo = new ResultInfo();
-        resultInfo.setMsg(msg);
-        resultInfo.setResult(result);
+        resultInfo.setMsg(msg); // Set the success message.
+        resultInfo.setResult(result); // Attach the result data.
         return resultInfo;
     }
 }

@@ -44,9 +44,13 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
         modelAndView.addObject("msg", "Server exception. Please try again...");
 
         if (handler instanceof HandlerMethod handlerMethod) {
+            // Check if the handler method has a @ResponseBody annotation
             ResponseBody responseBody = handlerMethod.getMethod().
                     getDeclaredAnnotation(ResponseBody.class);
             if (responseBody == null) {
+                // If not an @ResponseBody method and
+                // the exception is ParamsException,
+                // set the code and message in the ModelAndView
                 if (ex instanceof ParamsException p) {
                     modelAndView.addObject("code", p.getCode());
                     modelAndView.addObject("msg", p.getMsg());
@@ -55,32 +59,40 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
                 return modelAndView;
 
             } else {
+                // If it's an @ResponseBody method
                 ResultInfo resultInfo = new ResultInfo();
                 resultInfo.setCode(SERVER_ERROR_CODE);
                 resultInfo.setMsg("Server exception. Please try again...");
-
+                // Check if the exception is an instance of ParamsException
                 if (ex instanceof ParamsException p) {
+                    // If it is, set the code and message from the exception
                     resultInfo.setCode(p.getCode());
                     resultInfo.setMsg(p.getMessage());
+                    // Set the HTTP response status code to
+                    // indicate a bad request
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 } else {
+                    // If it's not a ParamsException, set the HTTP response
+                    // status code to indicate an internal server error
                     response.setStatus(HttpServletResponse.
                             SC_INTERNAL_SERVER_ERROR);
                 }
 
+                // Set the response content type to JSON
                 response.setContentType("application/json;charset=UTF-8");
                 try (PrintWriter out = response.getWriter()) {
+                    // Serialize the ResultInfo object to JSON
                     String json = JSON.toJSONString(resultInfo);
+                    // Write the JSON response to the PrintWriter
                     out.write(json);
                 } catch (IOException e) {
+                    // Handle any IO exceptions that may occur
                     e.printStackTrace();
                 }
-
+                // Return null to indicate that the response has been handled
                 return null;
-
             }
         }
-
         return modelAndView;
     }
 }
