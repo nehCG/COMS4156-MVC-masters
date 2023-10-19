@@ -6,15 +6,27 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+/**
+ * This class contains unit tests for the SharedData class.
+ */
 public class SharedDataTest {
 
+    /**
+     * The SharedData instance used for testing in the SharedDataTest class.
+     */
     private SharedData sharedData;
 
+    /**
+     * Initializes a new SharedData instance before each test.
+     */
     @BeforeEach
     public void setUp() {
         sharedData = new SharedData();
     }
 
+    /**
+     * Tests getters and setters for the SharedData class.
+     */
     @Test
     public void testGettersAndSetters() {
         // Set values using setters
@@ -24,7 +36,7 @@ public class SharedDataTest {
         sharedData.setCreatedTime("2023-05-30");
         sharedData.setLastModifiedTime("2023-05-31");
         sharedData.setUid(2);
-        sharedData.setLastModifiedBy(3);
+        sharedData.setLastModifiedBy(1);
 
 
         // Verify values using getters
@@ -34,9 +46,12 @@ public class SharedDataTest {
         assertEquals("2023-05-30", sharedData.getCreatedTime());
         assertEquals("2023-05-31", sharedData.getLastModifiedTime());
         assertEquals(2, sharedData.getUid());
-        assertEquals(3, sharedData.getLastModifiedBy());
+        assertEquals(1, sharedData.getLastModifiedBy());
     }
 
+    /**
+     * Tests setters with null values for the SharedData class.
+     */
     @Test
     public void testSettersWithNull() {
         // Set values using setters with null values
@@ -52,6 +67,9 @@ public class SharedDataTest {
         assertNull(sharedData.getContent());
     }
 
+    /**
+     * Tests setters with trim for the SharedData class.
+     */
     @Test
     public void testSettersWithTrim() {
         // Set values with leading and trailing spaces
@@ -63,6 +81,9 @@ public class SharedDataTest {
         assertEquals("dce", sharedData.getSubject());
     }
 
+    /**
+     * Tests setLastModifiedTime with null values for the SharedData class.
+     */
     @Test
     public void testSetLastModifiedTimeWithNull() {
         sharedData.setLastModifiedTime(null);
@@ -71,6 +92,9 @@ public class SharedDataTest {
         assertNull(sharedData.getLastModifiedTime());
     }
 
+    /**
+     * Tests setCreatedTime with null values for the SharedData class.
+     */
     @Test
     public void testSetCreatedTimeWithNull() {
         sharedData.setCreatedTime(null);
@@ -79,6 +103,9 @@ public class SharedDataTest {
         assertNull(sharedData.getCreatedTime());
     }
 
+    /**
+     * Tests setLastModifiedTime with trim for the SharedData class.
+     */
     @Test
     public void testSetLastModifiedTimeWithTrim() {
         sharedData.setLastModifiedTime("  2013-07/02  ");
@@ -87,11 +114,14 @@ public class SharedDataTest {
         assertEquals("2013-07/02", sharedData.getLastModifiedTime());
     }
 
+    /**
+     * Tests setCreatedTime with trim for the SharedData class.
+     */
     @Test
     public void testSetCreatedTimeWithTrim() {
         sharedData.setCreatedTime("  2023-08/03  ");
 
         // Verify that leading and trailing spaces are trimmed
-        assertEquals("2023-08/03",sharedData.getCreatedTime());
+        assertEquals("2023-08/03", sharedData.getCreatedTime());
     }
 }
