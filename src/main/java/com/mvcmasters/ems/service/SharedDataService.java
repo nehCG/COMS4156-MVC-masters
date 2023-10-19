@@ -20,7 +20,6 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
     // Add a new shared data entry
     public void addSharedData(SharedDataModel sharedData) {
         sharedData.setCreatedTime(LocalDateTime.now());
-        System.out.println(LocalDateTime.now());
         validateSharedData(sharedData);
         sharedDataMapper.insertSharedData(sharedData);
     }

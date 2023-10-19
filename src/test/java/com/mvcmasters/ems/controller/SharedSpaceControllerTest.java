@@ -82,7 +82,7 @@ public class SharedSpaceControllerTest {
         Integer id = 1;
         doNothing().when(sharedDataService).deleteSharedDataById(id);
 
-        ResponseEntity<String> expectedResponse = new ResponseEntity<>("Shared data deleted successfully!", HttpStatus.NO_CONTENT);
+        ResponseEntity<String> expectedResponse = new ResponseEntity<>("Shared data deleted successfully!", HttpStatus.OK);
         ResponseEntity<String> responseEntity = sharedSpaceController.deleteSharedDataById(id);
 
         assertEquals(expectedResponse, responseEntity);
