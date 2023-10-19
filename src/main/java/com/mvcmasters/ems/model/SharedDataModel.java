@@ -6,9 +6,9 @@ public class SharedDataModel {
     private Integer uid;
     private String subject;
     private String content;
-    private LocalDateTime created_time;
-    private Integer last_modified_by;
-    private LocalDateTime modified_time;
+    private LocalDateTime createdTime;
+    private Integer lastModifiedBy;
+    private LocalDateTime modifiedTime;
 
     // Getter and Setter functions for the attributes
     public Integer getId() {
@@ -19,11 +19,11 @@ public class SharedDataModel {
         this.id = id;
     }
 
-    public Integer getUserID() {
+    public Integer getUid() {
         return uid;
     }
 
-    public void setUserId(Integer uid) {
+    public void setUid(Integer uid) {
         this.uid = uid;
     }
 
@@ -43,27 +43,27 @@ public class SharedDataModel {
         return content;
     }
 
-    public void setLastModifiedUserID(Integer uid) {
-        this.last_modified_by = uid;
+    public void setLastModifiedBy(Integer uid) {
+        this.lastModifiedBy = uid;
     }
 
-    public Integer getLastModifiedUserID() {
-        return last_modified_by;
+    public Integer getLastModifiedBy() {
+        return lastModifiedBy;
     }
 
     public void setCreatedTime(LocalDateTime time) {
-        this.created_time = time;
+        this.createdTime = time;
     }
 
     public LocalDateTime getCreatedTime() {
-        return created_time;
+        return createdTime;
     }
 
-    public void setLastModifiedTime(LocalDateTime time) {
-        this.modified_time = time;
+    public void setModifiedTime(LocalDateTime time) {
+        this.modifiedTime = time;
     }
 
-    public LocalDateTime getLastModifiedTime() {
-        return modified_time;
+    public LocalDateTime getModifiedTime() {
+        return modifiedTime;
     }
 }

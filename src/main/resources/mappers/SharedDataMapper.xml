@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.mvcmasters.ems.repository.SharedDataMapper">
-
+  <resultMap id="sharedDataMap" type="com.mvcmasters.ems.model.SharedDataModel">
+    <id property="id" column="id" />
+    <result property="uid" column="uid" />
+    <result property="subject" column="subject" />
+    <result property="content" column="content" />
+    <result property="createdTime" column="created_time" /> <!-- mapped -->
+    <result property="lastModifiedBy" column="last_modified_by" /> <!-- mapped -->
+    <result property="modifiedTime" column="modified_time" /> <!-- mapped -->
+  </resultMap>
   <!-- Insert shared data -->
   <insert id="insertSharedData" parameterType="com.mvcmasters.ems.model.SharedDataModel">
     INSERT INTO t_sharedSpace (uid, subject, content, created_time, last_modified_by, modified_time)
-    VALUES (#{uid}, #{subject}, #{content}, #{created_time}, #{last_modified_by}, #{modified_time})
+    VALUES (#{uid}, #{subject}, #{content}, #{createdTime}, #{lastModifiedBy}, #{modifiedTime})
   </insert>
 
   <!-- Select shared data by ID -->
-  <select id="selectSharedDataById" resultType="com.mvcmasters.ems.model.SharedDataModel">
+  <select id="selectSharedDataById" resultMap="sharedDataMap">
     SELECT * FROM t_sharedSpace WHERE id = #{id}
   </select>
 
   <!-- Select all shared data entries -->
-  <select id="selectAllSharedData" resultType="com.mvcmasters.ems.model.SharedDataModel">
+  <select id="selectAllSharedData" resultMap="sharedDataMap">
     SELECT * FROM t_sharedSpace
   </select>
 
@@ -26,9 +33,9 @@
       <if test="uid != null">uid = #{uid},</if>
       <if test="subject != null">subject = #{subject},</if>
       <if test="content != null">content = #{content},</if>
-      <if test="created_time != null">created_time = #{created_time},</if>
-      <if test="last_modified_by != null">last_modified_by = #{last_modified_by},</if>
-      <if test="modified_time != null">modified_time = #{modified_time}</if>
+      <if test="createdTime != null">created_time = #{createdTime},</if>
+      <if test="lastModifiedBy != null">last_modified_by = #{lastModifiedBy},</if>
+      <if test="modifiedTime != null">modified_time = #{modifiedTime}</if>
     </set>
     WHERE id = #{id}
   </update>
