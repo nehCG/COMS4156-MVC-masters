@@ -212,6 +212,11 @@ Base URL: `http://localhost:8080/ems/announcement`
 - Status Codes:
     - 200 OK: Successfully added.
     - 400 BAD REQUEST: If the `SharedDataModel` object is null, or `subject` or `content` is null/empty.
+- **Postman API tests**:
+  - Add shared data without content: [View Screenshot](postman_API_tests/announcement/post/Ann_content_empty.png)
+  - Add shared data without subject: [View Screenshot](postman_API_tests/announcement/post/Ann_subject_empty.png)
+  - Successfully add shared data: [View Screenshot](postman_API_tests/announcement/post/Ann_success.png)
+  - Add shared data without uid: [View Screenshot](postman_API_tests/announcement/post/Ann_uid_null.png)
 
 #### GET `/{id}`
 
@@ -221,6 +226,9 @@ Base URL: `http://localhost:8080/ems/announcement`
 - Status Codes:
     - 200 OK: Successfully retrieved.
     - 400 BAD REQUEST: If `id` does not exist.
+- **Postman API tests**:
+  - Get shared data success: [View Screenshot](postman_API_tests/announcement/{id}/Get_ann_by_id.png)
+  - Get not exist shared data: [View Screenshot](postman_API_tests/announcement/{id}/Get_by_id_dne.png)
 
 #### GET `/all`
 
