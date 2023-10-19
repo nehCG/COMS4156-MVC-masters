@@ -18,7 +18,8 @@ public final class Md5Util {
      * the result as a Base64-encoded string.
      *
      * @param msg The message to encode.
-     * @return The MD5 hash of the message as a Base64-encoded string.
+     * @return The MD5 hash of the message as a Base64-encoded string,
+     * or null if there's an error.
      */
     public static String encode(final String msg) {
         if (msg == null) {
@@ -26,10 +27,14 @@ public final class Md5Util {
         }
 
         try {
+            // Create a MessageDigest instance for MD5
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+
+            // Calculate the MD5 hash of the message and encode it as Base64
             return Base64.getEncoder().
                           encodeToString(messageDigest.digest(msg.getBytes()));
         } catch (Exception e) {
+            // Handle exceptions and return null in case of an error
             e.printStackTrace();
             return null;
         }
