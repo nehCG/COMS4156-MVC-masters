@@ -12,7 +12,8 @@ public interface UserMapper extends BaseMapper<User, Integer> {
      * Queries the database to retrieve a User based on their username.
      *
      * @param userName the name of the user to query for.
-     * @return the User corresponding to the provided username, or null if not found.
+     * @return the User corresponding to the provided username,
+     * or null if not found.
      */
     User queryUserByName(String userName);
 }

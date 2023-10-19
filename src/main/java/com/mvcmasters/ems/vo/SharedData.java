@@ -1,74 +1,147 @@
 package com.mvcmasters.ems.vo;
 
+/**
+ * Represents a shared data.
+ */
 public class SharedData {
-
+    /**
+     * The shared data's ID.
+     */
     private Integer id;
-
+    /**
+     * The shared data's creator's uid.
+     */
     private Integer uid;
-
-    private Integer last_modified_by;
-
+    /**
+     * The uid of the user who last modified this shared data.
+     */
+    private Integer lastModifiedBy;
+    /**
+     * The shared data subject.
+     */
     private String subject;
-
+    /**
+     * The shared data content.
+     */
     private String content;
-
-    private String created_time;
-
-    private String modified_time;
-
+    /**
+     * The creation date of the shared data.
+     */
+    private String createdTime;
+    /**
+     * The last modification date of the shared data.
+     */
+    private String modifiedTime;
+    /**
+     * Gets the data's ID.
+     *
+     * @return The data's ID.
+     */
     public Integer getId() {
         return id;
     }
-
-    public void setId(Integer id) {
-        this.id = id;
+    /**
+     * Sets the user's ID.
+     *
+     * @param newId The user's ID to set.
+     */
+    public void setId(final Integer newId) {
+        this.id = newId;
     }
-
+    /**
+     * Gets the user's ID.
+     *
+     * @return The user's ID.
+     */
     public Integer getUid() {
         return uid;
     }
-
-    public void setUid(Integer uid) {
-        this.uid = uid;
+    /**
+     * Sets the user's ID.
+     *
+     * @param newUid The user's ID to set.
+     */
+    public void setUid(final Integer newUid) {
+        this.uid = newUid;
     }
-
-    public void setSubject(String subject) {
-        this.subject = subject == null ? null : subject.trim();
+    /**
+     * Sets the data new subjects.
+     *
+     * @param newSubject the data new subjects.
+     */
+    public void setSubject(final String newSubject) {
+        this.subject = newSubject == null ? null : newSubject.trim();
     }
-
+    /**
+     * Gets the subject.
+     *
+     * @return data subject.
+     */
     public String getSubject() {
         return subject;
     }
-
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+    /**
+     * Sets the new data content.
+     *
+     * @param newContent new data content.
+     */
+    public void setContent(final String newContent) {
+        this.content = newContent == null ? null : newContent.trim();
     }
-
+    /**
+     * Gets the content.
+     *
+     * @return data content.
+     */
     public String getContent() {
         return content;
     }
-
-    public void setLastModifiedBy(Integer uid) {
-        this.last_modified_by = uid;
+    /**
+     * Sets the last modified user's ID.
+     *
+     * @param newUid the last modified user ID.
+     */
+    public void setLastModifiedBy(final Integer newUid) {
+        this.lastModifiedBy = newUid;
     }
-
+    /**
+     * Gets the last modified user id.
+     *
+     * @return the last modified user id.
+     */
     public Integer getLastModifiedBy() {
-        return last_modified_by;
+        return lastModifiedBy;
     }
-
-    public void setCreatedTime(String time) {
-        this.created_time = time == null ? null : time.trim();
+    /**
+     * Sets the creation date.
+     *
+     * @param time the creation date.
+     */
+    public void setCreatedTime(final String time) {
+        this.createdTime = time == null ? null : time.trim();
     }
-
+    /**
+     * Gets the creation data.
+     *
+     * @return the creation dat.
+     */
     public String getCreatedTime() {
-        return created_time;
+        return createdTime;
     }
-
-    public void setLastModifiedTime(String time) {
-        this.modified_time = time == null ? null : time.trim();
+    /**
+     * Sets the modification date.
+     *
+     * @param time the modification date.
+     */
+    public void setLastModifiedTime(final String time) {
+        this.modifiedTime = time == null ? null : time.trim();
     }
-
+    /**
+     * Gets the user's ID.
+     *
+     * @return The user's ID.
+     */
     public String getLastModifiedTime() {
-        return modified_time;
+        return modifiedTime;
     }
 }
