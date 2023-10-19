@@ -49,8 +49,12 @@ public class SharedDataModelTest {
 
         assertEquals("abc", sharedData.getSubject());
     }
+
+    /**
+     * Test when setSubject with Whitespace.
+     */
     @Test
-    public void whenSettingSubject_withWhitespace_thenTrimmed() {
+    public void testSetSubjectWithWhitespace() {
         SharedDataModel sharedData = new SharedDataModel();
 
         sharedData.setSubject("  abc  ");
@@ -58,8 +62,11 @@ public class SharedDataModelTest {
         assertEquals("abc", sharedData.getSubject());
     }
 
+    /**
+     * Test when setSubject with null.
+     */
     @Test
-    public void whenSettingSubject_toNull_thenSubjectIsNull() {
+    public void testSetSubjectWithNull() {
         SharedDataModel sharedData = new SharedDataModel();
 
         sharedData.setSubject(null);
@@ -67,8 +74,11 @@ public class SharedDataModelTest {
         assertNull(sharedData.getSubject());
     }
 
+    /**
+     * Test when setSubject with empty string.
+     */
     @Test
-    public void whenSettingSubject_toEmptyString_thenSubjectIsEmpty() {
+    public void testSetSubjectToEmptyString() {
         SharedDataModel sharedData = new SharedDataModel();
 
         sharedData.setSubject("");
@@ -87,8 +97,12 @@ public class SharedDataModelTest {
 
         assertEquals("abc", sharedData.getContent());
     }
+
+    /**
+     * Test when setContent with whitespace .
+     */
     @Test
-    public void whenSettingContent_withWhitespace_thenTrimmed() {
+    public void testSetContentWithWhitespace() {
         SharedDataModel sharedData = new SharedDataModel();
 
         sharedData.setContent("  abc  ");
@@ -96,8 +110,11 @@ public class SharedDataModelTest {
         assertEquals("abc", sharedData.getContent());
     }
 
+    /**
+     * Test when setContent with null .
+     */
     @Test
-    public void whenSettingContent_toNull_thenContentIsNull() {
+    public void testSetContentToNull() {
         SharedDataModel sharedData = new SharedDataModel();
 
         sharedData.setContent(null);
@@ -105,8 +122,11 @@ public class SharedDataModelTest {
         assertNull(sharedData.getContent());
     }
 
+    /**
+     * Test when setContent with empty string .
+     */
     @Test
-    public void whenSettingContent_toEmptyString_thenContentIsEmpty() {
+    public void testSetContentToEmptyStringy() {
         SharedDataModel sharedData = new SharedDataModel();
 
         sharedData.setContent("");
