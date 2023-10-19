@@ -1,5 +1,86 @@
-# COMS4156-MVC-masters
-Entity management system is a comprehensive service that can be integrated by clients to manage all aspects related to their entities.
+# Entity management Service
+A comprehensive service that can be integrated by clients to manage all aspects related to their entities.
+
+[![license](https://img.shields.io/badge/license-MIT-green)](https://github.com/nehCG/ems/blob/main/LICENSE)
+[![Build Status](https://github.com/nehCG/ems/workflows/Build%20Status/badge.svg?branch=main)](https://github.com/nehCG/ems/actions?query=workflow%3A%22Build+Status%22)
+[![](https://img.shields.io/github/issues/nehCG/ems)](https://github.com/nehCG/ems/issues)
+[![codecov](https://codecov.io/gh/nehCG/ems/branch/main/graph/badge.svg)](https://codecov.io/gh/nehCG/ems)
+
+## Build and run the service using Docker
+
+### Prerequisites
+
+1. Ensure you have [Docker](https://www.docker.com/get-started) installed on your machine.
+2. Ensure you have [Docker Compose](https://docs.docker.com/compose/install/) installed.
+
+### 1. Clone the Repository
+
+If you haven't already, clone the repository to your local machine.
+
+### 2. Build the Docker Image
+
+Navigate to the directory containing the `Dockerfile` and run:
+
+```bash
+docker build -t ems-image .
+```
+
+This will build a Docker image named `ems-image` from the `Dockerfile` in the current directory.
+
+### 3. Run the Service using Docker
+
+Navigate to the directory containing the `docker-compose.yml` and run:
+
+```bash
+docker-compose up
+```
+
+Then give it a couple of minutes because MySQL might take a little while to be ready, especially on the first run when it's initializing data.
+
+### 4. Access the Service
+
+After a few minutes, open your browser and navigate to:
+
+[http://localhost:8080/ems](http://localhost:8080/ems)
+
+You should now see the service is running!
+
+### Troubleshooting
+
+- If you encounter port conflicts (e.g., port `8080` is already in use), either stop the service using the port or bind the application to a different port when running the Docker container.
+- Ensure your Docker daemon is running before executing Docker commands.
+- Check application logs in the Docker container for any issues related to the Spring Boot application.
+
+## Test the service
+
+### Run all unit tests
+
+```bash
+./mvnw test -Dcheckstyle.skip=true
+```
+
+If you want to generate a test coverage report, you can choose the following two commands：
+
+#### Clean old build artifacts, run tests, and verify the package is correct.
+```bash
+./mvnw clean verify -Dcheckstyle.skip=true
+```
+
+#### Clean old build artifacts, run tests, create the package, and install it to the local Maven repository.
+
+```bash
+./mvnw clean install -Dcheckstyle.skip=true
+```
+
+## Style Checker
+
+We use CheckStyle with Sun Checks
+
+### Run Checkstyle
+
+```bash
+./mvnw checkstyle:check
+```
 
 ## Operational Entry Points
 ### User Management Entry Points
@@ -105,6 +186,3 @@ Base URL: `http://localhost:8080/ems/announcement`
 - Status Codes:
     - 204 NO CONTENT: Successfully deleted.
     - 400 BAD REQUEST: If `id` does not exist.
-
-## Instructions
-_To include instructions explaining how to build, run and test your service_
