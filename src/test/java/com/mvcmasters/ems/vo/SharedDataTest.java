@@ -23,8 +23,8 @@ public class SharedDataTest {
         sharedData.setSubject("a");
         sharedData.setCreatedTime("2023-05-30");
         sharedData.setLastModifiedTime("2023-05-31");
-        sharedData.setUserId(2);
-        sharedData.setLastModifiedUserID(3);
+        sharedData.setUid(2);
+        sharedData.setLastModifiedBy(3);
 
 
         // Verify values using getters
@@ -33,19 +33,23 @@ public class SharedDataTest {
         assertEquals("a", sharedData.getSubject());
         assertEquals("2023-05-30", sharedData.getCreatedTime());
         assertEquals("2023-05-31", sharedData.getLastModifiedTime());
-        assertEquals(2, sharedData.getUserID());
-        assertEquals(3, sharedData.getLastModifiedUserID());
+        assertEquals(2, sharedData.getUid());
+        assertEquals(3, sharedData.getLastModifiedBy());
     }
 
     @Test
     public void testSettersWithNull() {
         // Set values using setters with null values
-        sharedData.setLastModifiedUserID(null);
-        sharedData.setUserId(null);
+        sharedData.setLastModifiedBy(null);
+        sharedData.setUid(null);
+        sharedData.setSubject(null);
+        sharedData.setContent(null);
 
         // Verify that null values are stored as-is
-        assertNull(sharedData.getLastModifiedUserID());
-        assertNull(sharedData.getUserID());
+        assertNull(sharedData.getLastModifiedBy());
+        assertNull(sharedData.getUid());
+        assertNull(sharedData.getSubject());
+        assertNull(sharedData.getContent());
     }
 
     @Test

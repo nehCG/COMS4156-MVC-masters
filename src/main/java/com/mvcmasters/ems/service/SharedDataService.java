@@ -40,14 +40,21 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
 
     // Update a shared data entry by its id
     public void updateSharedData(Integer id, SharedDataModel newData) {
-        if (newData == null) {
-            throw new CustomException("Updates can not be null", HttpStatus.BAD_REQUEST);
-        }
         SharedDataModel existingData = sharedDataMapper.selectSharedDataById(id);
         if (existingData == null) {
             throw new CustomException("Record ID does not exist", HttpStatus.BAD_REQUEST);
         }
-        newData.setLastModifiedTime(LocalDateTime.now());
+
+        if (newData.getContent() == null && newData.getSubject() == null) {
+            throw new CustomException("Updates can not be null", HttpStatus.BAD_REQUEST);
+        }
+
+        // Check if the user ID is not null
+        if (newData.getUid() == null) {
+            throw new CustomException("User ID cannot be null", HttpStatus.BAD_REQUEST);
+        }
+
+        newData.setModifiedTime(LocalDateTime.now());
         newData.setId(id);
         sharedDataMapper.updateSharedData(newData);
 
@@ -66,19 +73,30 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
         // may need to add check for data owner or only admin can delete
     }
 
-    void validateSharedData(SharedDataModel sharedData){
+    public void validateSharedData(SharedDataModel sharedData){
         // Check if the sharedData object itself is not null
         if (sharedData == null) {
             throw new CustomException("Shared data cannot be null", HttpStatus.BAD_REQUEST);
         }
 
+        // Check if the shared data object has a ID, which should be empty as the service
+        // will automatically assign ID
+        if (sharedData.getId() != null) {
+            throw new CustomException("ID will be automatically assigned", HttpStatus.BAD_REQUEST);
+        }
+
+        // Check if the user ID is not null
+        if (sharedData.getUid() == null) {
+            throw new CustomException("User ID cannot be null", HttpStatus.BAD_REQUEST);
+        }
+
         // Check if the 'subject' field is not null
-        if (sharedData.getSubject() == null || sharedData.getSubject().trim().isEmpty()) {
+        if (sharedData.getSubject() == null || sharedData.getSubject().isBlank()) {
             throw new CustomException("Subject cannot be empty", HttpStatus.BAD_REQUEST);
         }
 
         // Check if the 'content' field is not null
-        if (sharedData.getContent() == null || sharedData.getContent().trim().isEmpty()) {
+        if (sharedData.getContent() == null || sharedData.getContent().isBlank()) {
             throw new CustomException("Content cannot be empty", HttpStatus.BAD_REQUEST);
         }
     }

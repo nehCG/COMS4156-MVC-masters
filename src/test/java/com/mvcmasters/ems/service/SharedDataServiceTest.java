@@ -43,6 +43,7 @@ public class SharedDataServiceTest {
         sharedData.setCreatedTime(LocalDateTime.now());
         sharedData.setSubject("abc");
         sharedData.setContent("abc");
+        sharedData.setUid(1);
 
         doNothing().when(sharedDataMapper).insertSharedData(sharedData);
 
@@ -88,6 +89,7 @@ public class SharedDataServiceTest {
         sharedData.setCreatedTime(LocalDateTime.now());
         sharedData.setSubject("abc");
         sharedData.setContent("abc");
+        sharedData.setUid(1);
 
         // Prepare id
         Integer id = 1;
@@ -96,6 +98,7 @@ public class SharedDataServiceTest {
         SharedDataModel newSharedData = new SharedDataModel();
         newSharedData.setSubject("updated");
         newSharedData.setContent("updated");
+        newSharedData.setUid(1);
 
         when(sharedDataMapper.selectSharedDataById(id)).thenReturn(sharedData);
         doNothing().when(sharedDataMapper).updateSharedData(newSharedData);
@@ -105,8 +108,14 @@ public class SharedDataServiceTest {
 
     @Test
     public void testUpdateSharedDataWithNullData() {
+        // Arrange
+        int id = 1;
+        SharedDataModel existingData = new SharedDataModel();
+        when(sharedDataMapper.selectSharedDataById(id)).thenReturn(existingData);
+
+        // Act and Assert
         CustomException thrown = assertThrows(CustomException.class, () -> {
-            sharedDataService.updateSharedData(1, null);
+            sharedDataService.updateSharedData(id, new SharedDataModel());
         });
 
         assertEquals("Updates can not be null", thrown.getMessage());
@@ -117,11 +126,75 @@ public class SharedDataServiceTest {
         Integer id = 10000;
         when(sharedDataMapper.selectSharedDataById(id)).thenReturn(null);
 
+        SharedDataModel newData = new SharedDataModel();
+        newData.setSubject("New Subject");
+        newData.setContent("New Content");
+
         CustomException thrown = assertThrows(CustomException.class, () -> {
-            sharedDataService.updateSharedData(id, new SharedDataModel());
+            sharedDataService.updateSharedData(id, newData);
         });
 
         assertEquals("Record ID does not exist", thrown.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateSharedDataWithNullContentAndSubject(){
+        Integer id = 10000;
+        when(sharedDataMapper.selectSharedDataById(id)).thenReturn(new SharedDataModel());
+
+        SharedDataModel newData = new SharedDataModel();
+
+        CustomException thrown = assertThrows(CustomException.class, () -> {
+            sharedDataService.updateSharedData(id, newData);
+        });
+
+        assertEquals("Updates can not be null", thrown.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
+    }
+
+    @Test
+    public void testUpdateSharedDataWithNonNullContent() {
+        Integer id = 1;
+        when(sharedDataMapper.selectSharedDataById(id)).thenReturn(new SharedDataModel());
+
+        SharedDataModel newData = new SharedDataModel();
+        newData.setContent("Some content");
+        newData.setUid(1);
+
+        assertDoesNotThrow(() -> {
+            sharedDataService.updateSharedData(id, newData);
+        });
+    }
+
+    @Test
+    public void testUpdateSharedDataWithNonNullSubject() {
+        Integer id = 1;
+        when(sharedDataMapper.selectSharedDataById(id)).thenReturn(new SharedDataModel());
+
+        SharedDataModel newData = new SharedDataModel();
+        newData.setSubject("Some subject");
+        newData.setUid(1);
+
+        assertDoesNotThrow(() -> {
+            sharedDataService.updateSharedData(id, newData);
+        });
+    }
+
+    @Test
+    public void testUpdateSharedDataWithNullUid(){
+        Integer id = 10000;
+        when(sharedDataMapper.selectSharedDataById(id)).thenReturn(new SharedDataModel());
+
+        SharedDataModel newData = new SharedDataModel();
+        newData.setSubject("New Subject");
+        newData.setContent("New Content");
+
+        CustomException thrown = assertThrows(CustomException.class, () -> {
+            sharedDataService.updateSharedData(id, newData);
+        });
+
+        assertEquals("User ID cannot be null", thrown.getMessage());
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
 
@@ -160,6 +233,7 @@ public class SharedDataServiceTest {
         sharedData.setCreatedTime(LocalDateTime.now());
         sharedData.setSubject("abc");
         sharedData.setContent("abc");
+        sharedData.setUid(1);
 
         sharedDataService.validateSharedData(sharedData);
     }
@@ -180,6 +254,24 @@ public class SharedDataServiceTest {
         // Prepare data with empty subject
         SharedDataModel sharedData = new SharedDataModel();
         sharedData.setSubject("");
+        sharedData.setUid(1);
+
+        CustomException thrown = assertThrows(
+                CustomException.class,
+                () -> sharedDataService.validateSharedData(sharedData)
+        );
+
+        assertEquals("Subject cannot be empty", thrown.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
+    }
+
+    @Test
+    public void testValidateSharedDataWithNullSubject() {
+        // Prepare data with null content
+        SharedDataModel sharedData = new SharedDataModel();
+        sharedData.setContent("subjecttest");
+        sharedData.setSubject(null); // set content to null here
+        sharedData.setUid(1);
 
         CustomException thrown = assertThrows(
                 CustomException.class,
@@ -196,6 +288,7 @@ public class SharedDataServiceTest {
         SharedDataModel sharedData = new SharedDataModel();
         sharedData.setSubject("subjecttest");
         sharedData.setContent("");
+        sharedData.setUid(1);
 
         CustomException thrown = assertThrows(
                 CustomException.class,
@@ -205,4 +298,55 @@ public class SharedDataServiceTest {
         assertEquals("Content cannot be empty", thrown.getMessage());
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
+
+    @Test
+    public void testValidateSharedDataWithNullContent() {
+        // Prepare data with null content
+        SharedDataModel sharedData = new SharedDataModel();
+        sharedData.setSubject("subjecttest");
+        sharedData.setContent(null); // set content to null here
+        sharedData.setUid(1);
+
+        CustomException thrown = assertThrows(
+                CustomException.class,
+                () -> sharedDataService.validateSharedData(sharedData)
+        );
+
+        assertEquals("Content cannot be empty", thrown.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
+    }
+
+    @Test
+    public void testValidateSharedDataWithEmptyUid() {
+        // Prepare data with empty content
+        SharedDataModel sharedData = new SharedDataModel();
+        sharedData.setSubject("subjecttest");
+        sharedData.setContent("");
+
+        CustomException thrown = assertThrows(
+                CustomException.class,
+                () -> sharedDataService.validateSharedData(sharedData)
+        );
+
+        assertEquals("User ID cannot be null", thrown.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
+    }
+
+    @Test
+    public void testValidateSharedDataWithNotEmptyId() {
+        // Prepare data with empty content
+        SharedDataModel sharedData = new SharedDataModel();
+        sharedData.setSubject("subjecttest");
+        sharedData.setContent("");
+        sharedData.setId(1);
+
+        CustomException thrown = assertThrows(
+                CustomException.class,
+                () -> sharedDataService.validateSharedData(sharedData)
+        );
+
+        assertEquals("ID will be automatically assigned", thrown.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
+    }
+
 }

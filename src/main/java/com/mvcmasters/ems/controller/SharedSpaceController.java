@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/announcement")
@@ -49,7 +50,7 @@ public class SharedSpaceController extends BaseController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteSharedDataById(@PathVariable Integer id) {
         sharedDataService.deleteSharedDataById(id);
-        return new ResponseEntity<>("Shared data deleted successfully!", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Shared data deleted successfully!", HttpStatus.OK);
     }
 
 }
