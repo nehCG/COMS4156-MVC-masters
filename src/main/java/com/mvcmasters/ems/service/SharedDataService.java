@@ -91,12 +91,12 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
         }
 
         // Check if the 'subject' field is not null
-        if (sharedData.getSubject() == null || sharedData.getSubject().trim().isEmpty()) {
+        if (sharedData.getSubject() == null || sharedData.getSubject().isBlank()) {
             throw new CustomException("Subject cannot be empty", HttpStatus.BAD_REQUEST);
         }
 
         // Check if the 'content' field is not null
-        if (sharedData.getContent() == null || sharedData.getContent().trim().isEmpty()) {
+        if (sharedData.getContent() == null || sharedData.getContent().isBlank()) {
             throw new CustomException("Content cannot be empty", HttpStatus.BAD_REQUEST);
         }
     }

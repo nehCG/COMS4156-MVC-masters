@@ -42,10 +42,14 @@ public class SharedDataTest {
         // Set values using setters with null values
         sharedData.setLastModifiedBy(null);
         sharedData.setUid(null);
+        sharedData.setSubject(null);
+        sharedData.setContent(null);
 
         // Verify that null values are stored as-is
         assertNull(sharedData.getLastModifiedBy());
         assertNull(sharedData.getUid());
+        assertNull(sharedData.getSubject());
+        assertNull(sharedData.getContent());
     }
 
     @Test
