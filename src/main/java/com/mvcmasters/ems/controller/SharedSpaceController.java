@@ -39,7 +39,9 @@ public class SharedSpaceController extends BaseController {
     @PostMapping("/post")
     public ResponseEntity<String> addSharedData(
             @RequestBody final SharedDataModel sharedData) {
+        // Call the service method to add the shared data
         sharedDataService.addSharedData(sharedData);
+        // Return a ResponseEntity with a success message and HTTP status OK
         return new ResponseEntity<>(
                 "Shared data added successfully!", HttpStatus.OK);
     }
@@ -53,7 +55,11 @@ public class SharedSpaceController extends BaseController {
     @GetMapping("/{id}")
     public ResponseEntity<SharedDataModel> getSharedDataById(
             @PathVariable final Integer id) {
+        // Call the service method to retrieve the shared data by ID
         SharedDataModel sharedData = sharedDataService.getSharedDataById(id);
+
+        // Return a ResponseEntity containing the retrieved
+        // data and HTTP status OK
         return new ResponseEntity<>(sharedData, HttpStatus.OK);
     }
 
@@ -64,8 +70,11 @@ public class SharedSpaceController extends BaseController {
      */
     @GetMapping("/all")
     public ResponseEntity<List<SharedDataModel>> getAllSharedData() {
+        // Call the service method to retrieve all shared data entries
         List<SharedDataModel> sharedDataList =
                 sharedDataService.getAllSharedData();
+        // Return a ResponseEntity containing the list of
+        // shared data entries and HTTP status OK
         return new ResponseEntity<>(sharedDataList, HttpStatus.OK);
     }
 
@@ -80,7 +89,10 @@ public class SharedSpaceController extends BaseController {
     public ResponseEntity<String> updateSharedData(
             @PathVariable final Integer id,
             @RequestBody final SharedDataModel sharedData) {
+        // Call the service method to update the shared data by ID
         sharedDataService.updateSharedData(id, sharedData);
+
+        // Return a ResponseEntity with a success message and HTTP status OK
         return new ResponseEntity<>(
                 "Shared data updated successfully!", HttpStatus.OK);
     }
@@ -94,9 +106,11 @@ public class SharedSpaceController extends BaseController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteSharedDataById(
             @PathVariable final Integer id) {
+        // Call the service method to delete the shared data by ID
         sharedDataService.deleteSharedDataById(id);
+
+        // Return a ResponseEntity with a success message and HTTP status OK
         return new ResponseEntity<>(
                 "Shared data deleted successfully!", HttpStatus.OK);
     }
-
 }

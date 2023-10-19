@@ -28,8 +28,13 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
      * @param sharedData the shared data to be added.
      */
     public void addSharedData(final SharedDataModel sharedData) {
+        // Set the created time to the current LocalDateTime
         sharedData.setCreatedTime(LocalDateTime.now());
+
+        // Validate the shared data before adding it
         validateSharedData(sharedData);
+
+        // Insert the shared data using the sharedDataMapper
         sharedDataMapper.insertSharedData(sharedData);
     }
 
@@ -40,11 +45,17 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
      * @return a shared data with the corresponding id.
      */
     public SharedDataModel getSharedDataById(final Integer id) {
+        // Retrieve shared data from the data source using sharedDataMapper
         SharedDataModel data = sharedDataMapper.selectSharedDataById(id);
+
+        // If the data is not found, throw a CustomException
+        // with a Bad Request status
         if (data == null) {
             throw new CustomException("Record ID does not exist",
                                       HttpStatus.BAD_REQUEST);
         }
+
+        // Return the retrieved shared data
         return data;
     }
 
@@ -65,13 +76,18 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
      */
     public void updateSharedData(final Integer id,
                                  final SharedDataModel newData) {
+        // Retrieve existing shared data by ID from the data source
         SharedDataModel existingData =
                 sharedDataMapper.selectSharedDataById(id);
+
+        // If the data does not exist, throw a CustomException
+        // with a Bad Request status
         if (existingData == null) {
             throw new CustomException("Record ID does not exist",
                     HttpStatus.BAD_REQUEST);
         }
 
+        // Check if the content and subject of the new data are both null
         if (newData.getContent() == null && newData.getSubject() == null) {
             throw new CustomException("Updates can not be null",
                     HttpStatus.BAD_REQUEST);
@@ -83,8 +99,12 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
                     HttpStatus.BAD_REQUEST);
         }
 
+        // Set the modified time to the current LocalDateTime
         newData.setModifiedTime(LocalDateTime.now());
+        // Set the ID to the provided ID (to ensure the
+        // update is for the correct record)
         newData.setId(id);
+        // Update the shared data using sharedDataMapper
         sharedDataMapper.updateSharedData(newData);
     }
 
