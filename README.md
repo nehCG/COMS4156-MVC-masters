@@ -235,11 +235,18 @@ Base URL: `http://localhost:8080/ems/announcement`
 
 - Description: Update a specific shared data entry by its ID.
 - Path Variable: `id` - The ID of the shared data entry.
-- Request Body: `SharedDataModel` object, with non-null `subject` and `content`.
+- Request Body: `SharedDataModel` object, with non-null `uid`, `subject` and `content`.
 - Response: "Shared data updated successfully!" for valid input and ID.
 - Status Codes:
     - 200 OK: Successfully updated.
-    - 400 BAD REQUEST: If `id` does not exist, or the `SharedDataModel` object is null, or `subject` or `content` is null/empty.
+    - 400 BAD REQUEST: If `id` does not exist, or the `SharedDataModel` object is null, or `uid` is null, or `subject` or `content` is null/empty.
+- **Postman API tests**:
+  - Update with valid ID, userID, subject, and contents: [View Screenshot](postman_API_tests/announcement/update/Update_ann_success.png)
+  - Proof of update subject and contents success: [View Screenshot](postman_API_tests/announcement/update/Update_ann_proof.png)
+  - Update with valid ID, userID, and subject: [View Screenshot](postman_API_tests/announcement/update/Update_ann_subject_proof.png)
+  - Proof of update subject success: [View Screenshot](postman_API_tests/announcement/update/Update_ann_subject_proof.png)
+  - Update with valid ID, but no request body: [View Screenshot](postman_API_tests/announcement/update/Update_ann_null.png)
+  - Update with valid ID and subject, but no userID: [View Screenshot](postman_API_tests/announcement/update/Update_ann_uid_null.png)
 
 #### DELETE `/delete/{id}`
 
@@ -249,3 +256,6 @@ Base URL: `http://localhost:8080/ems/announcement`
 - Status Codes:
     - 204 NO CONTENT: Successfully deleted.
     - 400 BAD REQUEST: If `id` does not exist.
+- **Postman API tests**:
+  - Delete with valid ID: [View Screenshot](postman_API_tests/announcement/delete/Delete_ann_by_id_success.png)
+  - Proof of delete with valid ID success: [View Screenshot](postman_API_tests/announcement/delete/Delete_ann_proof.png)
