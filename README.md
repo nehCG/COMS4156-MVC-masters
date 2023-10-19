@@ -224,9 +224,12 @@ Base URL: `http://localhost:8080/ems/announcement`
 
 #### GET `/all`
 
-- Description: Retrieve all shared data entries.
-- Response: List of `SharedDataModel` objects.
-- Status Code: 200 OK
+- Description: Retrieve all shared data entry in the database.
+- Response: Map with `SharedDataModel` objects.
+- Status Codes:
+  - 200 OK: Successfully retrieved.
+- **Postman API tests**:
+  - Get all shared data success: [View Screenshot](postman_API_tests/announcement/all/Get_all_ann.png)
 
 #### PUT `/update/{id}`
 
