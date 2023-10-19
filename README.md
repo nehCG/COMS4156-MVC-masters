@@ -2,7 +2,7 @@
 A comprehensive service that can be integrated by clients to manage all aspects related to their entities.
 
 [![license](https://img.shields.io/badge/license-MIT-green)](https://github.com/nehCG/ems/blob/main/LICENSE)
-[![Build Status](https://github.com/nehCG/ems/workflows/Build%20Status/badge.svg?branch=main)](https://github.com/nehCG/ems/actions?query=workflow%3A%22Build+Status%22)
+[![Build Status](https://github.com/nehCG/ems/actions/workflows/build.yml/badge.svg)](https://github.com/nehCG/ems/actions)
 [![](https://img.shields.io/github/issues/nehCG/ems)](https://github.com/nehCG/ems/issues)
 [![codecov](https://codecov.io/gh/nehCG/ems/branch/main/graph/badge.svg)](https://codecov.io/gh/nehCG/ems)
 
@@ -82,7 +82,7 @@ We use CheckStyle with Sun Checks
 ./mvnw checkstyle:check
 ```
 
-## Operational Entry Points
+# API Documentation
 ### User Management Entry Points
 
 Base URL: `http://localhost:8080/ems/user`
@@ -91,13 +91,13 @@ Base URL: `http://localhost:8080/ems/user`
 
 - Description: Authenticate a user.
 - Request Params: 
-  - `userName`(String): The name of the user.
+  - `userName`(String): The username of the user.
   - `userPwd`(String): The password of the user.
 - Response: `UserModel` object for valid credentials.
 - Status Codes:
     - 200 OK: Authentication successful.
     - 400 BAD REQUEST: If `userName` or `userPwd` is empty, or if credentials are incorrect.
-    - 300 Custom code: Represents business logic errors.
+    - 300 CUSTOM CODE: Represents business logic errors.
 - **Postman API tests**:
   - Login success: [View Screenshot](postman_API_tests/user/login/Login_success.png)
   - User does not exist: [View Screenshot](postman_API_tests/user/login/Login_user_dne.png)
@@ -109,46 +109,96 @@ Base URL: `http://localhost:8080/ems/user`
 #### POST `/updatePwd`
 
 - Description: Update the password of an authenticated user.
-- Request Params: `userId`, `oldPassword`, `newPassword`, `repeatPassword`
+- Request Params: 
+  - `userId`(Integer): The ID of the user.
+  - `oldPassword`(String): The current password of the user.
+  - `newPassword`(String): The new password for the user.
+  - `repeatPassword`(String): Confirmation of the new password.
 - Response: Success message for a valid request.
 - Status Codes:
     - 200 OK: Password updated successfully.
     - 400 BAD REQUEST: If `userId` does not exist, `oldPassword` is incorrect, or new passwords do not match/are empty.
+    - 300 CUSTOM CODE: Represents business logic errors.
+- **Postman API tests**:
+  - Reset password success: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_success.png)
+  - Record does not exist: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_record_dne.png)
+  - Original password is empty: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_orgPwd_empty.png)
+  - Incorrect password: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_incorrect_pwd.png)
+  - New password is empty: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_newPwd_empty.png)
+  - Repeated password is empty: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_repeatPwd_empty.png)
+  - New password and Repeated password is inconsistent: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_inconsistent.png)
 
 #### POST `/add`
 
 - Description: Register a new user.
+- Request Params:
+  - `userName`(String): The username of the user.
+  - `email`(String): The email of the user.
+  - `phone`(String): The phone number of the user.
 - Request Body: `User` object.
 - Response: Success message for a valid request.
 - Status Codes:
     - 200 OK: User added successfully.
     - 400 BAD REQUEST: If input parameters are invalid or missing, or if the username already exists.
+    - 300 CUSTOM CODE: Represents business logic errors.
+- **Postman API tests**:
+  - Add user success: [View Screenshot](postman_API_tests/user/add/AddUser_success.png)
+  - Username is empty: [View Screenshot](postman_API_tests/user/add/AddUser_username_empty.png)
+  - Email is empty: [View Screenshot](postman_API_tests/user/add/AddUser_email_empty.png)
+  - Phone is empty: [View Screenshot](postman_API_tests/user/add/AddUser_phone_empty.png)
 
 #### POST `/update`
 
 - Description: Update an existing user's information.
+- Request Params:
+  - `id`(Integer): The ID of the user.
+  - `userName`(String): The username of the user.
+  - `email`(String): The email of the user.
+  - `phone`(String): The phone number of the user.
 - Request Body: `User` object.
 - Response: Success message for a valid request.
 - Status Codes:
     - 200 OK: User updated successfully.
-    - 400 BAD REQUEST: If the `User` object is invalid, the user does not exist, or if the updated username/email/phone is invalid or already exists.
+    - 400 BAD REQUEST: If the `User` object is invalid, the user does not exist, or if the updated username already exists.
+    - 300 CUSTOM CODE: Represents business logic errors.
+- **Postman API tests**:
+  - Update records success: [View Screenshot](postman_API_tests/user/update/UpdateUser_success.png)
+  - Update user does not exist: [View Screenshot](postman_API_tests/user/update/UpdateUser_user_dne.png)
+  - Username is empty: [View Screenshot](postman_API_tests/user/update/UpdateUser_username_empty.png)
+  - Username already exists: [View Screenshot](postman_API_tests/user/update/UpdateUser_username_exists.png)
+  - Email is empty: [View Screenshot](postman_API_tests/user/update/UpdateUser_email_empty.png)
+  - Phone is empty: [View Screenshot](postman_API_tests/user/update/UpdateUser_phone_empty.png)
 
 #### POST `/delete`
 
 - Description: Delete one or more users.
+- Request Params:
+  - `id`(Integer): The ID of the user.
 - Request Body: Array of user `ids`.
 - Response: Success message for a valid request.
 - Status Codes:
     - 200 OK: Users deleted successfully.
     - 400 BAD REQUEST: If the `ids` array is empty or if any of the `ids` do not correspond to existing users.
+    - 300 CUSTOM CODE: Represents business logic errors.
+- **Postman API tests**:
+  - Delete users success: [View Screenshot](postman_API_tests/user/delete/DeleteUser_success.png)
+  - Delete user does not exist: [View Screenshot](postman_API_tests/user/delete/DeleteUser_records_dne.png)
+  - Delete user fail: [View Screenshot](postman_API_tests/user/delete/DeleteUser_failed.png)
+  - User deleted proof: [View Screenshot](postman_API_tests/user/delete/DeleteUser_proof.png)
 
 #### GET `/list`
 
 - Description: Retrieve a list of users based on provided parameters.
-- Request Params: `UserQuery` object (define the expected fields).
+- Request Params:
+  - `page` (Integer): The page number. *Default: 1*
+  - `pageSize` (Integer): The number of users per page. *Default: 10*
+  - `username` (String): The username to filter by. *Optional*
+  - `email` (String): The email address to filter by. *Optional*
 - Response: Map with user information.
 - Status Codes:
     - 200 OK: Request successful.
+- **Postman API tests**:
+  - Get all users success: [View Screenshot](postman_API_tests/user/list/Get_all_user.png)
 
 ### Shared Space Entry Points
 
