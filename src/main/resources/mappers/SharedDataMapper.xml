@@ -13,7 +13,7 @@
   <!-- Insert shared data -->
   <insert id="insertSharedData" parameterType="com.mvcmasters.ems.model.SharedDataModel">
     INSERT INTO t_sharedSpace (uid, subject, content, created_time, last_modified_by, modified_time)
-    VALUES (#{uid}, #{subject}, #{content}, #{created_time}, #{last_modified_by}, #{modified_time})
+    VALUES (#{uid}, #{subject}, #{content}, #{createdTime}, #{lastModifiedBy}, #{modifiedTime})
   </insert>
 
   <!-- Select shared data by ID -->
@@ -33,9 +33,9 @@
       <if test="uid != null">uid = #{uid},</if>
       <if test="subject != null">subject = #{subject},</if>
       <if test="content != null">content = #{content},</if>
-      <if test="created_time != null">created_time = #{created_time},</if>
-      <if test="last_modified_by != null">last_modified_by = #{last_modified_by},</if>
-      <if test="modified_time != null">modified_time = #{modified_time}</if>
+      <if test="createdTime != null">created_time = #{createdTime},</if>
+      <if test="lastModifiedBy != null">last_modified_by = #{lastModifiedBy},</if>
+      <if test="modifiedTime != null">modified_time = #{modifiedTime}</if>
     </set>
     WHERE id = #{id}
   </update>
