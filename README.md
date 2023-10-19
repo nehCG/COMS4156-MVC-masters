@@ -90,11 +90,21 @@ Base URL: `http://localhost:8080/ems/user`
 #### POST `/login`
 
 - Description: Authenticate a user.
-- Request Params: `userName`, `userPwd`
+- Request Params: 
+  - `userName`(String): The name of the user.
+  - `userPwd`(String): The password of the user.
 - Response: `UserModel` object for valid credentials.
 - Status Codes:
     - 200 OK: Authentication successful.
     - 400 BAD REQUEST: If `userName` or `userPwd` is empty, or if credentials are incorrect.
+    - 300 Custom code: Represents business logic errors.
+- **Postman API tests**:
+  - Login success: [View Screenshot](postman_API_tests/user/login/Login_success.png)
+  - User does not exist: [View Screenshot](postman_API_tests/user/login/Login_user_dne.png)
+  - Username is empty: [View Screenshot](postman_API_tests/user/login/Login_username_empty.png)
+  - Incorrect password: [View Screenshot](postman_API_tests/user/login/Login_incorrect_pwd.png)
+  - Empty password: [View Screenshot](postman_API_tests/user/login/Login_password_empty.png)
+
 
 #### POST `/updatePwd`
 
