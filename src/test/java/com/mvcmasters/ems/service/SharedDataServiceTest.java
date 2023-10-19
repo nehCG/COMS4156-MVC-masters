@@ -1,12 +1,8 @@
 package com.mvcmasters.ems.service;
 
 import com.mvcmasters.ems.model.SharedDataModel;
-import com.mvcmasters.ems.model.UserModel;
 import com.mvcmasters.ems.repository.SharedDataMapper;
 import com.mvcmasters.ems.exceptions.CustomException;
-import com.mvcmasters.ems.repository.UserMapper;
-import com.mvcmasters.ems.utils.Md5Util;
-import com.mvcmasters.ems.vo.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,25 +13,38 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SharedDataServiceTest {
 
+    /**
+     * The service being tested, with dependencies mocked.
+     */
     @InjectMocks
     private SharedDataService sharedDataService;
 
+    /**
+     * A mock of the shared-data data access object.
+     */
     @Mock
     private SharedDataMapper sharedDataMapper;
 
+    /**
+     * Set up mockito annotations for each test.
+     */
     @BeforeEach
     public void setUp() {
         //MockitoAnnotations.initMocks(this);
     }
 
+    /**
+     * Test for addSharedData.
+     */
     @Test
     public void testAddSharedData() {
         // Prepare a shared data model
@@ -50,6 +59,9 @@ public class SharedDataServiceTest {
         sharedDataService.addSharedData(sharedData);
     }
 
+    /**
+     * Test for getSharedDataById with valid id.
+     */
     @Test
     public void testGetSharedDataByIdWithValidId() {
         // Prepare a shared data model
@@ -64,24 +76,35 @@ public class SharedDataServiceTest {
         assertEquals(sharedData, response);
     }
 
+    /**
+     * Test for getSharedDataById with invalid id.
+     */
     @Test
     public void testGetSharedDataByIdWithInvalidID() {
-        Integer id = 10000;
+        Integer id = 1;
         when(sharedDataMapper.selectSharedDataById(id)).thenReturn(null);
         Exception exception = assertThrows(CustomException.class, () -> {
             sharedDataService.getSharedDataById(id);
         });
 
         assertEquals("Record ID does not exist", exception.getMessage());
-        assertEquals(HttpStatus.BAD_REQUEST, ((CustomException) exception).getStatusCode());
+        assertEquals(
+                HttpStatus.BAD_REQUEST,
+                ((CustomException) exception).getStatusCode());
     }
 
+    /**
+     * Test for getAllSharedData.
+     */
     @Test
     public void testGetAllSharedData() {
         when(sharedDataMapper.selectAllSharedData()).thenReturn(null);
         sharedDataService.getAllSharedData();
     }
 
+    /**
+     * Test for updateSharedData.
+     */
     @Test
     public void testUpdateSharedData() {
         // Prepare a shared data model
@@ -106,12 +129,16 @@ public class SharedDataServiceTest {
         sharedDataService.updateSharedData(id, newSharedData);
     }
 
+    /**
+     * Test for updateSharedData with null data.
+     */
     @Test
     public void testUpdateSharedDataWithNullData() {
         // Arrange
         int id = 1;
         SharedDataModel existingData = new SharedDataModel();
-        when(sharedDataMapper.selectSharedDataById(id)).thenReturn(existingData);
+        when(sharedDataMapper.selectSharedDataById(id)).
+                thenReturn(existingData);
 
         // Act and Assert
         CustomException thrown = assertThrows(CustomException.class, () -> {
@@ -121,9 +148,13 @@ public class SharedDataServiceTest {
         assertEquals("Updates can not be null", thrown.getMessage());
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
+
+    /**
+     * Test for updateSharedData with invalid id.
+     */
     @Test
-    public void testUpdateSharedDataWithInvalidId(){
-        Integer id = 10000;
+    public void testUpdateSharedDataWithInvalidId() {
+        Integer id = 1;
         when(sharedDataMapper.selectSharedDataById(id)).thenReturn(null);
 
         SharedDataModel newData = new SharedDataModel();
@@ -138,10 +169,14 @@ public class SharedDataServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
 
+    /**
+     * Test for updateSharedData with null content and subject.
+     */
     @Test
-    public void testUpdateSharedDataWithNullContentAndSubject(){
-        Integer id = 10000;
-        when(sharedDataMapper.selectSharedDataById(id)).thenReturn(new SharedDataModel());
+    public void testUpdateSharedDataWithNullContentAndSubject() {
+        Integer id = 1;
+        when(sharedDataMapper.selectSharedDataById(id)).
+                thenReturn(new SharedDataModel());
 
         SharedDataModel newData = new SharedDataModel();
 
@@ -153,10 +188,14 @@ public class SharedDataServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
 
+    /**
+     * Test for updateSharedData with not null content.
+     */
     @Test
     public void testUpdateSharedDataWithNonNullContent() {
         Integer id = 1;
-        when(sharedDataMapper.selectSharedDataById(id)).thenReturn(new SharedDataModel());
+        when(sharedDataMapper.selectSharedDataById(id)).
+                thenReturn(new SharedDataModel());
 
         SharedDataModel newData = new SharedDataModel();
         newData.setContent("Some content");
@@ -167,10 +206,14 @@ public class SharedDataServiceTest {
         });
     }
 
+    /**
+     * Test for updateSharedData with null subject.
+     */
     @Test
     public void testUpdateSharedDataWithNonNullSubject() {
         Integer id = 1;
-        when(sharedDataMapper.selectSharedDataById(id)).thenReturn(new SharedDataModel());
+        when(sharedDataMapper.selectSharedDataById(id)).
+                thenReturn(new SharedDataModel());
 
         SharedDataModel newData = new SharedDataModel();
         newData.setSubject("Some subject");
@@ -181,10 +224,14 @@ public class SharedDataServiceTest {
         });
     }
 
+    /**
+     * Test for updateSharedData with null uid.
+     */
     @Test
-    public void testUpdateSharedDataWithNullUid(){
-        Integer id = 10000;
-        when(sharedDataMapper.selectSharedDataById(id)).thenReturn(new SharedDataModel());
+    public void testUpdateSharedDataWithNullUid() {
+        Integer id = 1;
+        when(sharedDataMapper.selectSharedDataById(id)).
+                thenReturn(new SharedDataModel());
 
         SharedDataModel newData = new SharedDataModel();
         newData.setSubject("New Subject");
@@ -198,6 +245,9 @@ public class SharedDataServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
 
+    /**
+     * Test for deleteSharedDataById.
+     */
     @Test
     public void testDeleteSharedDataById() {
         // Prepare a shared data model
@@ -213,9 +263,13 @@ public class SharedDataServiceTest {
 
         sharedDataService.deleteSharedDataById(id);
     }
+
+    /**
+     * Test for deleteSharedData with invalid id.
+     */
     @Test
-    public void testDeleteSharedDataWithInvalidId(){
-        Integer id = 10000;
+    public void testDeleteSharedDataWithInvalidId() {
+        Integer id = 1;
         when(sharedDataMapper.selectSharedDataById(id)).thenReturn(null);
 
         CustomException thrown = assertThrows(CustomException.class, () -> {
@@ -226,6 +280,9 @@ public class SharedDataServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
 
+    /**
+     * Test for validateSharedData.
+     */
     @Test
     public void testValidateSharedData() {
         // Prepare a shared data model
@@ -238,6 +295,9 @@ public class SharedDataServiceTest {
         sharedDataService.validateSharedData(sharedData);
     }
 
+    /**
+     * Test for validateSharedData with null data.
+     */
     @Test
     public void testValidateSharedDataWithNullData() {
         CustomException thrown = assertThrows(
@@ -249,6 +309,9 @@ public class SharedDataServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
 
+    /**
+     * Test for validateSharedData with empty subject.
+     */
     @Test
     public void testValidateSharedDataWithEmptySubject() {
         // Prepare data with empty subject
@@ -265,6 +328,9 @@ public class SharedDataServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
 
+    /**
+     * Test for validateSharedData with null subject.
+     */
     @Test
     public void testValidateSharedDataWithNullSubject() {
         // Prepare data with null content
@@ -282,6 +348,9 @@ public class SharedDataServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
 
+    /**
+     * Test for validateSharedData with empty content.
+     */
     @Test
     public void testValidateSharedDataWithEmptyContent() {
         // Prepare data with empty content
@@ -299,6 +368,9 @@ public class SharedDataServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
 
+    /**
+     * Test for validateSharedData with null content.
+     */
     @Test
     public void testValidateSharedDataWithNullContent() {
         // Prepare data with null content
@@ -316,6 +388,9 @@ public class SharedDataServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
 
+    /**
+     * Test for validateSharedData with empty uid.
+     */
     @Test
     public void testValidateSharedDataWithEmptyUid() {
         // Prepare data with empty content
@@ -332,6 +407,9 @@ public class SharedDataServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
 
+    /**
+     * Test for validateSharedData with not empty id.
+     */
     @Test
     public void testValidateSharedDataWithNotEmptyId() {
         // Prepare data with empty content
@@ -348,5 +426,4 @@ public class SharedDataServiceTest {
         assertEquals("ID will be automatically assigned", thrown.getMessage());
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
-
 }
