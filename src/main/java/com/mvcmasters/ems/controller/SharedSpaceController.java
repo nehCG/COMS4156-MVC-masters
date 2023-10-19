@@ -6,51 +6,97 @@ import com.mvcmasters.ems.service.SharedDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.logging.Logger;
 
+/**
+ * Controller for operations related to Shared Data.
+ */
 @RestController
 @RequestMapping("/announcement")
 public class SharedSpaceController extends BaseController {
-
+    /**
+     * Constructor for dependency injection.
+     * sharedDataService manages shared data operations.
+     */
     @Autowired
     private SharedDataService sharedDataService;
 
-    // Endpoint to add a new shared data entry
+    /**
+     * Add a new shared data entry.
+     *
+     * @param sharedData the shared data to add.
+     * @return a ResponseEntity with a success message.
+     */
     @PostMapping("/post")
-    public ResponseEntity<String> addSharedData(@RequestBody SharedDataModel sharedData) {
+    public ResponseEntity<String> addSharedData(
+            @RequestBody final SharedDataModel sharedData) {
         sharedDataService.addSharedData(sharedData);
-        return new ResponseEntity<>("Shared data added successfully!", HttpStatus.OK);
+        return new ResponseEntity<>(
+                "Shared data added successfully!", HttpStatus.OK);
     }
 
-    // Endpoint to get a specific shared data entry by its ID
+    /**
+     * Get specific shared data by ID.
+     *
+     * @param id of the shared data.
+     * @return ResponseEntity containing data.
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<SharedDataModel> getSharedDataById(@PathVariable Integer id) {
+    public ResponseEntity<SharedDataModel> getSharedDataById(
+            @PathVariable final Integer id) {
         SharedDataModel sharedData = sharedDataService.getSharedDataById(id);
         return new ResponseEntity<>(sharedData, HttpStatus.OK);
     }
 
-    // Endpoint to get all shared data entries
+    /**
+     * Get all shared data entries.
+     *
+     * @return ResponseEntity with all data.
+     */
     @GetMapping("/all")
     public ResponseEntity<List<SharedDataModel>> getAllSharedData() {
-        List<SharedDataModel> sharedDataList = sharedDataService.getAllSharedData();
+        List<SharedDataModel> sharedDataList =
+                sharedDataService.getAllSharedData();
         return new ResponseEntity<>(sharedDataList, HttpStatus.OK);
     }
 
-    // Endpoint to update a shared data entry by its id
+    /**
+     * Update shared data by ID.
+     *
+     * @param id of the shared data.
+     * @param sharedData updated data.
+     * @return ResponseEntity with message.
+     */
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateSharedData(@PathVariable Integer id, @RequestBody SharedDataModel sharedData) {
+    public ResponseEntity<String> updateSharedData(
+            @PathVariable final Integer id,
+            @RequestBody final SharedDataModel sharedData) {
         sharedDataService.updateSharedData(id, sharedData);
-        return new ResponseEntity<>("Shared data updated successfully!", HttpStatus.OK);
+        return new ResponseEntity<>(
+                "Shared data updated successfully!", HttpStatus.OK);
     }
 
-    // Endpoint to delete a shared data entry by its id
+    /**
+     * Delete shared data by ID.
+     *
+     * @param id of the shared data.
+     * @return ResponseEntity with message.
+     */
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteSharedDataById(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteSharedDataById(
+            @PathVariable final Integer id) {
         sharedDataService.deleteSharedDataById(id);
-        return new ResponseEntity<>("Shared data deleted successfully!", HttpStatus.OK);
+        return new ResponseEntity<>(
+                "Shared data deleted successfully!", HttpStatus.OK);
     }
 
 }
