@@ -1,4 +1,4 @@
-# Entity management Service
+# Entity Management Service
 A comprehensive service that can be integrated by clients to manage all aspects related to their entities.
 
 [![license](https://img.shields.io/badge/license-MIT-green)](https://github.com/nehCG/ems/blob/main/LICENSE)
@@ -20,7 +20,7 @@ A comprehensive service that can be integrated by clients to manage all aspects 
   - [Multiple Clients Test](#system-level-tests-of-multiple-clients)
 - [Style checker](#style-checker)
 - [API Documentation](#api-documentation)
-- [Persistent data storage](#persistent-data-storage-of-our-service)
+- [Persistent Data Storage](#persistent-data-storage-of-our-service)
 
 ## Build and Run the Service using Docker
 
@@ -97,26 +97,26 @@ We use the Runner in Postman to mock multiple clients are sending requests simul
 We performed several API functional and performance tests that may face multiple clients requesting and high concurrency. You can check details [here](postman_API_tests/multiple_clients_testing).
 
 **Login**: `http://localhost:8080/ems/user/login`
-- Functional test
+- Functional test (1000 iterations, 0ms delays)
   - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/login/functional_test/Login_functional_test_setting.png)
   - result: [View Screenshot](postman_API_tests/multiple_clients_testing/login/functional_test/Login_functional_test_result.png)
-- Performance test
+- Performance test (100 virtual clients, 1 min test duration)
   - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/login/performance_test/Login_performance_test_setting.png)
   - result: [View Screenshot](postman_API_tests/multiple_clients_testing/login/performance_test/Login_performance_test_result.png)
 
 **Get all users**: `http://localhost:8080/ems/user/all`
-- Functional test
+- Functional test (1000 iterations, 0ms delays)
   - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/functional_test/GetAllUsers_functional_test_setting.png)
   - result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/functional_test/GetAllUsers_functional_test_result.png)
-- Performance test
+- Performance test (100 virtual clients, 1 min test duration)
   - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/performance_test/GetAllUsers_performance_test_setting.png)
   - result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/performance_test/GetAllUsers_performance_test_result.png)
 
 **Get all announcements**: `http://localhost:8080/ems/announcements/all`
-- Functional test
+- Functional test (1000 iterations, 0ms delays)
   - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/functional_test/GetAllAnns_functional_test_setting.png)
   - result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/functional_test/GetAllAnns_functional_test_result.png)
-- Performance test
+- Performance test (100 virtual clients, 1 min test duration)
   - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/performance_test/GetAllAnns_performance_test_setting.png)
   - result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/performance_test/GetAllAnns_performance_test_result.png)
 
@@ -323,7 +323,7 @@ Base URL: `http://localhost:8080/ems/announcement`
 ## Persistent Data Storage of our Service
 
 Based on the provided `docker-compose.yml`, the MySQL database container is set up to ensure data persistence
-through Docker volumes. Specifically, the volumes directive under the mysql-db service maps db-data to /var/lib/mysql,
+through Docker volumes. Specifically, the volumes directive under the mysql-db service maps db-data to `/var/lib/mysql`,
 which is the default location where MySQL stores its data files. By doing so, any data changes made within the database
 are stored in this Docker-managed volume, named `ems_db-data`. As a result, even if the MySQL container is stopped,
 deleted, or recreated, the data remains intact and can be reattached to a new instance of the MySQL container.
@@ -331,7 +331,7 @@ deleted, or recreated, the data remains intact and can be reattached to a new in
 This volume-driven approach guarantees the resilience and persistence of data across container lifecycle events,
 ensuring that our database changes are consistently retained and not ephemeral.
 
-In the course of our comprehensive system-level testing for the Service, we rigorously executed all CRUD
+In the course of our comprehensive System-level Testing for the Service, we rigorously executed all CRUD
 (Create, Read, Update, Delete) operations utilizing Postman as our primary testing interface. For each individual operation,
 there was a direct and verifiable reflection in the MySQL database. This consistent alignment between the API calls and
 the resulting database modifications unequivocally confirms the robust interaction and integration of our service layer
