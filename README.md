@@ -6,7 +6,23 @@ A comprehensive service that can be integrated by clients to manage all aspects 
 [![](https://img.shields.io/github/issues/nehCG/ems)](https://github.com/nehCG/ems/issues)
 [![codecov](https://codecov.io/gh/nehCG/ems/branch/main/graph/badge.svg)](https://codecov.io/gh/nehCG/ems)
 
-## Build and run the service using Docker
+## Table of Contents
+- [Build and Run](#build-and-run-the-service-using-docker)
+  - [Prerequisites](#prerequisites)
+  - [1. Clone the Repo](#1-clone-the-repository)
+  - [2. Build the Docker Image](#2-build-the-docker-image)
+  - [3. Run the Service using Docker](#3-run-the-service-using-docker)
+  - [4. Access the Service](#4-access-the-service)
+  - [Troubleshooting](#troubleshooting)
+- [Unit Tests](#unit-tests-of-the-service)
+- [System Tests](#system-tests-corresponding-to-api)
+  - [API Entry Point Test](#system-level-tests-of-every-api-entry-point)
+  - [Multiple Clients Test](#system-level-tests-of-multiple-clients)
+- [Style checker](#style-checker)
+- [API Documentation](#api-documentation)
+- [Persistent data storage](#persistent-data-storage-of-our-service)
+
+## Build and Run the Service using Docker
 
 ### Prerequisites
 
@@ -39,11 +55,7 @@ Then give it a couple of minutes because MySQL might take a little while to be r
 
 ### 4. Access the Service
 
-After a few minutes, open your browser and navigate to:
-
-[http://localhost:8080/ems](http://localhost:8080/ems)
-
-You should now see the service is running!
+Then, the service will run on [`http://localhost:8080/ems`](http://localhost:8080/ems).
 
 ### Troubleshooting
 
@@ -51,7 +63,7 @@ You should now see the service is running!
 - Ensure your Docker daemon is running before executing Docker commands.
 - Check application logs in the Docker container for any issues related to the Spring Boot application.
 
-## Test the service
+## Unit Tests of the Service
 
 ### Run all unit tests
 
@@ -72,6 +84,43 @@ If you want to generate a test coverage report, you can choose the following two
 ./mvnw clean install -Dcheckstyle.skip=true
 ```
 
+Our unit tests have 98.6% code coverage. [Codecov report](https://app.codecov.io/gh/nehCG/ems)
+
+## System Tests Corresponding to API
+### System-level Tests of every API Entry Point
+Please see details on below [API Documentation](#api-documentation) section.
+
+### System-level Tests of Multiple Clients
+
+We use the Runner in Postman to mock multiple clients are sending requests simultaneously.
+
+We performed several API functional and performance tests that may face multiple clients requesting and high concurrency. You can check details [here](postman_API_tests/multiple_clients_testing).
+
+**Login**: `http://localhost:8080/ems/user/login`
+- Functional test
+  - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/login/functional_test/Login_functional_test_setting.png)
+  - result: [View Screenshot](postman_API_tests/multiple_clients_testing/login/functional_test/Login_functional_test_result.png)
+- Performance test
+  - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/login/performance_test/Login_performance_test_setting.png)
+  - result: [View Screenshot](postman_API_tests/multiple_clients_testing/login/performance_test/Login_performance_test_result.png)
+
+**Get all users**: `http://localhost:8080/ems/user/all`
+- Functional test
+  - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/functional_test/GetAllUsers_functional_test_setting.png)
+  - result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/functional_test/GetAllUsers_functional_test_result.png)
+- Performance test
+  - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/performance_test/GetAllUsers_performance_test_setting.png)
+  - result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/performance_test/GetAllUsers_performance_test_result.png)
+
+**Get all announcements**: `http://localhost:8080/ems/announcements/all`
+- Functional test
+  - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/functional_test/GetAllAnns_functional_test_setting.png)
+  - result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/functional_test/GetAllAnns_functional_test_result.png)
+- Performance test
+  - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/performance_test/GetAllAnns_performance_test_setting.png)
+  - result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/performance_test/GetAllAnns_performance_test_result.png)
+
+
 ## Style Checker
 
 We use CheckStyle with Sun Checks
@@ -82,7 +131,9 @@ We use CheckStyle with Sun Checks
 ./mvnw checkstyle:check
 ```
 
-# API Documentation
+Our checkstyle results are clean. [Checkstyle report](checkstyle_reports/checkstyle_report.png)
+
+## API Documentation
 ### User Management Entry Points
 
 Base URL: `http://localhost:8080/ems/user`
@@ -90,14 +141,14 @@ Base URL: `http://localhost:8080/ems/user`
 #### POST `/login`
 
 - Description: Authenticate a user.
-- Request Params: 
+- Request Params:
   - `userName`(String): The username of the user.
   - `userPwd`(String): The password of the user.
 - Response: `UserModel` object for valid credentials.
 - Status Codes:
-    - 200 OK: Authentication successful.
-    - 400 BAD REQUEST: If `userName` or `userPwd` is empty, or if credentials are incorrect.
-    - 300 CUSTOM CODE: Represents business logic errors.
+  - 200 OK: Authentication successful.
+  - 400 BAD REQUEST: If `userName` or `userPwd` is empty, or if credentials are incorrect.
+  - 300 CUSTOM CODE: Represents business logic errors.
 - **Postman API tests**:
   - Login success: [View Screenshot](postman_API_tests/user/login/Login_success.png)
   - User does not exist: [View Screenshot](postman_API_tests/user/login/Login_user_dne.png)
@@ -125,6 +176,7 @@ Base URL: `http://localhost:8080/ems/user`
   - Original password is empty: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_orgPwd_empty.png)
   - Incorrect password: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_incorrect_pwd.png)
   - New password is empty: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_newPwd_empty.png)
+  - New password is same as old password: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_newPwd_same_oldPwd.png)
   - Repeated password is empty: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_repeatPwd_empty.png)
   - New password and Repeated password is inconsistent: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_inconsistent.png)
 
@@ -267,3 +319,21 @@ Base URL: `http://localhost:8080/ems/announcement`
 - **Postman API tests**:
   - Delete with valid ID: [View Screenshot](postman_API_tests/announcement/delete/Delete_ann_by_id_success.png)
   - Proof of delete with valid ID success: [View Screenshot](postman_API_tests/announcement/delete/Delete_ann_proof.png)
+
+## Persistent Data Storage of our Service
+
+Based on the provided `docker-compose.yml`, the MySQL database container is set up to ensure data persistence
+through Docker volumes. Specifically, the volumes directive under the mysql-db service maps db-data to /var/lib/mysql,
+which is the default location where MySQL stores its data files. By doing so, any data changes made within the database
+are stored in this Docker-managed volume, named `ems_db-data`. As a result, even if the MySQL container is stopped,
+deleted, or recreated, the data remains intact and can be reattached to a new instance of the MySQL container.
+
+This volume-driven approach guarantees the resilience and persistence of data across container lifecycle events,
+ensuring that our database changes are consistently retained and not ephemeral.
+
+In the course of our comprehensive system-level testing for the Service, we rigorously executed all CRUD
+(Create, Read, Update, Delete) operations utilizing Postman as our primary testing interface. For each individual operation,
+there was a direct and verifiable reflection in the MySQL database. This consistent alignment between the API calls and
+the resulting database modifications unequivocally confirms the robust interaction and integration of our service layer
+with the persistent data layer. Our meticulous testing approach ensures that our application not only responds to API
+requests as expected but also effectively manages the underlying data in a reliable and consistent manner.
