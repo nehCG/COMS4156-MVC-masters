@@ -5,16 +5,24 @@ package com.mvcmasters.ems.base;
  */
 public class BaseQuery {
 
-    /** Default page number if not provided. */
+    /**
+     * Default page number if not provided.
+     */
     private static final int DEFAULT_PAGE = 1;
 
-    /** Default limit for page size if not provided. */
+    /**
+     * Default limit for page size if not provided.
+     */
     private static final int DEFAULT_LIMIT = 10;
 
-    /** The current page number for the query. */
+    /**
+     * The current page number for the query.
+     */
     private Integer page = DEFAULT_PAGE;
 
-    /** The limit or maximum number of results per page for the query. */
+    /**
+     * The limit or maximum number of results per page for the query.
+     */
     private Integer limit = DEFAULT_LIMIT;
 
     /**

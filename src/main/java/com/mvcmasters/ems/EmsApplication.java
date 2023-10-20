@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Entry point for the EMS (Entity Management Service).
  */
-@SuppressWarnings("checkstyle:HideUtilityClassConstructor")
 @SpringBootApplication
 @MapperScan("com.mvcmasters.ems.repository")
 public class EmsApplication {
@@ -21,5 +20,4 @@ public class EmsApplication {
     public static void main(final String[] args) {
         SpringApplication.run(EmsApplication.class, args);
     }
-
 }
