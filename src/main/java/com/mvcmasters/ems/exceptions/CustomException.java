@@ -51,4 +51,3 @@ public class CustomException extends RuntimeException {
         this.statusCode = code;
     }
 }
-

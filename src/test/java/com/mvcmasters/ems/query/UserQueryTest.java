@@ -49,5 +49,4 @@ public class UserQueryTest {
         userQuery.setPhone(expectedPhone);
         assertEquals(expectedPhone, userQuery.getPhone());
     }
-
 }

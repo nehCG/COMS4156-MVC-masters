@@ -54,9 +54,8 @@ public interface BaseMapper<T, ID> {
      * Deletes entities with the given primary keys in a batch.
      *
      * @param ids the primary keys of the entities to be deleted
-     * @return the number of rows affected by the delete
+     * @return the number of rows affected by delete
      * @throws DataAccessException if a data access error occurs
      */
     Integer deleteBatch(ID[] ids) throws DataAccessException;
-
 }

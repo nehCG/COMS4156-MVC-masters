@@ -49,8 +49,13 @@ public class SharedDataModelTest {
 
         assertEquals("abc", sharedData.getSubject());
     }
+    /**
+     * Test case to verify that when setting the subject of a
+     * SharedDataModel with leading and trailing whitespace,
+     * the whitespace is correctly trimmed from the subject.
+     */
     @Test
-    public void whenSettingSubject_withWhitespace_thenTrimmed() {
+    public void trimSubjectWithWhitespace() {
         SharedDataModel sharedData = new SharedDataModel();
 
         sharedData.setSubject("  abc  ");
@@ -58,8 +63,11 @@ public class SharedDataModelTest {
         assertEquals("abc", sharedData.getSubject());
     }
 
+    /**
+     * Test case for setting subject to null and verifying it becomes null.
+     */
     @Test
-    public void whenSettingSubject_toNull_thenSubjectIsNull() {
+    public void setSubjectToNullThenSubjectIsNull() {
         SharedDataModel sharedData = new SharedDataModel();
 
         sharedData.setSubject(null);
@@ -67,8 +75,12 @@ public class SharedDataModelTest {
         assertNull(sharedData.getSubject());
     }
 
+    /**
+     * Test case for setting subject to an empty
+     * string and verifying it remains empty.
+     */
     @Test
-    public void whenSettingSubject_toEmptyString_thenSubjectIsEmpty() {
+    public void setSubjectToEmptyStringThenSubjectIsEmpty() {
         SharedDataModel sharedData = new SharedDataModel();
 
         sharedData.setSubject("");
@@ -123,8 +135,11 @@ public class SharedDataModelTest {
 
         assertEquals("abc", sharedData.getContent());
     }
+    /**
+     * Test case for trimming content with whitespace.
+     */
     @Test
-    public void whenSettingContent_withWhitespace_thenTrimmed() {
+    public void trimContentWithWhitespace() {
         SharedDataModel sharedData = new SharedDataModel();
 
         sharedData.setContent("  abc  ");
@@ -132,8 +147,11 @@ public class SharedDataModelTest {
         assertEquals("abc", sharedData.getContent());
     }
 
+    /**
+     * Test case for setting content to null and verifying it becomes null.
+     */
     @Test
-    public void whenSettingContent_toNull_thenContentIsNull() {
+    public void setContentToNullThenContentIsNull() {
         SharedDataModel sharedData = new SharedDataModel();
 
         sharedData.setContent(null);
@@ -141,8 +159,12 @@ public class SharedDataModelTest {
         assertNull(sharedData.getContent());
     }
 
+    /**
+     * Test case for setting content to an empty
+     * string and verifying it remains empty.
+     */
     @Test
-    public void whenSettingContent_toEmptyString_thenContentIsEmpty() {
+    public void setContentToEmptyStringThenContentIsEmpty() {
         SharedDataModel sharedData = new SharedDataModel();
 
         sharedData.setContent("");
