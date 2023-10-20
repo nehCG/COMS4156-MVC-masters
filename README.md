@@ -98,27 +98,27 @@ We performed several API functional and performance tests that may face multiple
 
 **Login**: `http://localhost:8080/ems/user/login`
 - Functional test (1000 iterations, 0ms delays)
-  - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/login/functional_test/Login_functional_test_setting.png)
-  - result: [View Screenshot](postman_API_tests/multiple_clients_testing/login/functional_test/Login_functional_test_result.png)
+  - Setting: [View Screenshot](postman_API_tests/multiple_clients_testing/login/functional_test/Login_functional_test_setting.png)
+  - Result: [View Screenshot](postman_API_tests/multiple_clients_testing/login/functional_test/Login_functional_test_result.png)
 - Performance test (100 virtual clients, 1 min test duration)
-  - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/login/performance_test/Login_performance_test_setting.png)
-  - result: [View Screenshot](postman_API_tests/multiple_clients_testing/login/performance_test/Login_performance_test_result.png)
+  - Setting: [View Screenshot](postman_API_tests/multiple_clients_testing/login/performance_test/Login_performance_test_setting.png)
+  - Result: [View Screenshot](postman_API_tests/multiple_clients_testing/login/performance_test/Login_performance_test_result.png)
 
 **Get all users**: `http://localhost:8080/ems/user/all`
 - Functional test (1000 iterations, 0ms delays)
-  - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/functional_test/GetAllUsers_functional_test_setting.png)
-  - result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/functional_test/GetAllUsers_functional_test_result.png)
+  - Setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/functional_test/GetAllUsers_functional_test_setting.png)
+  - Result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/functional_test/GetAllUsers_functional_test_result.png)
 - Performance test (100 virtual clients, 1 min test duration)
-  - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/performance_test/GetAllUsers_performance_test_setting.png)
-  - result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/performance_test/GetAllUsers_performance_test_result.png)
+  - Setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/performance_test/GetAllUsers_performance_test_setting.png)
+  - Result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_users/performance_test/GetAllUsers_performance_test_result.png)
 
 **Get all announcements**: `http://localhost:8080/ems/announcements/all`
 - Functional test (1000 iterations, 0ms delays)
-  - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/functional_test/GetAllAnns_functional_test_setting.png)
-  - result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/functional_test/GetAllAnns_functional_test_result.png)
+  - Setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/functional_test/GetAllAnns_functional_test_setting.png)
+  - Result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/functional_test/GetAllAnns_functional_test_result.png)
 - Performance test (100 virtual clients, 1 min test duration)
-  - setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/performance_test/GetAllAnns_performance_test_setting.png)
-  - result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/performance_test/GetAllAnns_performance_test_result.png)
+  - Setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/performance_test/GetAllAnns_performance_test_setting.png)
+  - Result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/performance_test/GetAllAnns_performance_test_result.png)
 
 
 ## Style Checker
