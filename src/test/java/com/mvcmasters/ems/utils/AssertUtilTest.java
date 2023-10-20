@@ -46,5 +46,4 @@ public class AssertUtilTest {
         assertEquals("Expected exception with specific message",
                 exception.getMessage());
     }
-
 }
