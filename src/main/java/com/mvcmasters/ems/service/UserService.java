@@ -1,6 +1,7 @@
 package com.mvcmasters.ems.service;
 
 import com.mvcmasters.ems.base.BaseService;
+import com.mvcmasters.ems.utils.UserIDBase64;
 import com.mvcmasters.ems.vo.User;
 import com.mvcmasters.ems.repository.UserMapper;
 import com.mvcmasters.ems.model.UserModel;
@@ -123,7 +124,7 @@ public class UserService extends BaseService<User, Integer> {
 
         // Set the user ID, username, and true name
         // from the provided User object
-        userModel.setUserId(user.getId());
+        userModel.setUserIdStr(UserIDBase64.encoderUserID(user.getId()));
         userModel.setUserName(user.getUserName());
         userModel.setTrueName(user.getTrueName());
 

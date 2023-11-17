@@ -41,4 +41,16 @@ public class UserModelTest {
 
         assertEquals("John Doe", user.getTrueName());
     }
+
+    /**
+     * Test the getUserIdStr and setUserIdStr methods of UserModel.
+     */
+    @Test
+    public void testUserIdStrGetterSetter() {
+        UserModel user = new UserModel();
+
+        user.setUserIdStr("1");
+
+        assertEquals("1", user.getUserIdStr());
+    }
 }

@@ -8,7 +8,10 @@ public class UserModel {
      * The unique identifier for the user.
      */
     private Integer userId;
-
+    /**
+     * The encode identifier for the user.
+     */
+    private String userIdStr;
     /**
      * The user's login or display name.
      */
@@ -71,5 +74,22 @@ public class UserModel {
      */
     public void setTrueName(final String realName) {
         this.trueName = realName;
+    }
+    /**
+     * Retrieves encode userIdStr.
+     *
+     * @return encode userIdStr
+     */
+    public String getUserIdStr() {
+        return userIdStr;
+    }
+
+    /**
+     * Sets encode userId.
+     *
+     * @param idStr encode userId to set
+     */
+    public void setUserIdStr(final String idStr) {
+        this.userIdStr = idStr;
     }
 }

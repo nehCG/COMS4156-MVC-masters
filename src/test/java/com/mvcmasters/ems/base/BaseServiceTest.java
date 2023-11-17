@@ -98,6 +98,29 @@ public class BaseServiceTest {
     }
 
     /**
+     * Test the selectByPrimaryKey method.
+     *
+     * @throws DataAccessException if there is a data access exception.
+     */
+    @Test
+    public void testSelectByPrimaryKey() throws DataAccessException {
+        Long testId = 1L; // Example primary key
+        // Expected entity to be returned
+        TestEntity expectedEntity = new TestEntity();
+
+        // Configure the mock to return the expected entity
+        // when selectByPrimaryKey is called with testId
+        when(baseMapperMock.selectByPrimaryKey(testId)).
+                thenReturn(expectedEntity);
+
+        // Call the method under test
+        TestEntity actualEntity = baseService.selectByPrimaryKey(testId);
+
+        // Assert that the returned entity is the same as the expected entity
+        assertEquals(expectedEntity, actualEntity);
+    }
+
+    /**
      * This inner class represents a test entity used for testing purposes.
      */
     private static final class TestEntity {
