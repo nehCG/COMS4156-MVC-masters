@@ -51,6 +51,7 @@ public final class CookieUtil {
             } catch (UnsupportedEncodingException e) {
                 // Log the exception and return null if an encoding issue occurs
                 e.printStackTrace();
+                return null;
             }
         }
         // Return null if the cookie is not found or in case of an exception
