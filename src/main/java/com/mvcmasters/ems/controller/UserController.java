@@ -5,8 +5,10 @@ import com.mvcmasters.ems.base.ResultInfo;
 import com.mvcmasters.ems.model.UserModel;
 import com.mvcmasters.ems.query.UserQuery;
 import com.mvcmasters.ems.service.UserService;
+import com.mvcmasters.ems.utils.LoginUserUtil;
 import com.mvcmasters.ems.vo.User;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,7 +57,8 @@ public class UserController extends BaseController {
 
     /**
      * Updates the password of a user.
-     * @param userId the ID of the user.
+     * @param request The HttpServletRequest object,
+     *                providing information about the request.
      * @param oldPassword the old password.
      * @param newPassword the new password.
      * @param repeatPassword repeated new password.
@@ -63,7 +66,7 @@ public class UserController extends BaseController {
      */
     @PostMapping("/updatePwd")
     @ResponseBody
-    public ResultInfo updateUserPassword(final Integer userId,
+    public ResultInfo updateUserPassword(final HttpServletRequest request,
                                          final String oldPassword,
                                          final String newPassword,
                                          final String repeatPassword) {
@@ -71,6 +74,7 @@ public class UserController extends BaseController {
         // Create a new ResultInfo object to hold the update password result.
         ResultInfo resultInfo = new ResultInfo();
 
+        Integer userId = LoginUserUtil.releaseUserIdFromCookie(request);
         // Invoke the userService to update the user's password.
         // This will validate the old password, compare the new password
         // with the repeated one, and then update it if all checks pass.
@@ -142,5 +146,47 @@ public class UserController extends BaseController {
         // Return a success message indicating
         // that the users were deleted successfully
         return success("User deleted successfully!");
+    }
+    /**
+     * Redirects to the password management page.
+     * This method handles the navigation to the page
+     * where users can manage their passwords.
+     * @return The name of the password management view.
+     */
+    @RequestMapping("toPasswordPage")
+    public String toPasswordPage() {
+        return "user/password";
+    }
+    /**
+     * Displays the main user page.
+     * This method returns the view name of
+     * the main user management page,
+     * where various user-related operations can be performed.
+     * @return The name of the main user view.
+     */
+    @RequestMapping("/index")
+    public String index() {
+        return "user/user";
+    }
+    /**
+     * Navigates to the page for adding or updating a user.
+     * This method directs to a view for
+     * adding a new user or updating an existing one.
+     * If an ID is provided, it fetches the corresponding
+     * user details and sets them as a request attribute.
+     *
+     * @param id The ID of the user to be updated, or null if adding a new user.
+     * @param request The HttpServletRequest object,
+     *               providing information about the request.
+     * @return The name of the add or update user view.
+     */
+    @RequestMapping("toAddOrUpdateUserPage")
+    public String toAddOrUpdateUserPage(final Integer id,
+                                        final HttpServletRequest request) {
+        if (id != null) {
+            User user = userService.selectByPrimaryKey(id);
+            request.setAttribute("userInfo", user);
+        }
+        return "user/add_update";
     }
 }
