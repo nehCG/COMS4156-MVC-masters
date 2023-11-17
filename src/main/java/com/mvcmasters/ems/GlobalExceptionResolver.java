@@ -67,20 +67,22 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
                 if (ex instanceof ParamsException p) {
                     // If it is, set the code and message from the exception
                     resultInfo.setCode(p.getCode());
-                    resultInfo.setMsg(p.getMessage());
+                    resultInfo.setMsg(p.getMsg());
                     // Set the HTTP response status code to
                     // indicate a bad request
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                } else {
-                    // If it's not a ParamsException, set the HTTP response
-                    // status code to indicate an internal server error
-                    response.setStatus(HttpServletResponse.
-                            SC_INTERNAL_SERVER_ERROR);
+                    //response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//                } else {
+//                    // If it's not a ParamsException, set the HTTP response
+//                    // status code to indicate an internal server error
+//                    response.setStatus(HttpServletResponse.
+//                            SC_INTERNAL_SERVER_ERROR);
                 }
 
                 // Set the response content type to JSON
                 response.setContentType("application/json;charset=UTF-8");
-                try (PrintWriter out = response.getWriter()) {
+                PrintWriter out = null;
+                try {
+                    out = response.getWriter();
                     // Serialize the ResultInfo object to JSON
                     String json = JSON.toJSONString(resultInfo);
                     // Write the JSON response to the PrintWriter
@@ -88,6 +90,10 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
                 } catch (IOException e) {
                     // Handle any IO exceptions that may occur
                     e.printStackTrace();
+                } finally {
+                    if (out != null) {
+                        out.close();
+                    }
                 }
                 // Return null to indicate that the response has been handled
                 return null;

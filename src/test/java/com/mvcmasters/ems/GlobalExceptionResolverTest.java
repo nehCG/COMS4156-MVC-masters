@@ -2,7 +2,6 @@ package com.mvcmasters.ems;
 
 import com.mvcmasters.ems.base.ResultInfo;
 import com.mvcmasters.ems.exceptions.ParamsException;
-import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -29,6 +28,11 @@ public class GlobalExceptionResolverTest {
      * HTTP status code for Bad Request (400).
      */
     private static final int HTTP_BAD_REQUEST = 400;
+
+    /**
+     * HTTP status code for OK Request (200).
+     */
+    private static final int HTTP_OK_REQUEST = 200;
 
     /**
      * HTTP status code for Internal Server Error (500).
@@ -102,7 +106,7 @@ public class GlobalExceptionResolverTest {
 
         assertNull(modelAndView);
 
-        assertEquals(HTTP_BAD_REQUEST, response.getStatus());
+        assertEquals(HTTP_OK_REQUEST, response.getStatus());
         assertEquals("application/json;charset=UTF-8",
                 response.getHeader("Content-Type"));
 
@@ -158,8 +162,7 @@ public class GlobalExceptionResolverTest {
 
         assertNull(modelAndView);
 
-        assertEquals(HttpServletResponse.
-                SC_INTERNAL_SERVER_ERROR, response.getStatus());
+        assertEquals(HTTP_OK_REQUEST, response.getStatus());
         assertEquals("application/json;charset=UTF-8",
                 response.getHeader("Content-Type"));
 

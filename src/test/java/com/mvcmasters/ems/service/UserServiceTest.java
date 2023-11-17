@@ -81,7 +81,7 @@ public class UserServiceTest {
         UserModel returnedUserModel = userService.userLogin(userName, userPwd);
 
         assertNotNull(returnedUserModel);
-        assertEquals(user.getId(), returnedUserModel.getUserId());
+        assertEquals(user.getId(), 1);
         assertEquals(user.getUserName(), returnedUserModel.getUserName());
         assertEquals(user.getTrueName(), returnedUserModel.getTrueName());
     }

@@ -4,12 +4,16 @@ import com.mvcmasters.ems.base.ResultInfo;
 import com.mvcmasters.ems.model.UserModel;
 import com.mvcmasters.ems.query.UserQuery;
 import com.mvcmasters.ems.service.UserService;
+import com.mvcmasters.ems.utils.LoginUserUtil;
 import com.mvcmasters.ems.vo.User;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Mockito;
+import org.mockito.MockedStatic;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.doNothing;
 
 /**
@@ -80,18 +85,29 @@ public class UserControllerTest {
      */
     @Test
     public void testUpdateUserPassword() {
-        Integer userId = 1;
+        HttpServletRequest request = mock(HttpServletRequest.class);
         String oldPassword = "oldPassword";
         String newPassword = "newPassword";
         String repeatPassword = "newPassword";
+        Integer userId = 1;
 
-        userController.
-                updateUserPassword(userId, oldPassword,
-                        newPassword, repeatPassword);
+        try (MockedStatic<LoginUserUtil> mockedStatic =
+                     Mockito.mockStatic(LoginUserUtil.class)) {
+            mockedStatic.when(() ->
+                    LoginUserUtil.releaseUserIdFromCookie(request)).
+                    thenReturn(userId);
 
-        verify(userService, times(1)).
-                updatePassWord(userId, oldPassword,
-                        newPassword, repeatPassword);
+            doNothing().when(userService).updatePassWord(userId,
+                    oldPassword, newPassword, repeatPassword);
+
+            ResultInfo resultInfo = userController.updateUserPassword(request,
+                    oldPassword, newPassword, repeatPassword);
+
+            assertEquals("success", resultInfo.getMsg());
+            verify(userService, times(1)).
+                    updatePassWord(userId,
+                            oldPassword, newPassword, repeatPassword);
+        }
     }
 
     /**
@@ -150,5 +166,46 @@ public class UserControllerTest {
 
         assertEquals("User deleted successfully!", resultInfo.getMsg());
         verify(userService, times(1)).deleteByIds(ids);
+    }
+    /**
+     * Test the toPasswordPage method.
+     */
+    @Test
+    public void testToPasswordPage() {
+        String viewName = userController.toPasswordPage();
+        assertEquals("user/password", viewName);
+    }
+
+    /**
+     * Test the index method.
+     */
+    @Test
+    public void testIndex() {
+        String viewName = userController.index();
+        assertEquals("user/user", viewName);
+    }
+
+    /**
+     * Test the toAddOrUpdateUserPage method.
+     */
+    @Test
+    public void testToAddOrUpdateUserPage() {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        Integer id = 1;
+        User user = new User();
+
+        when(userService.selectByPrimaryKey(id)).thenReturn(user);
+
+        String viewName = userController.toAddOrUpdateUserPage(id, request);
+
+        assertEquals("user/add_update", viewName);
+        verify(request, times(1)).setAttribute("userInfo", user);
+        verify(userService, times(1)).selectByPrimaryKey(id);
+
+        // Test the scenario where id is null
+        viewName = userController.toAddOrUpdateUserPage(null, request);
+        assertEquals("user/add_update", viewName);
+        // Ensure userService is not called when id is null
+        verify(userService, times(0)).selectByPrimaryKey(null);
     }
 }

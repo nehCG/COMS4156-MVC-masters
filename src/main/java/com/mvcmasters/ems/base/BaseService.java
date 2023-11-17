@@ -60,4 +60,15 @@ public abstract class BaseService<T, ID> {
         result.put("msg", "");
         return result;
     }
+
+    /**
+     * Retrieves an entity of type based on its primary key.
+     *
+     * @param id The primary key of the entity to be retrieved
+     * @return The entity of type corresponding to the given primary key.
+     * @throws DataAccessException in case of data access issues
+     */
+    public T selectByPrimaryKey(final ID id) throws DataAccessException {
+        return baseMapper.selectByPrimaryKey(id);
+    }
 }
