@@ -49,6 +49,17 @@
             <div class="layui-side-scroll layui-left-menu">
                 <ul class="layui-nav layui-nav-tree layui-left-nav-tree layui-this" id="currency">
                     <li class="layui-nav-item">
+                        <a href="javascript:;" class="layui-menu-tips"><i class="fa fa-desktop"></i><span
+                                    class="layui-left-nav"> Shared Space</span> <span class="layui-nav-more"></span></a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" class="layui-menu-tips" data-type="tabAdd" data-tab-mpi="m-p-i-5"
+                                   data-tab="customer_serve/index/1" target="_self"><i
+                                            class="fa fa-tachometer"></i><span class="layui-left-nav"> Announcement</span></a>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
                         <a href="javascript:;" class="layui-menu-tips"><i class="fa fa-gears"></i><span
                                     class="layui-left-nav"> Management</span> <span class="layui-nav-more"></span></a>
                         <dl class="layui-nav-child">

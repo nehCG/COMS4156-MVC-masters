@@ -60,7 +60,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 	    FORM_TEAM_PID = 'XM_PID_VALUE',
 	    CZ = 'xm-cz',
 	    CZ_GROUP = 'xm-cz-group',
-	    TIPS = '请选择',
+	    TIPS = 'Please select',
 	    data = {},
 	    events = {
 		on: {},
@@ -103,13 +103,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 			lazy: true
 		}
 	},
-	    quickBtns = [{ icon: 'xm-iconfont icon-quanxuan', name: '全选', click: function click(id, cm) {
+	    quickBtns = [{ icon: 'xm-iconfont icon-quanxuan', name: 'All', click: function click(id, cm) {
 			cm.selectAll(id, true, true);
-		} }, { icon: 'xm-iconfont icon-qingkong', name: '清空', click: function click(id, cm) {
+		} }, { icon: 'xm-iconfont icon-qingkong', name: 'Clear', click: function click(id, cm) {
 			cm.removeAll(id, true, true);
-		} }, { icon: 'xm-iconfont icon-fanxuan', name: '反选', click: function click(id, cm) {
+		} }, { icon: 'xm-iconfont icon-fanxuan', name: '', click: function click(id, cm) {
 			cm.reverse(id, true, true);
-		} }, { icon: 'xm-iconfont icon-pifu', name: '换肤', click: function click(id, cm) {
+		} }, { icon: 'xm-iconfont icon-pifu', name: '', click: function click(id, cm) {
 			cm.skin(id);
 		} }],
 	    $ = window.$ || window.layui && window.layui.jquery,

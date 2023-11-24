@@ -7,21 +7,23 @@ USE ems;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user`;
 
-CREATE TABLE `t_user` (
-    `id` int NOT NULL AUTO_INCREMENT,
-    `user_name` varchar(20) DEFAULT NULL,
-    `user_pwd` varchar(100) DEFAULT NULL,
-    `true_name` varchar(20) DEFAULT NULL,
-    `email` varchar(30) DEFAULT NULL,
-    `phone` varchar(20) DEFAULT NULL,
+CREATE TABLE `t_user`  (
+    `id` int(0) NOT NULL AUTO_INCREMENT COMMENT 'pk',
+    `user_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+    `user_pwd` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+    `true_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+    `email` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+    `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
     `is_valid` int(0) NULL DEFAULT 1,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    `create_date` datetime(0) NULL DEFAULT NULL,
+    `update_date` datetime(0) NULL DEFAULT NULL,
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES (1, 'admin', '4QrcOUm6Wau+VuBX8g+IPg==', 'admin', 'admin@ems.com', '1111111111', 1);
+INSERT INTO `t_user` VALUES (1, 'admin', '4QrcOUm6Wau+VuBX8g+IPg==', 'admin', 'admin@ems.com', '1111111111', 1, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
 
 
 -- ----------------------------
@@ -58,7 +60,7 @@ CREATE TABLE `t_role`  (
     `update_date` datetime(0) NULL DEFAULT NULL,
     `is_valid` int(0) NULL DEFAULT NULL,
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_role
@@ -79,7 +81,7 @@ CREATE TABLE `t_user_role`  (
     `create_date` datetime(0) NULL DEFAULT NULL,
     `update_date` datetime(0) NULL DEFAULT NULL,
     PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 228 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_user_role

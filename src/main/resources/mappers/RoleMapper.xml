@@ -103,19 +103,44 @@
       is_valid = #{isValid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <select id="queryAllRoles" parameterType="int" resultType="java.util.Map">
     SELECT
-        r.id,
-        r.role_name AS roleName,
-        CASE
-            WHEN IFNULL(temp.id, 0) = 0 THEN ''
-            ELSE 'selected'
+      r.id,
+      r.role_name AS roleName,
+      CASE
+        WHEN IFNULL(temp.id,0) = 0 THEN ''
+        ELSE 'selected'
         END
-        AS 'selected'
-    from
-        t_role r
+      AS 'selected'
+    FROM
+      t_role r
         LEFT JOIN ( SELECT r.id FROM t_role r LEFT JOIN t_user_role ur ON r.id = ur.role_id WHERE user_id = #{userId} ) temp ON r.id = temp.id
+    WHERE
+      r.is_valid = 1
+  </select>
+
+  <select id="selectByParams" parameterType="com.mvcmasters.ems.query.RoleQuery" resultType="com.mvcmasters.ems.vo.Role">
+    select
+        <include refid="Base_Column_List"></include>
+    from
+        t_role
+    <where>
+      is_valid = 1
+      <if test="null != roleName and '' != roleName">
+        and role_name like concat('%', #{roleName}, '%')
+      </if>
+    </where>
+  </select>
+
+  <select id="selectByRoleName" parameterType="string" resultType="com.mvcmasters.ems.vo.Role">
+    select
+        <include refid="Base_Column_List"></include>
+    from
+        t_role
     where
-        r.is_valid = 1
+        is_valid = 1
+    and
+        role_name = #{roleName}
   </select>
 </mapper>

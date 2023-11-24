@@ -1,21 +1,34 @@
 package com.mvcmasters.ems.service;
 
+import com.mvcmasters.ems.exceptions.ParamsException;
 import com.mvcmasters.ems.repository.UserMapper;
+import com.mvcmasters.ems.repository.UserRoleMapper;
 import com.mvcmasters.ems.vo.User;
 import com.mvcmasters.ems.model.UserModel;
 import com.mvcmasters.ems.utils.Md5Util;
+import com.mvcmasters.ems.vo.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.anyInt;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -50,6 +63,12 @@ public class UserServiceTest {
      */
     @Mock
     private UserMapper userMapper;
+
+    /**
+     * A mock of the user role data access object.
+     */
+    @Mock
+    private UserRoleMapper userRoleMapper;
 
     /**
      * Set up mockito annotations for each test.
@@ -218,16 +237,13 @@ public class UserServiceTest {
      */
     @Test
     public void testAddUser() {
-        User user = new User();
-        user.setUserName("newUser");
-        user.setEmail("newuser@ems.com");
-        user.setPhone("2222222222");
-
-        when(userMapper.queryUserByName(user.getUserName())).thenReturn(null);
+        User newUser = new User();
+        newUser.setUserName("testUser");
+        newUser.setEmail("test@example.com");
+        newUser.setPhone("1234567890");
         when(userMapper.insertSelective(any(User.class))).thenReturn(1);
-
-        userService.addUser(user);
-
+        userService.addUser(newUser);
+        verify(userMapper, times(1)).insertSelective(any(User.class));
     }
 
     /**
@@ -263,18 +279,18 @@ public class UserServiceTest {
      * Test for updating a user with valid data.
      */
     @Test
-    public void testUpdateUserValid() {
-        User user = new User();
-        user.setId(1);
-        user.setUserName("updatedAdmin");
-        user.setEmail("updatedAdmin@ems.com");
-        user.setPhone("2222222222");
-
-        when(userMapper.selectByPrimaryKey(user.getId())).thenReturn(user);
-        when(userMapper.updateByPrimaryKeySelective(user)).thenReturn(1);
-        when(userMapper.queryUserByName(user.getUserName())).thenReturn(null);
-
-        userService.updateUser(user);
+    public void testUpdateUser() {
+        User existingUser = new User();
+        existingUser.setId(1);
+        existingUser.setUserName("existingUser");
+        existingUser.setEmail("user@example.com");
+        existingUser.setPhone("1234567890");
+        when(userMapper.selectByPrimaryKey(anyInt())).thenReturn(existingUser);
+        when(userMapper.updateByPrimaryKeySelective(any(User.class))).
+                thenReturn(1);
+        userService.updateUser(existingUser);
+        verify(userMapper, times(1)).
+                updateByPrimaryKeySelective(any(User.class));
     }
 
     /**
@@ -376,15 +392,91 @@ public class UserServiceTest {
     }
 
     /**
-     * Test for deleting users by id.
+     * Test for deleting users by id with user role deletion failure.
      */
     @Test
-    public void testDeleteByIdsValid() {
-        Integer[] ids = {ID1, ID2, ID3};
+    public void testDeleteByIdsWithUserRoleDeletionFailure() {
+        Integer[] userIds = {ID1, ID2, ID3};
 
-        when(userMapper.deleteBatch(ids)).thenReturn(ids.length);
+        // Mock to return a count greater than 0
+        when(userRoleMapper.countUserRoleByUserId(anyInt())).thenReturn(1);
 
-        userService.deleteByIds(ids);
+        // Mock to simulate deletion failure
+        // (returning a value different from count)
+        when(userRoleMapper.deleteUserRoleByUserId(anyInt())).thenReturn(0);
+
+        // Mock userMapper.deleteBatch
+        when(userMapper.deleteBatch(userIds)).thenReturn(userIds.length);
+
+        // Adjust the exception type here to ParamsException
+        Exception exception = assertThrows(ParamsException.class, () -> {
+            userService.deleteByIds(userIds);
+        });
+
+        assertEquals("Failed to delete users!", exception.getMessage());
+        // Additional verification as necessary
+    }
+
+    /**
+     * Test for deleting users by id with no user roles.
+     */
+    @Test
+    public void testDeleteByIdsWithNoUserRoles() {
+        Integer[] userIds = {ID1, ID2, ID3};
+
+        // Mock to return a count of 0, indicating no user roles
+        when(userRoleMapper.countUserRoleByUserId(anyInt())).thenReturn(0);
+
+        // Mock userMapper.deleteBatch
+        when(userMapper.deleteBatch(userIds)).thenReturn(userIds.length);
+
+        userService.deleteByIds(userIds);
+
+        // Verify deleteUserRoleByUserId is never called
+        verify(userRoleMapper, never()).deleteUserRoleByUserId(anyInt());
+
+        // Verify deleteBatch is called once
+        verify(userMapper, times(1)).deleteBatch(userIds);
+    }
+
+    /**
+     * Test for deleting users by id user role deletion matches count.
+     */
+    @Test
+    public void testDeleteByIdsUserRoleDeletionMatchesCount() {
+        Integer[] userIds = {1};
+        int count = 1;
+
+        when(userRoleMapper.countUserRoleByUserId(anyInt())).thenReturn(count);
+        when(userRoleMapper.deleteUserRoleByUserId(anyInt())).thenReturn(count);
+        when(userMapper.deleteBatch(userIds)).thenReturn(1);
+
+        userService.deleteByIds(userIds);
+
+        verify(userRoleMapper, times(1)).deleteUserRoleByUserId(anyInt());
+        verify(userMapper, times(1)).deleteBatch(userIds);
+    }
+
+    /**
+     * Test for deleting users by id user role deletion does not match count.
+     */
+    @Test
+    public void testDeleteByIdsUserRoleDeletionDoesNotMatchCount() {
+        Integer[] userIds = {1};
+        int count = 1;
+
+        when(userRoleMapper.countUserRoleByUserId(anyInt())).thenReturn(count);
+        when(userRoleMapper.deleteUserRoleByUserId(anyInt())).
+                thenReturn(0); // Different from count
+        when(userMapper.deleteBatch(userIds)).thenReturn(1);
+
+        Exception exception = assertThrows(ParamsException.class, () -> {
+            userService.deleteByIds(userIds);
+        });
+
+        assertEquals("Failed to delete users!", exception.getMessage());
+        verify(userRoleMapper, times(1)).deleteUserRoleByUserId(anyInt());
+        verify(userMapper, times(1)).deleteBatch(userIds);
     }
 
     /**
@@ -442,5 +534,81 @@ public class UserServiceTest {
     public void testDeleteByIdsNullIds() {
         assertThrows(RuntimeException.class, ()
                 -> userService.deleteByIds(null));
+    }
+    /**
+     * Test for relationUserRole.
+     */
+    @Test
+    public void testRelationUserRoleDeleteExistingRoles() {
+        Integer userId = 1;
+        String roleIds = ""; // No new roles to add
+
+        // Simulate existing roles
+        when(userRoleMapper.countUserRoleByUserId(userId)).thenReturn(1);
+        when(userRoleMapper.deleteUserRoleByUserId(userId)).thenReturn(1);
+
+        userService.relationUserRole(userId, roleIds);
+
+        verify(userRoleMapper, times(1)).deleteUserRoleByUserId(userId);
+    }
+
+    /**
+     * Test for relationUserRole.
+     */
+    @Test
+    public void testRelationUserRoleAddNewRoles() {
+        Integer userId = 1;
+        String roleIds = "2,3"; // New roles to add
+
+        // Simulate no existing roles
+        when(userRoleMapper.countUserRoleByUserId(userId)).thenReturn(0);
+
+        List<UserRole> userRoles = new ArrayList<>();
+        for (String roleId : roleIds.split(",")) {
+            UserRole userRole = new UserRole();
+            userRole.setRoleId(Integer.parseInt(roleId));
+            userRole.setUserId(userId);
+            userRole.setCreateDate(new Date());
+            userRole.setUpdateDate(new Date());
+            userRoles.add(userRole);
+        }
+
+        when(userRoleMapper.insertBatch(anyList())).
+                thenReturn(userRoles.size());
+
+        userService.relationUserRole(userId, roleIds);
+
+        verify(userRoleMapper, times(1)).insertBatch(anyList());
+    }
+
+    /**
+     * Test for relationUserRole.
+     */
+    @Test
+    public void testRelationUserRoleDeleteAndAddRoles() {
+        Integer userId = 1;
+        String roleIds = "4,5"; // New roles to add
+
+        // Simulate existing roles
+        when(userRoleMapper.countUserRoleByUserId(userId)).thenReturn(1);
+        when(userRoleMapper.deleteUserRoleByUserId(userId)).thenReturn(1);
+
+        List<UserRole> userRoles = new ArrayList<>();
+        for (String roleId : roleIds.split(",")) {
+            UserRole userRole = new UserRole();
+            userRole.setRoleId(Integer.parseInt(roleId));
+            userRole.setUserId(userId);
+            userRole.setCreateDate(new Date());
+            userRole.setUpdateDate(new Date());
+            userRoles.add(userRole);
+        }
+
+        when(userRoleMapper.insertBatch(anyList())).
+                thenReturn(userRoles.size());
+
+        userService.relationUserRole(userId, roleIds);
+
+        verify(userRoleMapper, times(1)).deleteUserRoleByUserId(userId);
+        verify(userRoleMapper, times(1)).insertBatch(anyList());
     }
 }

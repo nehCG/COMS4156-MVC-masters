@@ -1,5 +1,9 @@
 package com.mvcmasters.ems.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
 /**
  * Represents a user.
  */
@@ -39,6 +43,24 @@ public class User {
      */
     private Integer isValid;
 
+    /**
+     * The date and time when the user was created.
+     * Formatted as 'yyyy-MM-dd HH:mm:ss' and adjusted to 'GMT-5' timezone.
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT-5")
+    private Date createDate;
+
+    /**
+     * The date and time when the user was last updated.
+     * Formatted as 'yyyy-MM-dd HH:mm:ss' and adjusted to 'GMT-5' timezone.
+     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT-5")
+    private Date updateDate;
+
+    /**
+     * The user's roleIds.
+     */
+    private String roleIds;
     /**
      * Gets the user's ID.
      *
@@ -148,7 +170,7 @@ public class User {
     }
 
     /**
-     * Gets the user's validity status.
+     * Get the user's validity status.
      *
      * @return The user's validity status.
      */
@@ -157,11 +179,63 @@ public class User {
     }
 
     /**
-     * Sets the user's validity status.
+     * Set the user's validity status.
      *
      * @param newIsValid The user's validity status to set.
      */
     public void setIsValid(final Integer newIsValid) {
         this.isValid = newIsValid;
+    }
+
+    /**
+     * Gets the creation date of the role.
+     *
+     * @return The creation date of the role.
+     */
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    /**
+     * Sets the creation date of the role.
+     *
+     * @param cDate The creation date to set for the role.
+     */
+    public void setCreateDate(final Date cDate) {
+        this.createDate = cDate;
+    }
+
+    /**
+     * Gets the last update date of the role.
+     *
+     * @return The last update date of the role.
+     */
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    /**
+     * Sets the last update date for the role.
+     *
+     * @param uDate The update date to set for the role.
+     */
+    public void setUpdateDate(final Date uDate) {
+        this.updateDate = uDate;
+    }
+
+    /**
+     * Get the user's role id.
+     * @return The user's roleIds.
+     */
+    public String getRoleIds() {
+        return roleIds;
+    }
+
+    /**
+     * Set the user's role id.
+     * @param rIds The user's role id.
+     */
+    public void setRoleIds(final String rIds) {
+        this.roleIds = rIds;
     }
 }
