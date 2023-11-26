@@ -4,6 +4,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -33,6 +34,18 @@ import java.util.Optional;
  * as expected with various input scenarios.
  */
 public class RoleControllerTest {
+    /**
+     * Constant representing value 101.
+     */
+    private static final int V1 = 101;
+    /**
+     * Constant representing value 102.
+     */
+    private static final int V2 = 102;
+    /**
+     * Constant representing value 103.
+     */
+    private static final int V3 = 103;
     /**
      * HTTP status code for Success(200).
      */
@@ -239,5 +252,38 @@ public class RoleControllerTest {
         assertEquals("role/add_update", viewPath);
         assertNull(request.getAttribute("role"));
         verify(roleService, never()).selectByPrimaryKey(any());
+    }
+
+    /**
+     * Tests the {@code addGrant} method of {@link RoleController}.
+     * This test verifies that the correct response is
+     * returned when adding grant permissions to a role,
+     * and ensures that the service method is called
+     * with the appropriate parameters.
+     */
+    @Test
+    public void testAddGrant() {
+        Integer roleId = 1; // Example role ID
+        Integer[] mIds = {V1, V2, V3}; // Example module IDs
+
+        ResultInfo expectedResponse = new ResultInfo();
+        expectedResponse.setCode(HTTP_SUCCESS);
+        expectedResponse.setMsg("Role authorization successful!");
+
+        // Mocking the behavior of the role service
+        doNothing().when(roleService).addGrant(roleId, mIds);
+
+        // Executing the addGrant method
+        ResultInfo actualResponse = roleController.addGrant(roleId, mIds);
+
+        // Assertions
+        assertEquals("Code should match", Optional.of(HTTP_SUCCESS),
+                Optional.ofNullable(actualResponse.getCode()));
+        assertEquals("Message should match",
+                "Role authorization successful!", actualResponse.getMsg());
+        assertNull("Result should be null", actualResponse.getResult());
+
+        // Verify that the service method was called with the correct parameters
+        verify(roleService, times(1)).addGrant(roleId, mIds);
     }
 }

@@ -1,19 +1,24 @@
 package com.mvcmasters.ems.controller;
+import com.mvcmasters.ems.service.PermissionService;
 import com.mvcmasters.ems.service.UserService;
 import com.mvcmasters.ems.utils.LoginUserUtil;
 import com.mvcmasters.ems.vo.User;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Test class for IndexController.
@@ -44,7 +49,14 @@ public class IndexControllerTest {
     /**
      * Instance of IndexController under test.
      */
+    @InjectMocks
     private IndexController controller;
+
+    /**
+     * Mock of PermissionService for handling permission operations.
+     */
+    @Mock
+    private PermissionService permissionService;
 
     /**
      * Sets up the testing environment before each test.
@@ -57,6 +69,7 @@ public class IndexControllerTest {
         MockitoAnnotations.openMocks(this);
         controller = new IndexController();
         injectMocks(controller, "userService", userService);
+        injectMocks(controller, "permissionService", permissionService);
 
         when(request.getSession()).thenReturn(session);
     }
@@ -98,23 +111,34 @@ public class IndexControllerTest {
      */
     @Test
     void testMain() {
-        Integer userId = 1; // Example user ID
-        User user = new User(); // Mock user object
+        // Arrange
+        Integer userId = 1;
+        User mockUser = new User();
+        List<String> mockPermissions = List.of("READ", "WRITE");
 
-        try (MockedStatic<LoginUserUtil> mockedStatic
+        Cookie[] cookies = {new Cookie("user", "1")};
+        when(request.getCookies()).thenReturn(cookies);
+
+        try (MockedStatic<LoginUserUtil> mockedLoginUserUtil
                      = Mockito.mockStatic(LoginUserUtil.class)) {
-            mockedStatic.when(() ->
+            mockedLoginUserUtil.when(() ->
                     LoginUserUtil.releaseUserIdFromCookie(request)).
                     thenReturn(userId);
-            when(userService.selectByPrimaryKey(userId)).thenReturn(user);
-            when(request.getSession()).thenReturn(session);
 
-            String viewName = controller.main(request);
+            when(userService.selectByPrimaryKey(userId)).thenReturn(mockUser);
+            when(permissionService.
+                    queryUserHasRoleHasPermissionByUserId(userId)).
+                    thenReturn(mockPermissions);
 
+            Model model = new ExtendedModelMap();
+
+            // Act
+            String viewName = controller.main(model, request);
+
+            // Assert
             assertEquals("main", viewName);
-            verify(request).getSession();
-            verify(session).setAttribute("user", user);
-            verify(userService).selectByPrimaryKey(userId);
+            assertEquals(mockUser, model.asMap().get("user"));
+            assertEquals(mockPermissions, model.asMap().get("permissions"));
         }
     }
 }

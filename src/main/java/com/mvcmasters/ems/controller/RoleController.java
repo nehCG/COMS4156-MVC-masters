@@ -120,4 +120,21 @@ public class RoleController extends BaseController {
         roleService.deleteRole(roleId);
         return success("Role deleted successfully!");
     }
+
+    /**
+     * Adds grant permissions to a specific role
+     * based on the provided module IDs.
+     * @param roleId The ID of the role to which the grants are to be added.
+     * @param mIds An array of module IDs that are to be granted to the role.
+     * @return A ResultInfo object indicating the
+     *         success of the grant operation.
+     */
+    @PostMapping("addGrant")
+    @ResponseBody
+    public ResultInfo addGrant(final Integer roleId, final Integer[] mIds) {
+
+        roleService.addGrant(roleId, mIds);
+
+        return success("Role authorization successful!");
+    }
 }

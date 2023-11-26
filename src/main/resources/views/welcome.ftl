@@ -9,7 +9,7 @@
     <div class="layui-tab-item layui-show">
         <div class="layui-carousel" id="test10" align="center">
             <div carousel-item="">
-                <div><img src="${ctx}/images/timg.jpeg" style="width:100%"></div>
+                <div><img src="${ctx}/images/timg.jpeg" style="width:100%; height: 100%; object-fit: contain;"></div>
             </div>
         </div>
     </div>

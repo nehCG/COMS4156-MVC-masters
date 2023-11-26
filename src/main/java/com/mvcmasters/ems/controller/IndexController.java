@@ -1,6 +1,8 @@
 package com.mvcmasters.ems.controller;
 
+import org.springframework.ui.Model;
 import com.mvcmasters.ems.base.BaseController;
+import com.mvcmasters.ems.service.PermissionService;
 import com.mvcmasters.ems.service.UserService;
 import com.mvcmasters.ems.utils.LoginUserUtil;
 import com.mvcmasters.ems.vo.User;
@@ -8,6 +10,8 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 /**
  * Controller for handling main application pages.
@@ -21,6 +25,11 @@ public class IndexController extends BaseController {
      */
     @Resource
     private UserService userService;
+    /**
+     * Service for handling permission operations.
+     */
+    @Resource
+    private PermissionService permissionService;
     /**
      * Displays the index page.
      *
@@ -46,15 +55,22 @@ public class IndexController extends BaseController {
      * details, and stores them in the session.
      * It then returns the name of the main view.
      *
+     * @param model The model object, providing information about the model.
      * @param request The HttpServletRequest object,
      *                providing information about the request.
      * @return The name of the main view.
      */
     @RequestMapping("/main")
-    public String main(final HttpServletRequest request) {
+    public String main(final Model model, final HttpServletRequest request) {
+        // Example of fetching user data
         Integer userId = LoginUserUtil.releaseUserIdFromCookie(request);
         User user = userService.selectByPrimaryKey(userId);
-        request.getSession().setAttribute("user", user);
+        List<String> permissions =
+                permissionService.queryUserHasRoleHasPermissionByUserId(userId);
+        // Adding attributes to the model
+        model.addAttribute("user", user);
+        model.addAttribute("permissions", permissions);
+        // Return the view name
         return "main";
     }
 }

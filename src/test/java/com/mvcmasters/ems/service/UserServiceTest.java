@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -536,7 +535,8 @@ public class UserServiceTest {
                 -> userService.deleteByIds(null));
     }
     /**
-     * Test for relationUserRole.
+     * Tests the behavior of the relationUserRole method
+     * when deleting existing user-role relationships.
      */
     @Test
     public void testRelationUserRoleDeleteExistingRoles() {
@@ -553,7 +553,7 @@ public class UserServiceTest {
     }
 
     /**
-     * Test for relationUserRole.
+     * Tests the relationUserRole method for adding new roles to a user.
      */
     @Test
     public void testRelationUserRoleAddNewRoles() {
@@ -582,7 +582,8 @@ public class UserServiceTest {
     }
 
     /**
-     * Test for relationUserRole.
+     * Tests the relationUserRole method for both deleting
+     * existing roles and adding new roles.
      */
     @Test
     public void testRelationUserRoleDeleteAndAddRoles() {
@@ -610,5 +611,54 @@ public class UserServiceTest {
 
         verify(userRoleMapper, times(1)).deleteUserRoleByUserId(userId);
         verify(userRoleMapper, times(1)).insertBatch(anyList());
+    }
+
+    /**
+     * Tests the relationUserRole method for handling
+     * failures in deleting existing user-role relationships.
+     */
+    @Test
+    public void testRelationUserRoleDeleteFailure() {
+        Integer userId = 1;
+        String roleIds = "2,3"; // Assuming new roles to assign
+
+        // Mocking count of existing user-roles
+        when(userRoleMapper.countUserRoleByUserId(userId)).thenReturn(1);
+
+        // Simulating deletion failure (count mismatch)
+        when(userRoleMapper.deleteUserRoleByUserId(userId)).thenReturn(0);
+
+        // Expecting ParamsException due to failure in deletion
+        assertThrows(ParamsException.class, () ->
+                userService.relationUserRole(userId, roleIds));
+
+        verify(userRoleMapper).deleteUserRoleByUserId(userId);
+    }
+
+    /**
+     * Tests the relationUserRole method for handling
+     * insertion failures when adding new user-role relationships.
+     */
+    @Test
+    public void testRelationUserRoleInsertionFailure() {
+        Integer userId = 1;
+        String roleIds = "2,3"; // New roles to add
+
+        // Simulate no existing roles
+        when(userRoleMapper.countUserRoleByUserId(userId)).thenReturn(0);
+
+        // Simulate insertion failure by returning a
+        // number less than the number of role IDs
+        when(userRoleMapper.insertBatch(anyList())).
+                thenReturn(roleIds.split(",").length - 1);
+
+        // Expecting ParamsException due to failure in insertion
+        ParamsException exception = assertThrows(ParamsException.class, () ->
+                userService.relationUserRole(userId, roleIds));
+
+        assertEquals("Failed to assign a role!", exception.getMessage());
+
+        // Verify that insertBatch was called with any list of UserRole objects
+        verify(userRoleMapper).insertBatch(anyList());
     }
 }

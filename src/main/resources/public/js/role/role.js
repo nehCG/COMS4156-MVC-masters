@@ -39,6 +39,9 @@ layui.use(['table','layer'],function(){
     table.on('toolbar(roles)',function (data) {
         if (data.event == "add") {
             openAddOrUpdateRoleDialog();
+        } else if (data.event == "grant") {
+            var checkStatus = table.checkStatus(data.config.id);
+            openAddGrantDialog(checkStatus.data);
         }
     });
 
@@ -87,5 +90,29 @@ layui.use(['table','layer'],function(){
                 }
             });
         });
+    }
+
+    function openAddGrantDialog(data) {
+        // 判断是否选择了角色记录
+        if (data.length == 0) {
+            layer.msg("Please select the role you want to authorize!",{icon:5});
+            return;
+        }
+        // 只支持单个角色授权
+        if (data.length > 1) {
+            layer.msg("Multiple role authorize is not supported yet!",{icon:5});
+            return;
+        }
+
+        var url = ctx + "/module/toAddGrantPage?roleId="+data[0].id;
+        var title = "<h3>Role Mgmt - Role Authorize</h3>";
+        layui.layer.open({
+            title:title,
+            content:url,
+            type:2,
+            area:["600px","600px"],
+            maxmin: true
+        });
+
     }
 });

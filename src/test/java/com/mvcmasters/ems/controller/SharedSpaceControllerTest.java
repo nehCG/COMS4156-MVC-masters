@@ -131,4 +131,13 @@ public class SharedSpaceControllerTest {
         assertEquals(expectedResponse, responseEntity);
         verify(sharedDataService, times(1)).deleteSharedDataById(id);
     }
+
+    /**
+     * Test the index method.
+     */
+    @Test
+    public void testIndex() {
+        String viewName = sharedSpaceController.index();
+        assertEquals("announcement/announcement", viewName);
+    }
 }

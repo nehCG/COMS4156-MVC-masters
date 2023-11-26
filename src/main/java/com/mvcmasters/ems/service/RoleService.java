@@ -4,12 +4,16 @@ import com.mvcmasters.ems.base.BaseService;
 import com.mvcmasters.ems.repository.RoleMapper;
 import com.mvcmasters.ems.utils.AssertUtil;
 import com.mvcmasters.ems.vo.Role;
+import com.mvcmasters.ems.repository.PermissionMapper;
+import com.mvcmasters.ems.vo.Permission;
+import com.mvcmasters.ems.repository.ModuleMapper;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +31,19 @@ public class RoleService extends BaseService<Role, Integer> {
     @Resource
     private RoleMapper roleMapper;
 
+    /**
+     * Injected PermissionMapper for accessing
+     * database operations related to permissions.
+     */
+    @Resource
+    private PermissionMapper permissionMapper;
+
+    /**
+     * Injected ModuleMapper for accessing
+     * database operations related to modules.
+     */
+    @Resource
+    private ModuleMapper moduleMapper;
     /**
      * Queries and retrieves all roles associated with a given user ID.
      *
@@ -83,7 +100,7 @@ public class RoleService extends BaseService<Role, Integer> {
                 "Role name cannot be empty!");
         temp = roleMapper.selectByRoleName(role.getRoleName());
         // Check if the new role name conflicts with existing roles
-        AssertUtil.isTrue(null != temp && (temp.getId().equals(role.getId())),
+        AssertUtil.isTrue(null != temp && (!temp.getId().equals(role.getId())),
                 "Role name already exists!");
         // Set the update date and update the role
         role.setUpdateDate(new Date());
@@ -111,5 +128,54 @@ public class RoleService extends BaseService<Role, Integer> {
         // Perform the update and validate deletion
         AssertUtil.isTrue(roleMapper.updateByPrimaryKeySelective(role) < 1,
                 "Failed to delete a role");
+    }
+
+    /**
+     * Adds grant permissions to a specific role
+     * based on the provided module IDs.
+     * @param roleId The ID of the role to which the
+     *               permissions are to be granted.
+     * @param mIds An array of module IDs representing
+     *             the permissions to be granted.
+     * @throws IllegalArgumentException if the role authorization fails due to
+     *                        data inconsistency or database operation failure.
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void addGrant(final Integer roleId, final Integer[] mIds) {
+        // Count the existing permissions for the role
+        Integer count = permissionMapper.countPermissionByRoleId(roleId);
+
+        // If permissions exist, delete them
+        if (count > 0) {
+            permissionMapper.deletePermissionByRoleId(roleId);
+        }
+
+        // Check if there are module IDs to add permissions for
+        if (mIds != null &&  mIds.length > 0) {
+
+            // Prepare a list to hold the new permissions
+            List<Permission> permissionList = new ArrayList<>();
+            for (Integer mId: mIds) {
+                // Create a new permission object for each module ID
+                Permission permission = new Permission();
+                permission.setModuleId(mId);
+                permission.setRoleId(roleId);
+
+                // Set the access control value from the module
+                permission.setAclValue(moduleMapper.
+                        selectByPrimaryKey(mId).getOptValue());
+
+                // Set the creation and update dates
+                permission.setCreateDate(new Date());
+                permission.setUpdateDate(new Date());
+
+                // Add the new permission to the list
+                permissionList.add(permission);
+            }
+
+            // Insert the new permissions and check if all were added
+            AssertUtil.isTrue(permissionMapper.insertBatch(permissionList)
+                    != permissionList.size(), "Role authorization failed!");
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.mvcmasters.ems.service.SharedDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,14 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 /**
  * Controller for operations related to Shared Data.
  */
-@RestController
+@Controller
 @RequestMapping("/announcement")
 public class SharedSpaceController extends BaseController {
     /**
@@ -112,5 +112,15 @@ public class SharedSpaceController extends BaseController {
         // Return a ResponseEntity with a success message and HTTP status OK
         return new ResponseEntity<>(
                 "Shared data deleted successfully!", HttpStatus.OK);
+    }
+
+    /**
+     * Displays the index page.
+     *
+     * @return The name of the index view.
+     */
+    @RequestMapping("/index")
+    public String index() {
+        return "announcement/announcement";
     }
 }
