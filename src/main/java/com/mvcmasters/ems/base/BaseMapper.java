@@ -58,4 +58,13 @@ public interface BaseMapper<T, ID> {
      * @throws DataAccessException if a data access error occurs
      */
     Integer deleteBatch(ID[] ids) throws DataAccessException;
+
+    /**
+     * Inserts entities with the given primary keys in a batch.
+     *
+     * @param entities the primary keys of the entities to be deleted
+     * @return the number of rows affected by delete
+     * @throws DataAccessException if a data access error occurs
+     */
+    Integer insertBatch(List<T> entities) throws DataAccessException;
 }

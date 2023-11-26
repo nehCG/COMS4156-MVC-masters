@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.Date;
+
 /**
  * This class contains unit tests for the User class.
  */
@@ -140,5 +142,45 @@ public class UserTest {
 
         // Verify that leading and trailing spaces are trimmed
         assertEquals("123-456-7890", user.getPhone());
+    }
+
+    /**
+     * Tests the getter and setter for the user's creation date.
+     * Verifies that the creation date set by the setter
+     * is correctly retrieved by the getter.
+     */
+    @Test
+    public void testGetSetCreateDate() {
+        Date expectedDate = new Date();
+        user.setCreateDate(expectedDate);
+        Date actualDate = user.getCreateDate();
+        assertEquals(expectedDate, actualDate);
+    }
+
+    /**
+     * Tests the getter and setter for the user's update date.
+     * Ensures that the update date set by the setter is
+     * accurately retrieved by the getter.
+     */
+    @Test
+    public void testGetSetUpdateDate() {
+        Date expectedDate = new Date();
+        user.setUpdateDate(expectedDate);
+        Date actualDate = user.getUpdateDate();
+        assertEquals(expectedDate, actualDate);
+    }
+
+    /**
+     * Tests the getter and setter for the user's role IDs.
+     * Checks that the role IDs set by the setter
+     * are properly retrieved by the getter.
+     * This test verifies the basic assignment and retrieval of a string value.
+     */
+    @Test
+    public void testSetGetRoleIds() {
+        String expectedRoleIds = "1,2,3";
+        user.setRoleIds(expectedRoleIds);
+        String actualRoleIds = user.getRoleIds();
+        assertEquals(expectedRoleIds, actualRoleIds);
     }
 }

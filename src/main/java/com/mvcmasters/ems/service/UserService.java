@@ -4,14 +4,20 @@ import com.mvcmasters.ems.base.BaseService;
 import com.mvcmasters.ems.utils.UserIDBase64;
 import com.mvcmasters.ems.vo.User;
 import com.mvcmasters.ems.repository.UserMapper;
+import com.mvcmasters.ems.repository.UserRoleMapper;
 import com.mvcmasters.ems.model.UserModel;
 import com.mvcmasters.ems.utils.AssertUtil;
 import com.mvcmasters.ems.utils.Md5Util;
+import com.mvcmasters.ems.vo.UserRole;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Service layer for User related operations.
@@ -23,6 +29,11 @@ public class UserService extends BaseService<User, Integer> {
      */
     @Resource
     private UserMapper userMapper;
+    /**
+     * Mapper for user_role-related database operations.
+     */
+    @Resource
+    private UserRoleMapper userRoleMapper;
 
     /**
      * Handles user login logic.
@@ -192,6 +203,8 @@ public class UserService extends BaseService<User, Integer> {
         // Set the user's validity status to 1
         // (assuming 1 represents a valid user)
         user.setIsValid(1);
+        user.setCreateDate(new Date());
+        user.setUpdateDate(new Date());
 
         // Set the initial password for the new user (e.g., "123456")
         user.setUserPwd(Md5Util.encode("123456"));
@@ -200,6 +213,9 @@ public class UserService extends BaseService<User, Integer> {
         // and throw an exception if the insertion fails
         AssertUtil.isTrue(userMapper.insertSelective(user) != 1,
                 "Failed to add a new user");
+
+        // User role association
+        relationUserRole(user.getId(), user.getRoleIds());
     }
 
     /**
@@ -226,10 +242,13 @@ public class UserService extends BaseService<User, Integer> {
                         user.getPhone(),
                         user.getId());
 
+        user.setUpdateDate(new Date());
+
         // Attempt to update the user records in the database,
         // and throw an exception if the update fails
         AssertUtil.isTrue(userMapper.updateByPrimaryKeySelective(user) != 1,
                 "Failed to update user records!");
+        relationUserRole(user.getId(), user.getRoleIds());
     }
 
     private void checkUserParams(final String userName,
@@ -274,5 +293,70 @@ public class UserService extends BaseService<User, Integer> {
         // the expected number of deletions
         AssertUtil.isTrue(userMapper.deleteBatch(ids) != ids.length,
                 "Failed to delete users!");
+
+        for (Integer userId : ids) {
+            // Query the corresponding user role record by userId
+            Integer count  = userRoleMapper.countUserRoleByUserId(userId);
+            // Determine whether the user role record exists
+            if (count > 0) {
+                // Delete the corresponding user role record by userId
+                AssertUtil.isTrue(userRoleMapper.
+                                deleteUserRoleByUserId(userId) != count,
+                        "Failed to delete users!");
+            }
+        }
+    }
+    /**
+     * Establishes or updates the user-role relationship
+     * based on the provided user ID and role IDs.
+     * @param userId The ID of the user for whom the role
+     *               relationships are being established or updated.
+     * @param roleIds A comma-separated string of role IDs
+     *                to be assigned to the user.
+     *                Each role ID represents a specific
+     *                role to be associated with the user.
+     * @throws AssertionError if the deletion of existing
+     * user-role relationships fails or if the insertion
+     * of new relationships does not match the expected count.
+     */
+    public void relationUserRole(final Integer userId, final String roleIds) {
+        // Count existing user-role relationships for the given user ID
+        Integer count = userRoleMapper.countUserRoleByUserId(userId);
+        // If there are existing relationships, delete them
+        if (count > 0) {
+            // Assert that the number of deleted relationships
+            // equals the count found earlier
+            // If not, throw an assertion error indicating
+            // role assignment failure
+            AssertUtil.isTrue(userRoleMapper.
+                            deleteUserRoleByUserId(userId) != count,
+                    "Failed to assign a role!");
+        }
+        // Check if roleIds string is not blank (i.e., it contains role IDs)
+        if (StringUtils.isNotBlank(roleIds)) {
+            // Prepare a list to hold UserRole objects for batch insertion
+            List<UserRole> userRoleList = new ArrayList<>();
+            // Split roleIds string into an array of individual role IDs
+            String[] roleIdsArray = roleIds.split(",");
+            // Iterate over each role ID
+            for (String roleId : roleIdsArray) {
+                // Create a new UserRole object for each role ID
+                UserRole userRole = new UserRole();
+                // Set the role ID
+                userRole.setRoleId(Integer.parseInt(roleId));
+                // Set the user ID
+                userRole.setUserId(userId);
+                userRole.setCreateDate(new Date());
+                userRole.setUpdateDate(new Date());
+                // Add the UserRole object to the list
+                userRoleList.add(userRole);
+            }
+
+            // Perform batch insertion of UserRole objects
+            // Assert that the number of inserted records matches the list size
+            AssertUtil.isTrue(userRoleMapper.
+                            insertBatch(userRoleList) != userRoleList.size(),
+                    "Failed to assign a role!");
+        }
     }
 }

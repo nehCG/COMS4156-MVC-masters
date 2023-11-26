@@ -38,13 +38,13 @@
                 </div>
             </div>
 
-<#--            <div class="layui-form-item layui-row layui-col-xs12">-->
-<#--                <label class="layui-form-label">Role</label>-->
-<#--                <div class="layui-input-block">-->
-<#--                    <select name="roleIds"  xm-select="selectId">-->
-<#--                    </select>-->
-<#--                </div>-->
-<#--            </div>-->
+            <div class="layui-form-item layui-row layui-col-xs12">
+                <label class="layui-form-label">Role</label>
+                <div class="layui-input-block">
+                    <select name="roleIds"  xm-select="selectId">
+                    </select>
+                </div>
+            </div>
 
 
             <br/>

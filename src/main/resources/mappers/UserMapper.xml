@@ -9,9 +9,11 @@
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="is_valid" jdbcType="INTEGER" property="isValid" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_name, user_pwd, true_name, email, phone, is_valid
+    id, user_name, user_pwd, true_name, email, phone, is_valid, create_date, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -25,58 +27,72 @@
   </delete>
   <insert id="insert" parameterType="com.mvcmasters.ems.vo.User">
     insert into t_user (id, user_name, user_pwd, 
-      true_name, email, phone, isvalid
+      true_name, email, phone, 
+      is_valid, create_date, update_date
       )
     values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
-      #{trueName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER}
+      #{trueName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.mvcmasters.ems.vo.User">
+  <insert id="insertSelective" parameterType="com.mvcmasters.ems.vo.User" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
     insert into t_user
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         id,
       </if>
-      <if test="userName != null">
+      <if test="userName != null" >
         user_name,
       </if>
-      <if test="userPwd != null">
+      <if test="userPwd != null" >
         user_pwd,
       </if>
-      <if test="trueName != null">
+      <if test="trueName != null" >
         true_name,
       </if>
-      <if test="email != null">
+      <if test="email != null" >
         email,
       </if>
-      <if test="phone != null">
+      <if test="phone != null" >
         phone,
       </if>
       <if test="isValid != null" >
         is_valid,
       </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="userName != null">
+      <if test="userName != null" >
         #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="userPwd != null">
+      <if test="userPwd != null" >
         #{userPwd,jdbcType=VARCHAR},
       </if>
-      <if test="trueName != null">
+      <if test="trueName != null" >
         #{trueName,jdbcType=VARCHAR},
       </if>
-      <if test="email != null">
+      <if test="email != null" >
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
+      <if test="phone != null" >
         #{phone,jdbcType=VARCHAR},
       </if>
       <if test="isValid != null" >
         #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -98,8 +114,14 @@
       <if test="phone != null">
         phone = #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="isValid != null" >
+      <if test="isValid != null">
         is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -111,7 +133,9 @@
       true_name = #{trueName,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      is_valid = #{isValid,jdbcType=INTEGER}
+      is_valid = #{isValid,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="queryUserByName" parameterType="string" resultType="com.mvcmasters.ems.vo.User">
@@ -123,16 +147,16 @@
     select <include refid="Base_Column_List"></include>
     from t_user
     <where>
-    is_valid = 1
-    <if test="null != userName and userName != '' ">
-      and user_name like concat('%', #{userName}, '%')
-    </if>
-    <if test="null != email and email != '' ">
-      and email like concat('%', #{email}, '%')
-    </if>
-    <if test="null != phone and phone != '' ">
-      and phone like concat('%', #{phone}, '%')
-    </if>
+      is_valid = 1
+      <if test="null != userName and userName != '' ">
+        and user_name like concat('%', #{userName}, '%')
+      </if>
+      <if test="null != email and email != '' ">
+        and email like concat('%', #{email}, '%')
+      </if>
+      <if test="null != phone and phone != '' ">
+        and phone like concat('%', #{phone}, '%')
+      </if>
     </where>
   </select>
   <update id="deleteBatch">
@@ -140,8 +164,8 @@
     set is_valid = 0
     where id
     in
-      <foreach collection="array" item="id" open="(" close=")" separator=",">
-        #{id}
-      </foreach>
+    <foreach collection="array" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
   </update>
 </mapper>

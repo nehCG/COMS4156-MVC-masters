@@ -4,7 +4,7 @@ layui.use(['form', 'layer', 'formSelects'], function () {
         $ = layui.jquery;
     var formSelects = layui.formSelects;
 
-    form.on('submit(addOrUpdateUser)', function (data) {
+    form.on('submit(addOrUpdateRole)', function (data) {
 
         var index = top.layer.msg("Submitting...",{
             icon:16,
@@ -13,13 +13,12 @@ layui.use(['form', 'layer', 'formSelects'], function () {
         });
 
         var formData = data.field;
-        console.log(formData);
 
-        var url = ctx + "/user/add";
+        var url = ctx + "/role/add";
 
-
-        if ($("[name='id']").val()) {
-            var url = ctx + "/user/update";
+        var roleId = $("[name='id']").val();
+        if (roleId != null && roleId != '') {
+            url = ctx + "/role/update";
         }
 
 
@@ -40,13 +39,4 @@ layui.use(['form', 'layer', 'formSelects'], function () {
         var index = parent.layer.getFrameIndex(window.name);
         parent.layer.close(index);
     });
-
-    var userId = $("[name='id']").val();
-    formSelects.config("selectId",{
-        type:"post",
-        searchUrl: ctx+"/role/queryAllRoles?userId="+userId,
-        keyName: 'roleName',
-        keyVal: 'id'
-    }, true);
-
 });

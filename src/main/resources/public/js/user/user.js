@@ -4,9 +4,6 @@ layui.use(['table','layer'],function(){
         table = layui.table;
 
 
-    /**
-     * 加载数据表格
-     */
     var tableIns = table.render({
         id:'userTable'
         ,elem: '#userList'

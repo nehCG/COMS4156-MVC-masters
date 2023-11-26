@@ -30,20 +30,28 @@
 
             <script type="text/html" id="toolbarDemo">
                 <div class="layui-btn-container">
+<#--                    <#if permissions?seq_contains("201001")>-->
                     <a class="layui-btn layui-btn-normal addNews_btn" lay-event="add">
                         <i class="layui-icon">&#xe608;</i>
                         Add User
                     </a>
+<#--                    </#if>-->
+<#--                    <#if permissions?seq_contains("201004")>-->
                     <a class="layui-btn layui-btn-normal delNews_btn" lay-event="del">
                         <i class="layui-icon">&#xe608;</i>
                         Delete User
                     </a>
+<#--                    </#if>-->
                 </div>
             </script>
 
             <script id="userListBar" type="text/html">
+<#--                <#if permissions?seq_contains("201003")>-->
                 <a class="layui-btn layui-btn-xs" id="edit" lay-event="edit">Edit</a>
+<#--                </#if>-->
+<#--                <#if permissions?seq_contains("201004")>-->
                 <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">Delete</a>
+<#--                </#if>-->
             </script>
         </form>
 
