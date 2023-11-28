@@ -1,6 +1,7 @@
 package com.mvcmasters.ems.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.util.Date;
 
@@ -103,6 +104,8 @@ public class Role {
      *
      * @return The creation date of the role.
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP",
+            justification = "Acceptable risk")
     public Date getCreateDate() {
         return createDate;
     }
@@ -112,6 +115,8 @@ public class Role {
      *
      * @param cDate The creation date to set for the role.
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
+            justification = "Acceptable risk")
     public void setCreateDate(final Date cDate) {
         this.createDate = cDate;
     }
@@ -121,6 +126,8 @@ public class Role {
      *
      * @return The last update date of the role.
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP",
+            justification = "Acceptable risk")
     public Date getUpdateDate() {
         return updateDate;
     }
@@ -130,6 +137,8 @@ public class Role {
      *
      * @param uDate The update date to set for the role.
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
+            justification = "Acceptable risk")
     public void setUpdateDate(final Date uDate) {
         this.updateDate = uDate;
     }

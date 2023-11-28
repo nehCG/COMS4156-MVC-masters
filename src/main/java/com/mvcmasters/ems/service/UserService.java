@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Service layer for User related operations.
@@ -300,8 +301,8 @@ public class UserService extends BaseService<User, Integer> {
             // Determine whether the user role record exists
             if (count > 0) {
                 // Delete the corresponding user role record by userId
-                AssertUtil.isTrue(userRoleMapper.
-                                deleteUserRoleByUserId(userId) != count,
+                AssertUtil.isTrue(!Objects.equals(userRoleMapper.
+                                deleteUserRoleByUserId(userId), count),
                         "Failed to delete users!");
             }
         }
@@ -328,8 +329,8 @@ public class UserService extends BaseService<User, Integer> {
             // equals the count found earlier
             // If not, throw an assertion error indicating
             // role assignment failure
-            AssertUtil.isTrue(userRoleMapper.
-                            deleteUserRoleByUserId(userId) != count,
+            AssertUtil.isTrue(!Objects.equals(userRoleMapper.
+                            deleteUserRoleByUserId(userId), count),
                     "Failed to assign a role!");
         }
         // Check if roleIds string is not blank (i.e., it contains role IDs)

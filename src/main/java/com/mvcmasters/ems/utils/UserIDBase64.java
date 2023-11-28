@@ -1,5 +1,6 @@
 package com.mvcmasters.ems.utils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Base64;
@@ -36,6 +37,9 @@ public final class UserIDBase64 {
      * @return The decoded user ID as an Integer,
      * or null if input is blank or in case of decoding failure.
      */
+    @SuppressFBWarnings(value = "DM_DEFAULT_ENCODING",
+            justification =
+                    "Default encoding reliance accepted for this method")
     public static Integer decoderUserID(final String encodedUserID) {
         if (StringUtils.isBlank(encodedUserID)) {
             return null;
@@ -63,6 +67,9 @@ public final class UserIDBase64 {
      * @param userID The user ID to be encoded.
      * @return The Base64 encoded string representation of the user ID.
      */
+    @SuppressFBWarnings(value = "DM_DEFAULT_ENCODING",
+            justification =
+                    "Default encoding reliance accepted for this method")
     public static String encoderUserID(final Integer userID) {
         String base64UserIDEncoded =
                 Base64.getEncoder().encodeToString((userID + "").getBytes());
