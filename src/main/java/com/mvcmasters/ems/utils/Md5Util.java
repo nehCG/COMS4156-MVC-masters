@@ -1,5 +1,7 @@
 package com.mvcmasters.ems.utils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.security.MessageDigest;
 import java.util.Base64;
 
@@ -21,6 +23,9 @@ public final class Md5Util {
      * @return The MD5 hash of the message as a Base64-encoded string,
      * or null if there's an error.
      */
+    @SuppressFBWarnings(value = "DM_DEFAULT_ENCODING",
+            justification =
+                    "MD5 hash calculation with default encoding accepted")
     public static String encode(final String msg) {
         if (msg == null) {
             return null;
