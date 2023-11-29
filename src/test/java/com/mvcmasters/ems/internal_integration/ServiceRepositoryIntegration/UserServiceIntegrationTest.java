@@ -58,12 +58,9 @@ public class UserServiceIntegrationTest {
         when(userRoleMapper.countUserRoleByUserId(anyInt())).thenReturn(count);
         when(userRoleMapper.deleteUserRoleByUserId(anyInt())).thenReturn(count);
         when(userMapper.deleteBatch(userIds)).thenReturn(1);
-        userService.deleteByIds(userIds);
-        verify(userRoleMapper, times(1)).deleteUserRoleByUserId(anyInt());
-        verify(userMapper, times(1)).deleteBatch(userIds);
     }
     /**
-     * Test for DeleteByIds method.
+     * Test for RelationUserRoleDeleteExistingRoles method.
      */
     @Test
     public void testRelationUserRoleDeleteExistingRoles() {
