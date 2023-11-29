@@ -38,11 +38,14 @@ jobs:
       - name: Run Checkstyle
         run: mvn checkstyle:check
 
+      - name: Run SpotBugs
+        run: mvn spotbugs:check
+
       - name: Build with Maven (compile phase)
-        run: mvn compile -Dcheckstyle.skip=true
+        run: mvn compile -Dcheckstyle.skip=true -Dspotbugs.skip=true
 
       - name: Test with Maven
-        run: mvn test -Dcheckstyle.skip=true && mvn jacoco:report
+        run: mvn test -Dcheckstyle.skip=true -Dspotbugs.skip=true && mvn jacoco:report
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3

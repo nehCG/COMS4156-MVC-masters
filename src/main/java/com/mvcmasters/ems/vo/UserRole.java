@@ -1,5 +1,7 @@
 package com.mvcmasters.ems.vo;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.util.Date;
 
 /**
@@ -92,6 +94,8 @@ public class UserRole {
      *
      * @return The creation date.
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP",
+            justification = "Acceptable risk")
     public Date getCreateDate() {
         return createDate;
     }
@@ -101,6 +105,8 @@ public class UserRole {
      *
      * @param cDate The creation date to set.
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
+            justification = "Acceptable risk")
     public void setCreateDate(final Date cDate) {
         this.createDate = cDate;
     }
@@ -110,6 +116,8 @@ public class UserRole {
      *
      * @return The update date.
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP",
+            justification = "Acceptable risk")
     public Date getUpdateDate() {
         return updateDate;
     }
@@ -119,6 +127,8 @@ public class UserRole {
      *
      * @param uDate The update date to set.
      */
+    @SuppressFBWarnings(value = "EI_EXPOSE_REP2",
+            justification = "Acceptable risk")
     public void setUpdateDate(final Date uDate) {
         this.updateDate = uDate;
     }

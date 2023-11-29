@@ -19,7 +19,8 @@ A comprehensive service that can be integrated by clients to manage all aspects 
 - [System Tests](#system-tests-corresponding-to-api)
   - [API Entry Point Test](#system-level-tests-of-every-api-entry-point)
   - [Multiple Clients Test](#system-level-tests-of-multiple-clients)
-- [Style checker](#style-checker)
+- [Style Checker](#style-checker)
+- [Bug Finder](#bug-finder)
 - [API Documentation](#api-documentation)
 - [Persistent Data Storage](#persistent-data-storage-of-our-service)
 
@@ -69,20 +70,20 @@ Then, the service will run on [`http://localhost:8080/ems`](http://localhost:808
 ### Run all unit tests
 
 ```bash
-./mvnw test -Dcheckstyle.skip=true
+./mvnw test -Dcheckstyle.skip=true -Dspotbugs.skip=true
 ```
 
 If you want to generate a test coverage report, you can choose the following two commands：
 
 #### Clean old build artifacts, run tests, and verify the package is correct.
 ```bash
-./mvnw clean verify -Dcheckstyle.skip=true
+./mvnw clean verify -Dcheckstyle.skip=true -Dspotbugs.skip=true
 ```
 
 #### Clean old build artifacts, run tests, create the package, and install it to the local Maven repository.
 
 ```bash
-./mvnw clean install -Dcheckstyle.skip=true
+./mvnw clean install -Dcheckstyle.skip=true -Dspotbugs.skip=true
 ```
 
 Our unit tests have 98.6% code coverage. [Codecov report](https://app.codecov.io/gh/nehCG/ems)
@@ -145,7 +146,21 @@ We use CheckStyle with Sun Checks
 ./mvnw checkstyle:check
 ```
 
-Our checkstyle results are clean. [Checkstyle report](checkstyle_reports/checkstyle_report.png)
+Our checkstyle results are clean. [Checkstyle report](reports/checkstyle_report.png)
+
+## Bug Finder
+
+We use SpotBugs Bug Detector
+
+### Run SpotBugs
+
+```bash
+./mvnw spotbugs:check
+```
+
+Our Spotbugs results are clean. [SpotBugs report](reports/SpotBugs_report.png)
+
+To generate report, run ```./mvnw clean compile site```
 
 ## API Documentation
 ### User Management Entry Points
