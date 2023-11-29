@@ -1,5 +1,8 @@
 package com.mvcmasters.ems.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.mvcmasters.ems.base.BaseQuery;
 import com.mvcmasters.ems.base.BaseService;
 import com.mvcmasters.ems.exceptions.CustomException;
 import com.mvcmasters.ems.model.SharedDataModel;
@@ -9,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service layer for shared data related operations.
@@ -64,8 +69,24 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
      *
      * @return all shared data in the database.
      */
-    public List<SharedDataModel> getAllSharedData() {
-        return sharedDataMapper.selectAllSharedData();
+//   public List<SharedDataModel> getAllSharedData() {
+//        return sharedDataMapper.selectAllSharedData();
+//    }
+    public Map<String, Object> queryByParamsForTable(final BaseQuery baseQuery) {
+        Map<String, Object> result = new HashMap<>();
+        // Initialize the pagination mechanism using the page number and limit
+        PageHelper.startPage(baseQuery.getPage(), baseQuery.getLimit());
+
+        // Fetch the paginated results and organize them into a PageInfo structure
+        List<SharedDataModel> sharedDataList = sharedDataMapper.selectAllSharedData();
+        PageInfo<SharedDataModel> pageInfo = new PageInfo<>(sharedDataList);
+
+        // Populate the results map with relevant information for table display
+        result.put("count", pageInfo.getTotal());
+        result.put("data", pageInfo.getList());
+        result.put("code", 0); // Code 0 typically signifies a successful operation
+        result.put("msg", ""); // Placeholder for any potential messages
+        return result;
     }
 
     /**

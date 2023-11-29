@@ -1,21 +1,17 @@
 package com.mvcmasters.ems.controller;
 
 import com.mvcmasters.ems.base.BaseController;
+import com.mvcmasters.ems.base.BaseQuery;
 import com.mvcmasters.ems.model.SharedDataModel;
 import com.mvcmasters.ems.service.SharedDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controller for operations related to Shared Data.
@@ -69,14 +65,19 @@ public class SharedSpaceController extends BaseController {
      * @return ResponseEntity with all data.
      */
     @GetMapping("/all")
-    public ResponseEntity<List<SharedDataModel>> getAllSharedData() {
-        // Call the service method to retrieve all shared data entries
-        List<SharedDataModel> sharedDataList =
-                sharedDataService.getAllSharedData();
-        // Return a ResponseEntity containing the list of
-        // shared data entries and HTTP status OK
-        return new ResponseEntity<>(sharedDataList, HttpStatus.OK);
+    @ResponseBody
+    public Map<String, Object> getAllSharedData(final BaseQuery baseQuery){
+        return sharedDataService.queryByParamsForTable(baseQuery);
     }
+//    public ResponseEntity<List<SharedDataModel>> getAllSharedData() {
+//        // return new ResponseEntity<>(tableData, HttpStatus.OK);
+//        // Call the service method to retrieve all shared data entries
+//        List<SharedDataModel> sharedDataList =
+//                sharedDataService.getAllSharedData();
+//        // Return a ResponseEntity containing the list of
+//        // shared data entries and HTTP status OK
+//        return new ResponseEntity<>(sharedDataList, HttpStatus.OK);
+//    }
 
     /**
      * Update shared data by ID.
