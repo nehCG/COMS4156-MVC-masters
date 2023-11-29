@@ -15,7 +15,7 @@ A comprehensive service that can be integrated by clients to manage all aspects 
   - [4. Access the Service](#4-access-the-service)
   - [Troubleshooting](#troubleshooting)
 - [Unit Tests](#unit-tests-of-the-service)
-- [Integration Tests]
+- [Integration Tests](#unit-tests-of-the-service)
 - [System Tests](#system-tests-corresponding-to-api)
   - [API Entry Point Test](#system-level-tests-of-every-api-entry-point)
   - [Multiple Clients Test](#system-level-tests-of-multiple-clients)
@@ -88,15 +88,15 @@ If you want to generate a test coverage report, you can choose the following two
 Our unit tests have 98.6% code coverage. [Codecov report](https://app.codecov.io/gh/nehCG/ems)
 
 ## Integration Tests of the Service
-We used Big Bang Integration Testing approach. We tested the integration of multiple units 
-simultaneously, and the entire system is tested as a whole. 
+We employed the Big Bang Integration Testing approach, where the integration of multiple units are tested 
+simultaneously. Then, the entire system is tested as a whole. 
 
 ### Internal Integration Test
-For the internal integration test, we separately tested the interaction between Controller Layer and Service Layer and the interaction between Service layer and Repository layer. 
-Then, the entire service integration is tested in the External Integration Test when testing RESTFul API.
+In this phase, we focused on two key integration. The first one is the interaction between Controller Layer and Service Layer, which involved mocking the HTTP request and allow the service layer to process. The second one is the interaction between Service Layer and Repository Layer, which involved mocking the database. 
+After these targeted tests, we proceeded to the External Integration Test, where we examined the entire service through RESTful API testing.
 
 ### External Integration Test
-Our application has two external components, which are RESTFul API and the MySQL database. Thus, we tested the 
+Our services has two external components, which are RESTFul API and the MySQL database. Thus, we tested the 
 interaction between the Mapper files and the external MySQL database. Next, we used @RestTemplate
 to call each API endpoints, where the service is tested as a whole. 
 
