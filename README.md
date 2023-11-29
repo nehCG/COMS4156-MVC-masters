@@ -15,7 +15,7 @@ A comprehensive service that can be integrated by clients to manage all aspects 
   - [4. Access the Service](#4-access-the-service)
   - [Troubleshooting](#troubleshooting)
 - [Unit Tests](#unit-tests-of-the-service)
-- [Integration Tests](#unit-tests-of-the-service)
+- [Integration Tests](#integration-tests-of-the-service)
 - [System Tests](#system-tests-corresponding-to-api)
   - [API Entry Point Test](#system-level-tests-of-every-api-entry-point)
   - [Multiple Clients Test](#system-level-tests-of-multiple-clients)
