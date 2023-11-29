@@ -354,4 +354,4 @@ with the persistent data layer. Our meticulous testing approach ensures that our
 requests as expected but also effectively manages the underlying data in a reliable and consistent manner.
 
 ## End to End Testing Checklist
-Please see details in [View Screenshot](/E2E-Testing-Checklist.md)
+Please see details in [E2E Testing Checklist](/E2E-Testing-Checklist.md)
