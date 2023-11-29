@@ -22,7 +22,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
-## Build locally settings
+### Build locally settings
 #server:
 #  port: 8080
 #  servlet:
