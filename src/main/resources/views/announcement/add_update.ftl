@@ -21,14 +21,18 @@
                 </div>
             </div>
             <div class="layui-form-item layui-row layui-col-xs12">
-                <label class="layui-form-label">Uid</label>
-                <div class="layui-input-block">
-                    <input type="text" class="layui-input uid"
-                           lay-verify="uid" name="uid" value="${(sharedDataInfo.uid)!}"
-                           id="uid"
-                           placeholder="Please enter uid">
-                </div>
+                <input type="hidden" name="uid" id="uid" value="${(sharedDataInfo.uid)!}" />
             </div>
+
+            <#--            <div class="layui-form-item layui-row layui-col-xs12">-->
+<#--                <label class="layui-form-label">Uid</label>-->
+<#--                <div class="layui-input-block">-->
+<#--                    <input type="hidden" class="layui-input uid"-->
+<#--                           lay-verify="uid" name="uid" value="${(sharedDataInfo.uid)!}"-->
+<#--                           id="uid"-->
+<#--                           placeholder="Please enter uid">-->
+<#--                </div>-->
+<#--            </div>-->
 
 <#--            <div class="layui-form-item layui-row layui-col-xs12">-->
 <#--                <label class="layui-form-label">Phone</label>-->

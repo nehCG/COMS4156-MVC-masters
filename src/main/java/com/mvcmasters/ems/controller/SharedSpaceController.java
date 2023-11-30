@@ -91,15 +91,17 @@ public class SharedSpaceController extends BaseController {
      * @return ResponseEntity with message.
      */
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateSharedData(
+    @ResponseBody
+    public ResultInfo updateSharedData(
             @PathVariable final Integer id,
             @RequestBody final SharedDataModel sharedData) {
         // Call the service method to update the shared data by ID
         sharedDataService.updateSharedData(id, sharedData);
 
         // Return a ResponseEntity with a success message and HTTP status OK
-        return new ResponseEntity<>(
-                "Shared data updated successfully!", HttpStatus.OK);
+//        return new ResponseEntity<>(
+//                "Shared data updated successfully!", HttpStatus.OK);
+        return success("Announcement updated successfully!");
     }
 
     /**

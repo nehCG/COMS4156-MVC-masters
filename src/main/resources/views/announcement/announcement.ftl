@@ -34,10 +34,10 @@
             <i class="layui-icon">&#xe608;</i>
             Add Announcement
         </a>
-        <a class="layui-btn layui-btn-danger delAnnouncement_btn" lay-event="del">
-            <i class="layui-icon">&#xe640;</i>
-            Delete Announcement
-        </a>
+<#--        <a class="layui-btn layui-btn-danger delAnnouncement_btn" lay-event="del">-->
+<#--            <i class="layui-icon">&#xe640;</i>-->
+<#--            Delete Announcement-->
+<#--        </a>-->
     </div>
 </script>
 
