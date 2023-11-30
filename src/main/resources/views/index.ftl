@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Login - ems</title>
+    <title>Login - Star Preschool</title>
     <#include "common.ftl">
     <link rel="stylesheet" href="${ctx}/css/index.css" media="all">
 </head>
@@ -13,7 +13,7 @@
             <div class="layui-form login-form">
                 <form class="layui-form" action="">
                     <div class="layui-form-item logo-title">
-                        <h1>EMS</h1>
+                        <h1>Star Preschool</h1>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-icon layui-icon-username" for="username"></label>

@@ -23,9 +23,11 @@ CREATE TABLE `t_user`  (
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES (1, 'admin', '4QrcOUm6Wau+VuBX8g+IPg==', 'admin', 'admin@ems.com', '1111111111', 1, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
-INSERT INTO `t_user` VALUES (2, 'testManager', '4QrcOUm6Wau+VuBX8g+IPg==', 'manager', 'manager@ems.com', '1111111111', 1, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
-INSERT INTO `t_user` VALUES (3, 'testStaff', '4QrcOUm6Wau+VuBX8g+IPg==', 'staff', 'staff@ems.com', '1111111111', 1, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
+INSERT INTO `t_user` VALUES (1, 'admin', '4QrcOUm6Wau+VuBX8g+IPg==', 'Admin', 'admin@starpreschool.com', '000000000', 1, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
+INSERT INTO `t_user` VALUES (2, 'director', '4QrcOUm6Wau+VuBX8g+IPg==', 'Education Director', 'director@starpreschool.com', '9375902750', 1, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
+INSERT INTO `t_user` VALUES (3, 'leader', '4QrcOUm6Wau+VuBX8g+IPg==', 'Lead Teacher', 'leader@starpreschool.com', '4567218763', 1, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
+INSERT INTO `t_user` VALUES (4, 'assistant', '4QrcOUm6Wau+VuBX8g+IPg==', 'Assistant Teacher', 'staff@starpreschool.com', '2315738295', 1, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
+INSERT INTO `t_user` VALUES (5, 'TA', '4QrcOUm6Wau+VuBX8g+IPg==', 'Teaching Assistant', 'TA@starpreschool.com', '5343859012', 1, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
 
 
 -- ----------------------------
@@ -68,8 +70,10 @@ CREATE TABLE `t_role`  (
 -- Records of t_role
 -- ----------------------------
 INSERT INTO `t_role` VALUES (1, 'admin', 'admin', '2023-11-13 00:00:00', '2023-11-13 00:00:00', 1);
-INSERT INTO `t_role` VALUES (2, 'manager', 'manager', '2023-11-13 00:00:00', '2023-11-13 00:00:00', 1);
-INSERT INTO `t_role` VALUES (3, 'staff', 'staff', '2023-11-13 00:00:00', '2023-11-13 00:00:00', 1);
+INSERT INTO `t_role` VALUES (2, 'director', 'director', '2023-11-13 00:00:00', '2023-11-13 00:00:00', 1);
+INSERT INTO `t_role` VALUES (3, 'leader', 'leader', '2023-11-13 00:00:00', '2023-11-13 00:00:00', 1);
+INSERT INTO `t_role` VALUES (4, 'staff', 'staff', '2023-11-13 00:00:00', '2023-11-13 00:00:00', 1);
+INSERT INTO `t_role` VALUES (5, 'TA', 'TA', '2023-11-13 00:00:00', '2023-11-13 00:00:00', 1);
 
 
 -- ----------------------------
@@ -91,6 +95,8 @@ CREATE TABLE `t_user_role`  (
 INSERT INTO `t_user_role` VALUES (1, 1, 1, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
 INSERT INTO `t_user_role` VALUES (2, 2, 2, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
 INSERT INTO `t_user_role` VALUES (3, 3, 3, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
+INSERT INTO `t_user_role` VALUES (4, 4, 4, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
+INSERT INTO `t_user_role` VALUES (5, 5, 5, '2023-11-13 00:00:00', '2023-11-13 00:00:00');
 
 
 -- ----------------------------
@@ -132,6 +138,18 @@ INSERT INTO `t_module` VALUES (13, 'Add', '', NULL, 8, NULL, 2, '202001', NULL, 
 INSERT INTO `t_module` VALUES (14, 'Search', '', NULL, 8, NULL, 2, '202002', NULL, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
 INSERT INTO `t_module` VALUES (15, 'Update', '', NULL, 8, NULL, 2, '202003', NULL, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
 INSERT INTO `t_module` VALUES (16, 'Delete', '', NULL, 8, NULL, 2, '202004', NULL, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_module` VALUES (17, 'Class One', '', '#', -1, NULL, 0, '30', 1, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_module` VALUES (18, 'Discussion Board', '', '#', 17, NULL, 0, '3010', 1, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_module` VALUES (19, 'Activities', '', '#', 17, NULL, 0, '3020', 1, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_module` VALUES (20, 'Class Two', '', '#', -1, NULL, 0, '40', 1, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_module` VALUES (21, 'Discussion Board', '', '#', 20, NULL, 0, '4010', 1, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_module` VALUES (22, 'Activities', '', '#', 20, NULL, 0, '4020', 1, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_module` VALUES (23, 'Class Three', '', '#', -1, NULL, 0, '50', 1, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_module` VALUES (24, 'Discussion Board', '', '#', 23, NULL, 0, '5010', 1, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_module` VALUES (25, 'Activities', '', '#', 23, NULL, 0, '5020', 1, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_module` VALUES (26, 'Playground', '', '#', -1, NULL, 0, '60', 1, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_module` VALUES (27, 'Games', '', '#', 26, NULL, 0, '6010', 1, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_module` VALUES (28, 'Activities', '', '#', 26, NULL, 0, '6020', 1, 1, '2023-11-24 00:00:00', '2023-11-24 00:00:00');
 
 
 -- ----------------------------
@@ -167,3 +185,15 @@ INSERT INTO `t_permission` VALUES (13, 1, 13, '202001', '2023-11-24 00:00:00', '
 INSERT INTO `t_permission` VALUES (14, 1, 14, '202002', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
 INSERT INTO `t_permission` VALUES (15, 1, 15, '202003', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
 INSERT INTO `t_permission` VALUES (16, 1, 16, '202004', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_permission` VALUES (17, 1, 17, '30', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_permission` VALUES (18, 1, 18, '3010', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_permission` VALUES (19, 1, 19, '3020', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_permission` VALUES (20, 1, 20, '40', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_permission` VALUES (21, 1, 21, '4010', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_permission` VALUES (22, 1, 22, '4020', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_permission` VALUES (23, 1, 23, '50', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_permission` VALUES (24, 1, 24, '5010', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_permission` VALUES (25, 1, 25, '5020', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_permission` VALUES (26, 1, 26, '60', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_permission` VALUES (27, 1, 27, '6010', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
+INSERT INTO `t_permission` VALUES (28, 1, 28, '6020', '2023-11-24 00:00:00', '2023-11-24 00:00:00');
