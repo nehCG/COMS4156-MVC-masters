@@ -151,10 +151,10 @@ Please see details in [E2E Testing Checklist](/E2E-Testing-Checklist.md)
 To ensure robust performance under high load, we used Apache JMeter for performance testing on key endpoints.
 
 Our focus was on scenarios likely to experience heavy traffic:
-- Concurrent User Logins: Tested the system's response to 100 simultaneous user logins
-  [View Screenshot](JMeter_tests/Login 100 Concurrent Users.png)
+- Concurrent User Logins: Tested the system's response to 100 simultaneous user logins 
+[View Screenshot](JMeter_tests/Login 100 Concurrent Users.png)
 - Bulk Announcement Posting: Assessed system stability with 100 announcements posted concurrently
-  [View Screenshot](JMeter_tests/Add 100 Concurrent Announcements.png)
+[View Screenshot](JMeter_tests/Add 100 Concurrent Announcements.png)
 
 Alongside Apache JMeter tests, we conducted real-world scenario tests to validate our system's performance
 and responsiveness:
