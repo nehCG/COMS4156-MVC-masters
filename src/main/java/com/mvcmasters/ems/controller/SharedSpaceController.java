@@ -37,7 +37,7 @@ public class SharedSpaceController extends BaseController {
      */
     @PostMapping("/post")
     @ResponseBody
-    public ResultInfo addSharedData(final SharedDataModel sharedData) {
+    public ResultInfo addSharedData(@RequestBody final SharedDataModel sharedData) {
         // Call the service method to add the shared data
         sharedDataService.addSharedData(sharedData);
         // Return a ResponseEntity with a success message and HTTP status OK
@@ -109,14 +109,14 @@ public class SharedSpaceController extends BaseController {
      * @return ResponseEntity with message.
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteSharedDataById(
+    @ResponseBody
+    public ResultInfo deleteSharedDataById(
             @PathVariable final Integer id) {
         // Call the service method to delete the shared data by ID
         sharedDataService.deleteSharedDataById(id);
 
         // Return a ResponseEntity with a success message and HTTP status OK
-        return new ResponseEntity<>(
-                "Shared data deleted successfully!", HttpStatus.OK);
+        return success("Announcement deleted successfully!");
     }
 
     /**

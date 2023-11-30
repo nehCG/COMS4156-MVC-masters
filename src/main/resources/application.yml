@@ -33,8 +33,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/ems
-    username: ${env.MYSQL_USERNAME}
-    password: ${env.MYSQL_PASSWORD}
+    username: root #${env.MYSQL_USERNAME}
+    password: dbuserdbuser #${env.MYSQL_PASSWORD}
 
   freemarker:
     suffix: .ftl

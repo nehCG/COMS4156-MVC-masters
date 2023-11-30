@@ -1,13 +1,19 @@
-layui.use(['table', 'layer'], function() {
+layui.use(['table', 'layer','jquery', 'jquery_cookie'], function() {
     var layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery,
-        table = layui.table;
-
+        table = layui.table,
+        cookie = layui.jquery_cookie($);
+    // Function to get logged-in user's information
+    function getLoggedInUserName() {
+        return $.cookie('userName');
+    }
+    var loggedInUserName = getLoggedInUserName();
     // Initialize userMap to hold userID: userName pairs
     var userMap = {};
     $.ajax({
         url: ctx+'/user/list', // Replace with your actual endpoint
         type: 'GET',
+        async : false,
         success: function(response) {
             var users = response.data;
             for (var i = 0; i < users.length; i++) {
@@ -39,6 +45,15 @@ layui.use(['table', 'layer'], function() {
             {field: 'subject', title: 'Subject', align: 'center'},
             {field: 'content', title: 'Content', align: 'center'},
             {field: 'modifiedTime', title: 'Modified Time', align: 'center'},
+            {title:'Operate',templet: function(d) {
+                    // Check if the announcement's user ID matches the logged-in user's ID
+                    if (userMap[d.uid] === loggedInUserName) {
+                        return '<a class="layui-btn layui-btn-xs" lay-event="edit">Edit</a>' +
+                            '<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">Delete</a>';
+                    } else {
+                        return 'View Only'; // No buttons if user IDs don't match
+                    }
+                }, fixed: 'right', align:'center', minWidth:150}
         ]]
     });
 
@@ -53,8 +68,23 @@ layui.use(['table', 'layer'], function() {
     });
 
     // Function to delete announcements
-    function deleteAnnouncements(announcementData) {
-        // Implementation similar to deleteUsers in your user.js
+    function deleteAnnouncement(id) {
+        layer.confirm('Confirm to delete?',{icon:3, title:"Announcement Management"}, function (index) {
+            layer.close(index);
+
+            $.ajax({
+                type:"delete",
+                url:ctx + "/announcement/delete/"+id,
+                success:function (result) {
+                    if (result.code == 200) {
+                        layer.msg("Deleted!",{icon:6});
+                        tableIns.reload();
+                    } else {
+                        layer.msg(result.msg, {icon:5});
+                    }
+                }
+            });
+        });
     }
 
     // Function to handle add or update announcement dialog
@@ -87,7 +117,7 @@ layui.use(['table', 'layer'], function() {
     });
 
     // Function to delete a single announcement
-    function deleteAnnouncement(id) {
+    function deleteAnnouncements(id) {
         // Implementation similar to deleteUser in your user.js
     }
 });
