@@ -1,8 +1,10 @@
 package com.mvcmasters.ems.controller;
 
+import com.mvcmasters.ems.base.BaseQuery;
 import com.mvcmasters.ems.base.ResultInfo;
 import com.mvcmasters.ems.service.SharedDataService;
 import com.mvcmasters.ems.model.SharedDataModel;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,14 +13,16 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.mock;
 
 /**
  * This class represents a test for the SharedSpaceController class.
@@ -55,11 +59,9 @@ public class SharedSpaceControllerTest {
 
         ResultInfo responseEntity =
                 sharedSpaceController.addSharedData(sharedData);
-        ResultInfo expectedResponse = new ResultInfo();
-        expectedResponse.setMsg("Announcement added successfully!");
 
-
-        assertEquals(expectedResponse, responseEntity);
+        assertEquals("Announcement added successfully!",
+                responseEntity.getMsg());
         verify(sharedDataService, times(1)).addSharedData(sharedData);
     }
 
@@ -83,18 +85,18 @@ public class SharedSpaceControllerTest {
     /**
      * Test the getAllSharedData method.
      */
-//    @Test
-//    public void testGetAllSharedData() {
-//        List<SharedDataModel> sharedDataList = new ArrayList<>();
-//        when(sharedDataService.getAllSharedData()).thenReturn(sharedDataList);
-//        ResponseEntity<List<SharedDataModel>> expectedResponse =
-//                new ResponseEntity<>(sharedDataList, HttpStatus.OK);
-//        ResponseEntity<List<SharedDataModel>> responseEntity =
-//                sharedSpaceController.getAllSharedData();
-//
-//        assertEquals(expectedResponse, responseEntity);
-//        verify(sharedDataService, times(1)).getAllSharedData();
-//    }
+    @Test
+    public void testGetAllSharedData() {
+        BaseQuery query = new BaseQuery();
+        Map<String, Object> expectedResult = new HashMap<>();
+        when(sharedDataService.queryByParamsForTable(query)).
+                thenReturn(expectedResult);
+        Map<String, Object> response =
+                sharedSpaceController.getAllSharedData(query);
+
+        assertEquals(expectedResult, response);
+        verify(sharedDataService, times(1)).queryByParamsForTable(query);
+    }
 
     /**
      * Test the updateSharedData method.
@@ -105,13 +107,11 @@ public class SharedSpaceControllerTest {
         SharedDataModel sharedData = new SharedDataModel();
         doNothing().when(sharedDataService).updateSharedData(id, sharedData);
 
-        ResponseEntity<String> expectedResponse =
-                new ResponseEntity<>(
-                        "Shared data updated successfully!", HttpStatus.OK);
-        ResponseEntity<String> responseEntity =
+        ResultInfo responseEntity =
                 sharedSpaceController.updateSharedData(id, sharedData);
 
-        assertEquals(expectedResponse, responseEntity);
+        assertEquals("Announcement updated successfully!",
+                responseEntity.getMsg());
         verify(sharedDataService, times(1)).updateSharedData(id, sharedData);
     }
 
@@ -123,13 +123,11 @@ public class SharedSpaceControllerTest {
         Integer id = 1;
         doNothing().when(sharedDataService).deleteSharedDataById(id);
 
-        ResponseEntity<String> expectedResponse =
-                new ResponseEntity<>(
-                        "Shared data deleted successfully!", HttpStatus.OK);
-        ResponseEntity<String> responseEntity =
+        ResultInfo responseEntity =
                 sharedSpaceController.deleteSharedDataById(id);
 
-        assertEquals(expectedResponse, responseEntity);
+        assertEquals("Announcement deleted successfully!",
+                responseEntity.getMsg());
         verify(sharedDataService, times(1)).deleteSharedDataById(id);
     }
 
@@ -140,5 +138,27 @@ public class SharedSpaceControllerTest {
     public void testIndex() {
         String viewName = sharedSpaceController.index();
         assertEquals("announcement/announcement", viewName);
+    }
+
+    /**
+     * Test the toAddOrUpdateUserPage method.
+     */
+    @Test
+    public void testToAddOrUpdateUserPage() {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        Integer id = 1;
+        SharedDataModel sharedData = new SharedDataModel();
+        when(sharedDataService.getSharedDataById(id)).thenReturn(sharedData);
+
+        String viewName = sharedSpaceController.
+                toAddOrUpdateUserPage(id, request);
+        assertEquals("announcement/add_update", viewName);
+
+        // Test the scenario where id is null
+        viewName = sharedSpaceController.toAddOrUpdateUserPage(null, request);
+        assertEquals("announcement/add_update", viewName);
+        // Ensure sharedDataService is not called when id is null
+        verify(sharedDataService, times(0)).selectByPrimaryKey(null);
+
     }
 }

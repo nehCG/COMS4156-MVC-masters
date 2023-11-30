@@ -71,20 +71,32 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
      */
    public List<SharedDataModel> getAllSharedData() {
         return sharedDataMapper.selectAllSharedData();
-    }
-    public Map<String, Object> queryByParamsForTable(final BaseQuery baseQuery) {
+   }
+
+   /**
+    * Handles shared data query.
+    *
+    * @param baseQuery the query of the data.
+    * @return a map of query results
+    */
+   public Map<String, Object> queryByParamsForTable(final BaseQuery baseQuery) {
         Map<String, Object> result = new HashMap<>();
         // Initialize the pagination mechanism using the page number and limit
         PageHelper.startPage(baseQuery.getPage(), baseQuery.getLimit());
 
-        // Fetch the paginated results and organize them into a PageInfo structure
-        List<SharedDataModel> sharedDataList = sharedDataMapper.selectAllSharedData();
+        // Fetch the paginated results
+       // and organize them into a PageInfo structure
+        List<SharedDataModel> sharedDataList = sharedDataMapper.
+                selectAllSharedData();
         PageInfo<SharedDataModel> pageInfo = new PageInfo<>(sharedDataList);
+
+        System.out.println("hereee");
 
         // Populate the results map with relevant information for table display
         result.put("count", pageInfo.getTotal());
         result.put("data", pageInfo.getList());
-        result.put("code", 0); // Code 0 typically signifies a successful operation
+        // Code 0 typically signifies a successful operation
+        result.put("code", 0);
         result.put("msg", ""); // Placeholder for any potential messages
         return result;
     }
