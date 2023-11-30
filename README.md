@@ -101,6 +101,8 @@ Our services has two external components, which are RESTFul API and the MySQL da
 interaction between the Mapper files and the external MySQL database. Next, we used @RestTemplate
 to call each API endpoints, where the service is tested as a whole. 
 
+Both Internal and External Integration Tests are located in src/test/java, which will be run automatically during CI. The folder containing external integration tests is excluded for the 'mvn test' build during CI.  
+
 ## System Tests Corresponding to API
 ### System-level Tests of every API Entry Point
 Please see details on below [API Documentation](#api-documentation) section.
@@ -163,6 +165,23 @@ Our Spotbugs results are clean. [SpotBugs report](reports/SpotBugs_report.png)
 To generate report, run ```./mvnw clean compile site```
 
 ## API Documentation
+
+### FrontEnd Entry Points
+
+Base URL: http://localhost:8080/ems
+
+#### GET: `/index`
+- Description: Display the login page.
+  - Frontend login page: [View Screenshot](FrontEndScreenShots/loginPage.png)
+
+#### GET: `/main`
+- Description: Display the main page of the service.
+  - Frontend login page: [View Screenshot](FrontEndScreenShots/mainPage.png)
+
+#### GET: `/welcome`
+- Description: Display the welcome pag.
+  - Frontend login page: [View Screenshot](FrontEndScreenShots/welcomePage.png)
+
 ### User Management Entry Points
 
 Base URL: `http://localhost:8080/ems/user`
@@ -281,6 +300,139 @@ Base URL: `http://localhost:8080/ems/user`
 - **Postman API tests**:
   - Get all users success: [View Screenshot](postman_API_tests/user/list/Get_all_user.png)
 
+#### GET `/index`
+
+- Description: Direct to the main user page.
+- Response: A string representing the path the main user management page.
+- Status Codes:
+  - 200 OK: Request successful.
+
+#### GET `/toPasswordPage`
+
+- Description: Direct to the password management page.
+- Response: A string representing the path to the password management page.
+- Status Codes:
+  - 200 OK: Request successful.
+
+#### GET `/toAddOrUpdateUserPage`
+
+- Description: Direct to the page for adding or updating a user.
+- Request Params:
+  - `roleId` (Integer): The ID of the user to be updated, or null if adding a new user. *Optional*
+- Response: A string representing the path to the view for adding a new user or updating an existing one.
+- Status Codes:
+  - 200 OK: Request successful.
+
+### Role Management Entry Points
+
+Base URL: `http://localhost:8080/ems/role`
+
+#### GET `/queryAllRoles`
+
+- Description: Retrieve all roles associated with a given user ID.
+- Request Params:
+  - `roleId` (Integer): The role ID used for querying roles. *Default: 1*
+- Response: A list of maps, each representing a role and its information.
+- Status Codes:
+  - 200 OK: Request successful.
+
+#### GET `/list`
+
+- Description: Retrieve a list of roles based on provided parameters.
+- Request Params:
+  - `roleName` (Integer): The name of the role being queried. *Default: 1*
+- Response: Map with user information.
+- Status Codes:
+  - 200 OK: Request successful.
+
+#### POST `/add`
+
+- Description: Add a new role into the system.
+- Request Params:
+  - `roleName`(String): The name of the role.
+- Request Body: `Role` object.
+- Response: Success message for a valid request.
+- Status Codes:
+  - 200 OK: Role added successfully.
+  - 400 BAD REQUEST: If input parameters are invalid or missing, or if the rolename already exists.
+  - 300 CUSTOM CODE: Represents business logic errors.
+
+#### POST `/update`
+
+- Description: Update an existing role information in the system.
+- Request Params:
+  - `roleId`(Integer): The ID of the role.
+  - `roleName`(String): The name of the role.
+- Request Body: `Role` object.
+- Response: Success message for a valid request.
+- Status Codes:
+  - 200 OK: Role updated successfully.
+  - 400 BAD REQUEST: If the `Role` object is invalid, the roleID does not exist, or if the updated rolename already exists.
+  - 300 CUSTOM CODE: Represents business logic errors.
+
+#### POST `/delete`
+
+- Description: Delete a role from the system.
+- Request Params:
+  - `roleId`(Integer): The ID of the role.
+- Request Body: The role id.
+- Response: Success message for a valid request.
+- Status Codes:
+  - 200 OK: Role deleted successfully.
+  - 400 BAD REQUEST: If the `roleId` is empty or if the `roleId` does not correspond to existing users.
+  - 300 CUSTOM CODE: Represents business logic errors.
+
+#### POST `/addGrant`
+
+- Description: Grant permissions to a specific role
+- Request Params:
+  - `roleId`(Integer): The ID of the role.
+  - `mId`(Integer):  ModuleID that is to be granted to the role.
+- Request Body: The roleId and Array of module `mId`s.
+- Response: Success message for a valid request.
+- Status Codes:
+  - 200 OK: Role deleted successfully.
+  - 400 BAD REQUEST: If the `roleId` is empty or if the `roleId` does not correspond to existing users.
+  - 300 CUSTOM CODE: Represents business logic errors.
+
+#### GET `/index`
+
+- Description: Direct to the role index page.
+- Response: A string representing the path to the role index view.
+- Status Codes:
+  - 200 OK: Request successful.
+
+#### GET `/toAddOrUpdateRolePage`
+
+- Description: Direct to a page for adding or updating a role.
+- Request Params:
+  - `roleId`(Integer): The ID of the role to edit, or null for adding a new role.
+- Response: A string representing the path to the role index view.
+- Status Codes:
+  - 200 OK: Request successful.
+
+### Module Operations Entry Points
+
+Base URL: `http://localhost:8080/ems/module`
+
+#### GET `/queryAllModules`
+
+- Description: Retrieve all modules based on the given role ID.
+- Request Params:
+  - `roleId` (Integer): The role ID used for querying modules. *Default: 1*
+- Response: List of TreeModel representing Module Information.
+- Status Codes:
+  - 200 OK: Request successful.
+
+#### GET `/toAddGrantPage`
+
+- Description: Directs the user to the page for adding grants to a role.
+- Request Params:
+  - `roleId` (Integer): The ID of the role to add grants to. *Default: 1*
+- Response: The path to the "grant" view under the "role" directory.
+- Status Codes:
+  - 200 OK: Request successful.
+
 ### Shared Space Entry Points
 
 Base URL: `http://localhost:8080/ems/announcement`
@@ -348,6 +500,13 @@ Base URL: `http://localhost:8080/ems/announcement`
 - **Postman API tests**:
   - Delete with valid ID: [View Screenshot](postman_API_tests/announcement/delete/Delete_ann_by_id_success.png)
   - Proof of delete with valid ID success: [View Screenshot](postman_API_tests/announcement/delete/Delete_ann_proof.png)
+
+#### GET `/index`
+
+- Description: Direct to the shared space index page.
+- Response: A string representing the path to the shared space index view.
+- Status Codes:
+  - 200 OK: Request successful.
 
 ## Persistent Data Storage of our Service
 
