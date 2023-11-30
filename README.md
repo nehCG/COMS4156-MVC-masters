@@ -25,6 +25,7 @@ A comprehensive service that can be integrated by clients to manage all aspects 
 - [API Documentation](#api-documentation)
 - [Persistent Data Storage](#persistent-data-storage-of-our-service)
 - [Change In API Implementation From Proposal](#change-in-api-implementation-from-proposal)
+- [About Our Client App](#about-our-client-app)
 
 ## Build and Run the Service using Docker
 
@@ -551,3 +552,36 @@ We decided to make the following changes to our API implementation, which are di
    Once again, our entity management system prioritizes the core functionalities related to entities (e.g., CRUD of entities, roles).
    And there various multi-language translation API provided by major technology companies, 
    such as Google Cloud Translation API, Microsoft Translator API, and DeepL API.
+
+
+## About Our Client App
+
+Our client app is an application tailored for pre-K school internal management. 
+It provides a centralized platform for administrators, teachers, and other school roles to collaborate and manage various aspects of the pre-K education experience.
+Key Features:
+
+- Announcement board: the announcement board uses CRUD APIs from /announcement in our service.
+Pre-K school teachers and administrators can post announcements, which will be visible to all Pre-K school employees.
+The announcement board serves as an effective notification platform.
+
+
+- Role management: the authorization of each role can be customized.
+This functionality uses /role/list, /role/toAddOrUpdateRolePage, /role/delete, and /module/toAddGrantPage.
+The administrators or other authorized roles are able to manage the authorization of each role in the Pre-K school.
+They are also able to create/delete/edit each role. 
+This role management functionality helps to manage the scope of roles within Pre-K school.
+
+
+- User management: users can be added, edited, or removed by authorized entities. 
+The user management uses CRUD APIs from /user.
+The administrators or other authorized roles are able to manage all employees within the Pre-K school.
+This user management functionality provides the flexibility for adding new teachers or employees.
+
+
+- User setting: users are able to update their password. 
+This functionality uses /updatePwd from /user in our service
+After login, individual can change the default password to their choice.
+This user setting helps Pre-K school individual to customize their password and provides data security.
+
+The users of our app can have comprehensive role management and user management functionalities, 
+while before they may only can communicate using their internal app.
