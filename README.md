@@ -19,10 +19,13 @@ A comprehensive service that can be integrated by clients to manage all aspects 
 - [System Tests](#system-tests-corresponding-to-api)
   - [API Entry Point Test](#system-level-tests-of-every-api-entry-point)
   - [Multiple Clients Test](#system-level-tests-of-multiple-clients)
+- [End-to-End Testing Checklist](#end-to-end-testing-checklist)
 - [Style Checker](#style-checker)
 - [Bug Finder](#bug-finder)
 - [API Documentation](#api-documentation)
 - [Persistent Data Storage](#persistent-data-storage-of-our-service)
+- [Change In API Implementation From Proposal](#change-in-api-implementation-from-proposal)
+- [About Our Client App](#about-our-client-app)
 
 ## Build and Run the Service using Docker
 
@@ -101,6 +104,8 @@ Our services has two external components, which are RESTFul API and the MySQL da
 interaction between the Mapper files and the external MySQL database. Next, we used @RestTemplate
 to call each API endpoints, where the service is tested as a whole. 
 
+Both Internal and External Integration Tests are located in src/test/java, which will be run automatically during CI. The folder containing external integration tests is excluded for the 'mvn test' build during CI.  
+
 ## System Tests Corresponding to API
 ### System-level Tests of every API Entry Point
 Please see details on below [API Documentation](#api-documentation) section.
@@ -136,6 +141,9 @@ We performed several API functional and performance tests that may face multiple
   - Result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/performance_test/GetAllAnns_performance_test_result.png)
 
 
+## End-to-End Testing Checklist
+Please see details in [E2E Testing Checklist](/E2E-Testing-Checklist.md)
+
 ## Style Checker
 
 We use CheckStyle with Sun Checks
@@ -163,6 +171,23 @@ Our Spotbugs results are clean. [SpotBugs report](reports/SpotBugs_report.png)
 To generate report, run ```./mvnw clean compile site```
 
 ## API Documentation
+
+### FrontEnd Entry Points
+
+Base URL: http://localhost:8080/ems
+
+#### GET: `/index`
+- Description: Display the login page.
+  - Frontend login page: [View Screenshot](FrontEndScreenShots/loginPage.png)
+
+#### GET: `/main`
+- Description: Display the main page of the service.
+  - Frontend login page: [View Screenshot](FrontEndScreenShots/mainPage.png)
+
+#### GET: `/welcome`
+- Description: Display the welcome pag.
+  - Frontend login page: [View Screenshot](FrontEndScreenShots/welcomePage.png)
+
 ### User Management Entry Points
 
 Base URL: `http://localhost:8080/ems/user`
@@ -281,6 +306,139 @@ Base URL: `http://localhost:8080/ems/user`
 - **Postman API tests**:
   - Get all users success: [View Screenshot](postman_API_tests/user/list/Get_all_user.png)
 
+#### GET `/index`
+
+- Description: Direct to the main user page.
+- Response: A string representing the path the main user management page.
+- Status Codes:
+  - 200 OK: Request successful.
+
+#### GET `/toPasswordPage`
+
+- Description: Direct to the password management page.
+- Response: A string representing the path to the password management page.
+- Status Codes:
+  - 200 OK: Request successful.
+
+#### GET `/toAddOrUpdateUserPage`
+
+- Description: Direct to the page for adding or updating a user.
+- Request Params:
+  - `roleId` (Integer): The ID of the user to be updated, or null if adding a new user. *Optional*
+- Response: A string representing the path to the view for adding a new user or updating an existing one.
+- Status Codes:
+  - 200 OK: Request successful.
+
+### Role Management Entry Points
+
+Base URL: `http://localhost:8080/ems/role`
+
+#### GET `/queryAllRoles`
+
+- Description: Retrieve all roles associated with a given user ID.
+- Request Params:
+  - `roleId` (Integer): The role ID used for querying roles. *Default: 1*
+- Response: A list of maps, each representing a role and its information.
+- Status Codes:
+  - 200 OK: Request successful.
+
+#### GET `/list`
+
+- Description: Retrieve a list of roles based on provided parameters.
+- Request Params:
+  - `roleName` (Integer): The name of the role being queried. *Default: 1*
+- Response: Map with user information.
+- Status Codes:
+  - 200 OK: Request successful.
+
+#### POST `/add`
+
+- Description: Add a new role into the system.
+- Request Params:
+  - `roleName`(String): The name of the role.
+- Request Body: `Role` object.
+- Response: Success message for a valid request.
+- Status Codes:
+  - 200 OK: Role added successfully.
+  - 400 BAD REQUEST: If input parameters are invalid or missing, or if the rolename already exists.
+  - 300 CUSTOM CODE: Represents business logic errors.
+
+#### POST `/update`
+
+- Description: Update an existing role information in the system.
+- Request Params:
+  - `roleId`(Integer): The ID of the role.
+  - `roleName`(String): The name of the role.
+- Request Body: `Role` object.
+- Response: Success message for a valid request.
+- Status Codes:
+  - 200 OK: Role updated successfully.
+  - 400 BAD REQUEST: If the `Role` object is invalid, the roleID does not exist, or if the updated rolename already exists.
+  - 300 CUSTOM CODE: Represents business logic errors.
+
+#### POST `/delete`
+
+- Description: Delete a role from the system.
+- Request Params:
+  - `roleId`(Integer): The ID of the role.
+- Request Body: The role id.
+- Response: Success message for a valid request.
+- Status Codes:
+  - 200 OK: Role deleted successfully.
+  - 400 BAD REQUEST: If the `roleId` is empty or if the `roleId` does not correspond to existing users.
+  - 300 CUSTOM CODE: Represents business logic errors.
+
+#### POST `/addGrant`
+
+- Description: Grant permissions to a specific role
+- Request Params:
+  - `roleId`(Integer): The ID of the role.
+  - `mId`(Integer):  ModuleID that is to be granted to the role.
+- Request Body: The roleId and Array of module `mId`s.
+- Response: Success message for a valid request.
+- Status Codes:
+  - 200 OK: Role deleted successfully.
+  - 400 BAD REQUEST: If the `roleId` is empty or if the `roleId` does not correspond to existing users.
+  - 300 CUSTOM CODE: Represents business logic errors.
+
+#### GET `/index`
+
+- Description: Direct to the role index page.
+- Response: A string representing the path to the role index view.
+- Status Codes:
+  - 200 OK: Request successful.
+
+#### GET `/toAddOrUpdateRolePage`
+
+- Description: Direct to a page for adding or updating a role.
+- Request Params:
+  - `roleId`(Integer): The ID of the role to edit, or null for adding a new role.
+- Response: A string representing the path to the role index view.
+- Status Codes:
+  - 200 OK: Request successful.
+
+### Module Operations Entry Points
+
+Base URL: `http://localhost:8080/ems/module`
+
+#### GET `/queryAllModules`
+
+- Description: Retrieve all modules based on the given role ID.
+- Request Params:
+  - `roleId` (Integer): The role ID used for querying modules. *Default: 1*
+- Response: List of TreeModel representing Module Information.
+- Status Codes:
+  - 200 OK: Request successful.
+
+#### GET `/toAddGrantPage`
+
+- Description: Directs the user to the page for adding grants to a role.
+- Request Params:
+  - `roleId` (Integer): The ID of the role to add grants to. *Default: 1*
+- Response: The path to the "grant" view under the "role" directory.
+- Status Codes:
+  - 200 OK: Request successful.
+
 ### Shared Space Entry Points
 
 Base URL: `http://localhost:8080/ems/announcement`
@@ -349,6 +507,13 @@ Base URL: `http://localhost:8080/ems/announcement`
   - Delete with valid ID: [View Screenshot](postman_API_tests/announcement/delete/Delete_ann_by_id_success.png)
   - Proof of delete with valid ID success: [View Screenshot](postman_API_tests/announcement/delete/Delete_ann_proof.png)
 
+#### GET `/index`
+
+- Description: Direct to the shared space index page.
+- Response: A string representing the path to the shared space index view.
+- Status Codes:
+  - 200 OK: Request successful.
+
 ## Persistent Data Storage of our Service
 
 Based on the provided `docker-compose.yml`, the MySQL database container is set up to ensure data persistence
@@ -367,6 +532,56 @@ the resulting database modifications unequivocally confirms the robust interacti
 with the persistent data layer. Our meticulous testing approach ensures that our application not only responds to API
 requests as expected but also effectively manages the underlying data in a reliable and consistent manner.
 
-## End to End Testing Checklist
-Please see details in [E2E Testing Checklist](/E2E-Testing-Checklist.md)
 
+## Change In API Implementation From Proposal
+
+We decided to make the following changes to our API implementation, which are different from our proposal:
+
+1. Add role management:
+   Role management allows for the definition of roles, each with specific permissions. 
+   This is crucial in an entity management system to control who can perform certain actions on entities.
+   For data protection, different roles should have different levels of access to sensitive information. 
+   Role management ensures that only authorized individuals can view or modify specific entities, contributing to data security.
+
+
+2. Remove customizable workflow:
+   Our entity management system focuses on handling and organizing data related to entities (e.g., information of the entities, roles) 
+   and we decided not to add the complexity of managing intricate workflows.
+
+3. Remove multi-language translation
+   Once again, our entity management system prioritizes the core functionalities related to entities (e.g., CRUD of entities, roles).
+   And there various multi-language translation API provided by major technology companies, 
+   such as Google Cloud Translation API, Microsoft Translator API, and DeepL API.
+
+
+## About Our Client App
+
+Our client app is an application tailored for pre-K school internal management. 
+It provides a centralized platform for administrators, teachers, and other school roles to collaborate and manage various aspects of the pre-K education experience.
+Key Features:
+
+- Announcement board: the announcement board uses CRUD APIs from /announcement in our service.
+Pre-K school teachers and administrators can post announcements, which will be visible to all Pre-K school employees.
+The announcement board serves as an effective notification platform.
+
+
+- Role management: the authorization of each role can be customized.
+This functionality uses /role/list, /role/toAddOrUpdateRolePage, /role/delete, and /module/toAddGrantPage.
+The administrators or other authorized roles are able to manage the authorization of each role in the Pre-K school.
+They are also able to create/delete/edit each role. 
+This role management functionality helps to manage the scope of roles within Pre-K school.
+
+
+- User management: users can be added, edited, or removed by authorized entities. 
+The user management uses CRUD APIs from /user.
+The administrators or other authorized roles are able to manage all employees within the Pre-K school.
+This user management functionality provides the flexibility for adding new teachers or employees.
+
+
+- User setting: users are able to update their password. 
+This functionality uses /updatePwd from /user in our service
+After login, individual can change the default password to their choice.
+This user setting helps Pre-K school individual to customize their password and provides data security.
+
+The users of our app can have comprehensive role management and user management functionalities, 
+while before they may only can communicate using their internal app.
