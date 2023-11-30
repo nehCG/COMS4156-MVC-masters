@@ -13,7 +13,6 @@ layui.use(['form', 'layer', 'formSelects'], function () {
         });
 
         var formData = data.field;
-        console.log("hereee", formData);
 
 
         var url = ctx + "/announcement/post";
@@ -21,7 +20,6 @@ layui.use(['form', 'layer', 'formSelects'], function () {
         // if ($("[name='id']").val()) {
         //     var url = ctx + "/user/update";
         // }
-
         //
         $.post(url, formData, function (result) {
             if (result.code == 200) {
@@ -41,12 +39,12 @@ layui.use(['form', 'layer', 'formSelects'], function () {
         parent.layer.close(index);
     });
 
-    var userId = $("[name='id']").val();
-    formSelects.config("selectId",{
-        type:"post",
-        searchUrl: ctx+"/role/queryAllRoles?userId="+userId,
-        keyName: 'roleName',
-        keyVal: 'id'
-    }, true);
+    // var userId = $("[name='id']").val();
+    // formSelects.config("selectId",{
+    //     type:"post",
+    //     searchUrl: ctx+"/role/queryAllRoles?userId="+userId,
+    //     keyName: 'roleName',
+    //     keyVal: 'id'
+    // }, true);
 
 });

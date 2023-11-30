@@ -44,7 +44,6 @@ layui.use(['table', 'layer'], function() {
 
     // Toolbar event handling
     table.on('toolbar(announcements)', function(data) {
-        // log("hereee", data);
         if (data.event === "add") {
             openAddOrUpdateAnnouncementDialog(data.data);
         } else if (data.event === "del") {

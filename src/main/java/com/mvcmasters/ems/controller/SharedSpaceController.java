@@ -2,6 +2,7 @@ package com.mvcmasters.ems.controller;
 
 import com.mvcmasters.ems.base.BaseController;
 import com.mvcmasters.ems.base.BaseQuery;
+import com.mvcmasters.ems.base.ResultInfo;
 import com.mvcmasters.ems.model.SharedDataModel;
 import com.mvcmasters.ems.service.SharedDataService;
 import com.mvcmasters.ems.vo.User;
@@ -35,13 +36,14 @@ public class SharedSpaceController extends BaseController {
      * @return a ResponseEntity with a success message.
      */
     @PostMapping("/post")
-    public ResponseEntity<String> addSharedData(
-            @RequestBody final SharedDataModel sharedData) {
+    @ResponseBody
+    public ResultInfo addSharedData(final SharedDataModel sharedData) {
         // Call the service method to add the shared data
         sharedDataService.addSharedData(sharedData);
         // Return a ResponseEntity with a success message and HTTP status OK
-        return new ResponseEntity<>(
-                "Shared data added successfully!", HttpStatus.OK);
+        return success("Announcement added successfully!");
+//        return new ResponseEntity<>(
+//                "Shared data added successfully!", HttpStatus.OK);
     }
 
     /**

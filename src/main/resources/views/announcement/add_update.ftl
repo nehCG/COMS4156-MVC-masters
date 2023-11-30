@@ -9,26 +9,26 @@
             <div class="layui-form-item layui-row layui-col-xs12">
                 <label class="layui-form-label">Subject</label>
                 <div class="layui-input-block">
-                    <input type="text" class="layui-input userName"
+                    <input type="text" class="layui-input subject"
                            lay-verify="required" name="subject" id="subject"  value="${(sharedDataInfo.subject)!}" placeholder="Announcement subject">
                 </div>
             </div>
             <div class="layui-form-item layui-row layui-col-xs12">
                 <label class="layui-form-label">Content</label>
                 <div class="layui-input-block">
-                    <input type="text" class="layui-input userName"
+                    <input type="text" class="layui-input content"
                            lay-verify="required" name="content" id="content" value="${(sharedDataInfo.content)!}" placeholder="Announcement content">
                 </div>
             </div>
-<#--            <div class="layui-form-item layui-row layui-col-xs12">-->
-<#--                <label class="layui-form-label">Email</label>-->
-<#--                <div class="layui-input-block">-->
-<#--                    <input type="text" class="layui-input userEmail"-->
-<#--                           lay-verify="email" name="email" value="${(userInfo.email)!}"-->
-<#--                           id="email"-->
-<#--                           placeholder="Please enter email">-->
-<#--                </div>-->
-<#--            </div>-->
+            <div class="layui-form-item layui-row layui-col-xs12">
+                <label class="layui-form-label">Uid</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input uid"
+                           lay-verify="uid" name="uid" value="${(sharedDataInfo.uid)!}"
+                           id="uid"
+                           placeholder="Please enter uid">
+                </div>
+            </div>
 
 <#--            <div class="layui-form-item layui-row layui-col-xs12">-->
 <#--                <label class="layui-form-label">Phone</label>-->

@@ -69,9 +69,9 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
      *
      * @return all shared data in the database.
      */
-//   public List<SharedDataModel> getAllSharedData() {
-//        return sharedDataMapper.selectAllSharedData();
-//    }
+   public List<SharedDataModel> getAllSharedData() {
+        return sharedDataMapper.selectAllSharedData();
+    }
     public Map<String, Object> queryByParamsForTable(final BaseQuery baseQuery) {
         Map<String, Object> result = new HashMap<>();
         // Initialize the pagination mechanism using the page number and limit
