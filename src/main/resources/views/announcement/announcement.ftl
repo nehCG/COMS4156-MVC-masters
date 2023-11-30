@@ -43,7 +43,7 @@
 
 <!-- Script template for each row in the announcement table -->
 <script id="announcementListBar" type="text/html">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">Edit</a>
+    <a class="layui-btn layui-btn-xs" id="edit" lay-event="edit">Edit</a>
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">Delete</a>
 </script>
 

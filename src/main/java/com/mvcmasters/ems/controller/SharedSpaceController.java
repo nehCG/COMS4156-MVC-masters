@@ -4,6 +4,8 @@ import com.mvcmasters.ems.base.BaseController;
 import com.mvcmasters.ems.base.BaseQuery;
 import com.mvcmasters.ems.model.SharedDataModel;
 import com.mvcmasters.ems.service.SharedDataService;
+import com.mvcmasters.ems.vo.User;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -123,5 +125,16 @@ public class SharedSpaceController extends BaseController {
     @RequestMapping("/index")
     public String index() {
         return "announcement/announcement";
+    }
+
+    @RequestMapping("toAddOrUpdateAnnouncementPage")
+    public String toAddOrUpdateUserPage(final Integer id,
+                                        final HttpServletRequest request) {
+        if (id != null) {
+            SharedDataModel sharedData = sharedDataService.getSharedDataById(id);
+            sharedData.setUid(1);
+            request.setAttribute("sharedDataInfo", sharedData);
+        }
+        return "announcement/add_update";
     }
 }

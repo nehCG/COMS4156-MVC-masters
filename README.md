@@ -15,6 +15,7 @@ A comprehensive service that can be integrated by clients to manage all aspects 
   - [4. Access the Service](#4-access-the-service)
   - [Troubleshooting](#troubleshooting)
 - [Unit Tests](#unit-tests-of-the-service)
+- [Integration Tests](#integration-tests-of-the-service)
 - [System Tests](#system-tests-corresponding-to-api)
   - [API Entry Point Test](#system-level-tests-of-every-api-entry-point)
   - [Multiple Clients Test](#system-level-tests-of-multiple-clients)
@@ -86,6 +87,19 @@ If you want to generate a test coverage report, you can choose the following two
 ```
 
 Our unit tests have 98.6% code coverage. [Codecov report](https://app.codecov.io/gh/nehCG/ems)
+
+## Integration Tests of the Service
+We employed the Big Bang Integration Testing approach, where the integration of multiple units are tested 
+simultaneously. Then, the entire system is tested as a whole. 
+
+### Internal Integration Test
+In this phase, we focused on two key integration. The first one is the interaction between Controller Layer and Service Layer, which involved mocking the HTTP request and allow the service layer to process. The second one is the interaction between Service Layer and Repository Layer, which involved mocking the database. 
+After these targeted tests, we proceeded to the External Integration Test, where we examined the entire service through RESTful API testing.
+
+### External Integration Test
+Our services has two external components, which are RESTFul API and the MySQL database. Thus, we tested the 
+interaction between the Mapper files and the external MySQL database. Next, we used @RestTemplate
+to call each API endpoints, where the service is tested as a whole. 
 
 ## System Tests Corresponding to API
 ### System-level Tests of every API Entry Point
@@ -352,3 +366,7 @@ there was a direct and verifiable reflection in the MySQL database. This consist
 the resulting database modifications unequivocally confirms the robust interaction and integration of our service layer
 with the persistent data layer. Our meticulous testing approach ensures that our application not only responds to API
 requests as expected but also effectively manages the underlying data in a reliable and consistent manner.
+
+## End to End Testing Checklist
+Please see details in [E2E Testing Checklist](/E2E-Testing-Checklist.md)
+
