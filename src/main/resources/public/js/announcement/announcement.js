@@ -52,7 +52,25 @@ layui.use(['table', 'layer','jquery', 'jquery_cookie'], function() {
                 {field: 'content', title: 'Content', align: 'center'},
                 {field: 'modifiedTime', title: 'Last Updated On', align: 'center', templet: function(d) {
                         // Use modifiedTime if it's not empty, otherwise use createdTime
-                        return d.modifiedTime || d.createdTime;
+                        var dateStr = d.modifiedTime || d.createdTime;
+                        if (dateStr) {
+                            var date = new Date(dateStr);
+                            var year = date.getFullYear();
+                            var month = date.getMonth() + 1; // getMonth() returns 0-11
+                            var day = date.getDate();
+                            var hour = date.getHours();
+                            var minute = date.getMinutes();
+
+                            // Format month, day, hour, and minute to ensure they are always two digits
+                            month = ('0' + month).slice(-2);
+                            day = ('0' + day).slice(-2);
+                            hour = ('0' + hour).slice(-2);
+                            minute = ('0' + minute).slice(-2);
+
+                            return year + '-' + month + '-' + day + ' ' + hour + ':' + minute; // Format: YYYY-MM-DD HH:MM
+                        } else {
+                            return ''; // or return some default value or message
+                        }
                     }},
                 {title:'Operate', templet: function(d) {
                         if (userMap[d.uid] === loggedInUserName) {
