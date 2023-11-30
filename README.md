@@ -19,10 +19,12 @@ A comprehensive service that can be integrated by clients to manage all aspects 
 - [System Tests](#system-tests-corresponding-to-api)
   - [API Entry Point Test](#system-level-tests-of-every-api-entry-point)
   - [Multiple Clients Test](#system-level-tests-of-multiple-clients)
+- [End-to-End Testing Checklist](#end-to-end-testing-checklist)
 - [Style Checker](#style-checker)
 - [Bug Finder](#bug-finder)
 - [API Documentation](#api-documentation)
 - [Persistent Data Storage](#persistent-data-storage-of-our-service)
+- [Change In API Implementation From Proposal](#change-in-api-implementation-from-proposal)
 
 ## Build and Run the Service using Docker
 
@@ -137,6 +139,9 @@ We performed several API functional and performance tests that may face multiple
   - Setting: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/performance_test/GetAllAnns_performance_test_setting.png)
   - Result: [View Screenshot](postman_API_tests/multiple_clients_testing/query_anns/performance_test/GetAllAnns_performance_test_result.png)
 
+
+## End-to-End Testing Checklist
+Please see details in [E2E Testing Checklist](/E2E-Testing-Checklist.md)
 
 ## Style Checker
 
@@ -526,6 +531,23 @@ the resulting database modifications unequivocally confirms the robust interacti
 with the persistent data layer. Our meticulous testing approach ensures that our application not only responds to API
 requests as expected but also effectively manages the underlying data in a reliable and consistent manner.
 
-## End to End Testing Checklist
-Please see details in [E2E Testing Checklist](/E2E-Testing-Checklist.md)
 
+## Change In API Implementation From Proposal
+
+We decided to make the following changes to our API implementation, which are different from our proposal:
+
+1. Add role management:
+   Role management allows for the definition of roles, each with specific permissions. 
+   This is crucial in an entity management system to control who can perform certain actions on entities.
+   For data protection, different roles should have different levels of access to sensitive information. 
+   Role management ensures that only authorized individuals can view or modify specific entities, contributing to data security.
+
+
+2. Remove customizable workflow:
+   Our entity management system focuses on handling and organizing data related to entities (e.g., information of the entities, roles) 
+   and we decided not to add the complexity of managing intricate workflows.
+
+3. Remove multi-language translation
+   Once again, our entity management system prioritizes the core functionalities related to entities (e.g., CRUD of entities, roles).
+   And there various multi-language translation API provided by major technology companies, 
+   such as Google Cloud Translation API, Microsoft Translator API, and DeepL API.
