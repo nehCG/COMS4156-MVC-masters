@@ -230,6 +230,9 @@
                 <version>3.1.0</version>
                 <configuration>
                     <useModulePath>false</useModulePath>
+                    <excludes>
+                        <exclude>**/com/mvcmasters/ems/external_integration/**</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
 
