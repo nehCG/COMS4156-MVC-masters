@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>EMS</title>
+    <title>Star Preschool</title>
     <#include "common.ftl">
 </head>
 
@@ -12,7 +12,7 @@
             <div class="layui-logo">
                 <a href="">
                     <img src="images/logo.png" alt="logo">
-                    <h1>EMS</h1>
+                    <h1>Star Preschool</h1>
                 </a>
             </div>
             <a>
@@ -49,6 +49,74 @@
             <div class="layui-side-scroll layui-left-menu">
                 <#if permissions??>
                 <ul class="layui-nav layui-nav-tree layui-left-nav-tree layui-this" id="currency">
+                    <#if permissions?seq_contains("30") >
+                        <li class="layui-nav-item">
+                            <a href="javascript:;" class="layui-menu-tips"><i class="fa fa-street-view"></i><span class="layui-left-nav"> Class One</span> <span class="layui-nav-more"></span></a>
+                            <dl class="layui-nav-child">
+                                <#if permissions?seq_contains("3010")>
+                                    <dd>
+                                        <a href="javascript:;" class="layui-menu-tips" data-type="tabAdd" data-tab-mpi="m-p-i-1" data-tab="discussion/index" target="_self"><i class="fa fa-ellipsis-h"></i><span class="layui-left-nav"> Discussion Board</span></a>
+                                    </dd>
+                                </#if>
+                                <#if permissions?seq_contains("3020")>
+                                    <dd>
+                                        <a href="javascript:;" class="layui-menu-tips" data-type="tabAdd" data-tab-mpi="m-p-i-2" data-tab="activities/index" target="_self"><i class="fa fa-ellipsis-h"></i><span class="layui-left-nav"> Activities</span></a>
+                                    </dd>
+                                </#if>
+                            </dl>
+                        </li>
+                    </#if>
+                    <#if permissions?seq_contains("40") >
+                        <li class="layui-nav-item">
+                            <a href="javascript:;" class="layui-menu-tips"><i class="fa fa-street-view"></i><span class="layui-left-nav"> Class Two</span> <span class="layui-nav-more"></span></a>
+                            <dl class="layui-nav-child">
+                                <#if permissions?seq_contains("4010")>
+                                    <dd>
+                                        <a href="javascript:;" class="layui-menu-tips" data-type="tabAdd" data-tab-mpi="m-p-i-1" data-tab="discussion/index" target="_self"><i class="fa fa-ellipsis-h"></i><span class="layui-left-nav"> Discussion Board</span></a>
+                                    </dd>
+                                </#if>
+                                <#if permissions?seq_contains("4020")>
+                                    <dd>
+                                        <a href="javascript:;" class="layui-menu-tips" data-type="tabAdd" data-tab-mpi="m-p-i-2" data-tab="activities/index" target="_self"><i class="fa fa-ellipsis-h"></i><span class="layui-left-nav"> Activities</span></a>
+                                    </dd>
+                                </#if>
+                            </dl>
+                        </li>
+                    </#if>
+                    <#if permissions?seq_contains("50") >
+                        <li class="layui-nav-item">
+                            <a href="javascript:;" class="layui-menu-tips"><i class="fa fa-street-view"></i><span class="layui-left-nav"> Class Three</span> <span class="layui-nav-more"></span></a>
+                            <dl class="layui-nav-child">
+                                <#if permissions?seq_contains("5010")>
+                                    <dd>
+                                        <a href="javascript:;" class="layui-menu-tips" data-type="tabAdd" data-tab-mpi="m-p-i-1" data-tab="discussion/index" target="_self"><i class="fa fa-ellipsis-h"></i><span class="layui-left-nav"> Discussion Board</span></a>
+                                    </dd>
+                                </#if>
+                                <#if permissions?seq_contains("5020")>
+                                    <dd>
+                                        <a href="javascript:;" class="layui-menu-tips" data-type="tabAdd" data-tab-mpi="m-p-i-2" data-tab="activities/index" target="_self"><i class="fa fa-ellipsis-h"></i><span class="layui-left-nav"> Activities</span></a>
+                                    </dd>
+                                </#if>
+                            </dl>
+                        </li>
+                    </#if>
+                    <#if permissions?seq_contains("60") >
+                        <li class="layui-nav-item">
+                            <a href="javascript:;" class="layui-menu-tips"><i class="fa fa-street-view"></i><span class="layui-left-nav"> Playground</span> <span class="layui-nav-more"></span></a>
+                            <dl class="layui-nav-child">
+                                <#if permissions?seq_contains("6010")>
+                                    <dd>
+                                        <a href="javascript:;" class="layui-menu-tips" data-type="tabAdd" data-tab-mpi="m-p-i-1" data-tab="games/index" target="_self"><i class="fa fa-ellipsis-h"></i><span class="layui-left-nav"> Games</span></a>
+                                    </dd>
+                                </#if>
+                                <#if permissions?seq_contains("6020")>
+                                    <dd>
+                                        <a href="javascript:;" class="layui-menu-tips" data-type="tabAdd" data-tab-mpi="m-p-i-2" data-tab="activities/index" target="_self"><i class="fa fa-ellipsis-h"></i><span class="layui-left-nav"> Activities</span></a>
+                                    </dd>
+                                </#if>
+                            </dl>
+                        </li>
+                    </#if>
                     <#if permissions?seq_contains("10")>
                     <li class="layui-nav-item">
                         <a href="javascript:;" class="layui-menu-tips"><i class="fa fa-desktop"></i><span
