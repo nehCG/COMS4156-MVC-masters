@@ -90,7 +90,6 @@ public class SharedDataService extends BaseService<SharedDataModel, Integer> {
                 selectAllSharedData();
         PageInfo<SharedDataModel> pageInfo = new PageInfo<>(sharedDataList);
 
-        System.out.println("hereee");
 
         // Populate the results map with relevant information for table display
         result.put("count", pageInfo.getTotal());
