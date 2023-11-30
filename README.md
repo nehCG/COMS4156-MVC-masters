@@ -20,6 +20,7 @@ A comprehensive service that can be integrated by clients to manage all aspects 
   - [API Entry Point Test](#system-level-tests-of-every-api-entry-point)
   - [Multiple Clients Test](#system-level-tests-of-multiple-clients)
 - [End-to-End Testing Checklist](#end-to-end-testing-checklist)
+- [Testing for Multiple Simultaneous Requests](#testing-for-multiple-simultaneous-requests)
 - [Style Checker](#style-checker)
 - [Bug Finder](#bug-finder)
 - [API Documentation](#api-documentation)
@@ -143,6 +144,26 @@ We performed several API functional and performance tests that may face multiple
 
 ## End-to-End Testing Checklist
 Please see details in [E2E Testing Checklist](/E2E-Testing-Checklist.md)
+
+
+## Testing for Multiple Simultaneous Requests
+
+To ensure robust performance under high load, we used Apache JMeter for performance testing on key endpoints.
+
+Our focus was on scenarios likely to experience heavy traffic:
+- Concurrent User Logins: Tested the system's response to 100 simultaneous user logins
+  [View Screenshot](JMeter_tests/Login 100 Concurrent Users.png)
+- Bulk Announcement Posting: Assessed system stability with 100 announcements posted concurrently
+  [View Screenshot](JMeter_tests/Add 100 Concurrent Announcements.png)
+
+Alongside Apache JMeter tests, we conducted real-world scenario tests to validate our system's performance
+and responsiveness:
+
+- Manual Multi-Instance Testing: Simulated user activities by opening multiple browsers,
+  logging in as different users, and performing actions like posting announcements and adjusting role assignments.
+
+- Real-Time Responsiveness: Verified that changes made by one user (e.g., role adjustments) were immediately
+  reflected for other users, ensuring real-time data consistency and dynamic interaction.
 
 ## Style Checker
 
@@ -584,21 +605,3 @@ This user setting helps Pre-K school individual to customize their password and 
 
 The users of our app can have comprehensive role management and user management functionalities, 
 while before they may only can communicate using their internal app.
-
-## Testing for Multiple Simultaneous Requests
-To ensure robust performance under high load, we used Apache JMeter for performance testing on key endpoints.
-
-Our focus was on scenarios likely to experience heavy traffic:
-- Concurrent User Logins: Tested the system's response to 100 simultaneous user logins
-[View Screenshot](JMeter_tests/Login 100 Concurrent Users.png)
-- Bulk Announcement Posting: Assessed system stability with 100 announcements posted concurrently
-[View Screenshot](JMeter_tests/Add 100 Concurrent Announcements.png)
-
-Alongside Apache JMeter tests, we conducted real-world scenario tests to validate our system's performance 
-and responsiveness:
-
-- Manual Multi-Instance Testing: Simulated user activities by opening multiple browsers, 
-logging in as different users, and performing actions like posting announcements and adjusting role assignments.
-
-- Real-Time Responsiveness: Verified that changes made by one user (e.g., role adjustments) were immediately 
-reflected for other users, ensuring real-time data consistency and dynamic interaction.
