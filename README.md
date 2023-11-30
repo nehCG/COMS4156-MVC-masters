@@ -152,9 +152,9 @@ To ensure robust performance under high load, we used Apache JMeter for performa
 
 Our focus was on scenarios likely to experience heavy traffic:
 - Concurrent User Logins: Tested the system's response to 100 simultaneous user logins 
-[View Screenshot](JMeter_tests/Login 100 Concurrent Users.png)
+[View Screenshot](JMeter_tests/Login_100_Concurrent_Users.png)
 - Bulk Announcement Posting: Assessed system stability with 100 announcements posted concurrently
-[View Screenshot](JMeter_tests/Add 100 Concurrent Announcements.png)
+[View Screenshot](JMeter_tests/Add_100_Concurrent_Announcements.png)
 
 Alongside Apache JMeter tests, we conducted real-world scenario tests to validate our system's performance
 and responsiveness:
