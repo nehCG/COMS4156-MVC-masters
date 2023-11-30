@@ -543,7 +543,6 @@ We decided to make the following changes to our API implementation, which are di
    For data protection, different roles should have different levels of access to sensitive information. 
    Role management ensures that only authorized individuals can view or modify specific entities, contributing to data security.
 
-
 2. Remove customizable workflow:
    Our entity management system focuses on handling and organizing data related to entities (e.g., information of the entities, roles) 
    and we decided not to add the complexity of managing intricate workflows.
@@ -585,3 +584,21 @@ This user setting helps Pre-K school individual to customize their password and 
 
 The users of our app can have comprehensive role management and user management functionalities, 
 while before they may only can communicate using their internal app.
+
+## Testing for Multiple Simultaneous Requests
+To ensure robust performance under high load, we used Apache JMeter for performance testing on key endpoints.
+
+Our focus was on scenarios likely to experience heavy traffic:
+- Concurrent User Logins: Tested the system's response to 100 simultaneous user logins
+[View Screenshot](JMeter_tests/Login 100 Concurrent Users.png)
+- Bulk Announcement Posting: Assessed system stability with 100 announcements posted concurrently
+[View Screenshot](JMeter_tests/Add 100 Concurrent Announcements.png)
+
+Alongside Apache JMeter tests, we conducted real-world scenario tests to validate our system's performance 
+and responsiveness:
+
+- Manual Multi-Instance Testing: Simulated user activities by opening multiple browsers, 
+logging in as different users, and performing actions like posting announcements and adjusting role assignments.
+
+- Real-Time Responsiveness: Verified that changes made by one user (e.g., role adjustments) were immediately 
+reflected for other users, ensuring real-time data consistency and dynamic interaction.
