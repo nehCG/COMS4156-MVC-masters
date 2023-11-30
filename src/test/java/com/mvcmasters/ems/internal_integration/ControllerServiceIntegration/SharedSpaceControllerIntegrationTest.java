@@ -3,7 +3,10 @@ package com.mvcmasters.ems.internal_integration.ControllerServiceIntegration;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.BDDMockito.*;
+
+import com.mvcmasters.ems.base.BaseQuery;
 import com.mvcmasters.ems.model.SharedDataModel;
+import com.mvcmasters.ems.query.UserQuery;
 import com.mvcmasters.ems.service.SharedDataService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Internal Integration Test for testing interaction
@@ -45,7 +50,8 @@ public class SharedSpaceControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"data\":\"Example data\"}"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Shared data added successfully!"));
+                .andExpect(jsonPath("$.msg").
+                        value("Announcement added successfully!"));
 
         verify(sharedDataService).addSharedData(any(SharedDataModel.class));
     }
@@ -69,16 +75,18 @@ public class SharedSpaceControllerIntegrationTest {
      */
     @Test
     public void testGetAllSharedData() throws Exception {
-        List<SharedDataModel> sharedDataList =
-                Arrays.asList(new SharedDataModel(), new SharedDataModel());
-        when(sharedDataService.getAllSharedData()).thenReturn(sharedDataList);
+
+        Map<String, Object> expectedResult = new HashMap<>();
+        expectedResult.put("key", "value");
+
+        given(sharedDataService.queryByParamsForTable(any(BaseQuery.class)))
+                .willReturn(expectedResult);
+        expectedResult.put("key", "value");
 
         mockMvc.perform(get("/announcement/all"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0]").exists());
+                .andExpect(jsonPath("$.key").value("value"));
 
-        verify(sharedDataService).getAllSharedData();
     }
     /**
      * Test the UpdateSharedData Method.
@@ -92,8 +100,8 @@ public class SharedSpaceControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"data\":\"Updated data\"}"))
                 .andExpect(status().isOk())
-                .andExpect(content()
-                        .string("Shared data updated successfully!"));
+                .andExpect(jsonPath("$.msg").
+                        value("Announcement updated successfully!"));
 
         verify(sharedDataService)
                 .updateSharedData(eq(1), any(SharedDataModel.class));
@@ -107,8 +115,8 @@ public class SharedSpaceControllerIntegrationTest {
 
         mockMvc.perform(delete("/announcement/delete/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(content()
-                        .string("Shared data deleted successfully!"));
+                .andExpect(jsonPath("$.msg").
+                        value("Announcement deleted successfully!"));
 
         verify(sharedDataService).deleteSharedDataById(1);
     }

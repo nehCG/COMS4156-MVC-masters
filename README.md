@@ -20,6 +20,7 @@ A comprehensive service that can be integrated by clients to manage all aspects 
   - [API Entry Point Test](#system-level-tests-of-every-api-entry-point)
   - [Multiple Clients Test](#system-level-tests-of-multiple-clients)
 - [End-to-End Testing Checklist](#end-to-end-testing-checklist)
+- [Testing for Multiple Simultaneous Requests](#testing-for-multiple-simultaneous-requests)
 - [Style Checker](#style-checker)
 - [Bug Finder](#bug-finder)
 - [API Documentation](#api-documentation)
@@ -143,6 +144,26 @@ We performed several API functional and performance tests that may face multiple
 
 ## End-to-End Testing Checklist
 Please see details in [E2E Testing Checklist](/E2E-Testing-Checklist.md)
+
+
+## Testing for Multiple Simultaneous Requests
+
+To ensure robust performance under high load, we used Apache JMeter for performance testing on key endpoints.
+
+Our focus was on scenarios likely to experience heavy traffic:
+- Concurrent User Logins: Tested the system's response to 100 simultaneous user logins 
+[View Screenshot](JMeter_tests/Login_100_Concurrent_Users.png)
+- Bulk Announcement Posting: Assessed system stability with 100 announcements posted concurrently
+[View Screenshot](JMeter_tests/Add_100_Concurrent_Announcements.png)
+
+Alongside Apache JMeter tests, we conducted real-world scenario tests to validate our system's performance
+and responsiveness:
+
+- Manual Multi-Instance Testing: Simulated user activities by opening multiple browsers,
+  logging in as different users, and performing actions like posting announcements and adjusting role assignments.
+
+- Real-Time Responsiveness: Verified that changes made by one user (e.g., role adjustments) were immediately
+  reflected for other users, ensuring real-time data consistency and dynamic interaction.
 
 ## Style Checker
 
@@ -542,7 +563,6 @@ We decided to make the following changes to our API implementation, which are di
    This is crucial in an entity management system to control who can perform certain actions on entities.
    For data protection, different roles should have different levels of access to sensitive information. 
    Role management ensures that only authorized individuals can view or modify specific entities, contributing to data security.
-
 
 2. Remove customizable workflow:
    Our entity management system focuses on handling and organizing data related to entities (e.g., information of the entities, roles) 

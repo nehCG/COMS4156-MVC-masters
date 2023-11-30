@@ -1,5 +1,6 @@
 package com.mvcmasters.ems.service;
 
+import com.mvcmasters.ems.base.BaseQuery;
 import com.mvcmasters.ems.model.SharedDataModel;
 import com.mvcmasters.ems.repository.SharedDataMapper;
 import com.mvcmasters.ems.exceptions.CustomException;
@@ -12,12 +13,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;
+
 
 @ExtendWith(MockitoExtension.class)
 public class SharedDataServiceTest {
@@ -426,4 +433,26 @@ public class SharedDataServiceTest {
         assertEquals("ID will be automatically assigned", thrown.getMessage());
         assertEquals(HttpStatus.BAD_REQUEST, thrown.getStatusCode());
     }
+
+    /**
+     * Test for queryByParamsForTable.
+     */
+    @Test
+    public void testQueryByParamsForTable() {
+        Map<String, Object> expectResult = new HashMap<>();
+        expectResult.put("code", 0);
+        expectResult.put("msg", "");
+
+        BaseQuery query = new BaseQuery();
+        List<SharedDataModel> sharedDataList = new ArrayList<>();
+
+        when(sharedDataMapper.selectAllSharedData()).
+                thenReturn(sharedDataList);
+        Map<String, Object> response = sharedDataService.
+                queryByParamsForTable(query);
+
+        assertEquals(expectResult.get("code"), response.get("code"));
+        assertEquals(expectResult.get("msg"), response.get("msg"));
+    }
+
 }

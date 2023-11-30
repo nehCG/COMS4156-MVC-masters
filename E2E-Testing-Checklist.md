@@ -141,3 +141,31 @@ URL: http://localhost:8080/ems/index
 - [ ] Logout the current user
 - [ ] Login the user with the role 
 - [ ] That user should be able to see the authorized pages only.
+
+
+## Announcement Page Checklist
+1. Add Announcement Error
+- [ ] Go to Shared Space -> Announcement
+- [ ] Click Add Announcement
+- [ ] Enter Subject, but leave Content blank
+- [ ] The system should show "Required fields cannot be blank"
+
+
+2. Add Announcement Success
+- [ ] Go to Shared Space -> Announcement
+- [ ] Click Add Announcement
+- [ ] Enter Subject and Content
+- [ ] The new announcement should be shown in the announcement page
+
+
+3. Edit Announcement
+- [ ] Go to Shared Space -> Announcement
+- [ ] Click Edit button next to the announcement you choose
+- [ ] The edited subject or content should be shown in the announcement page
+- [ ] The "Last Update On" time should be updated to the current time
+
+4. Delete Announcement
+- [ ] Go to Shared Space -> Announcement
+- [ ] Click Delete button next to the announcement you choose
+- [ ] Click "Confirm"
+- [ ] The announcement should be deleted from the announcement page
