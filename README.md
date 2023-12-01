@@ -252,7 +252,7 @@ Base URL: http://localhost:8080/ems
 
 #### GET: `/index`
 - Description: Display the login page.
-  - Frontend login page: [View Screenshot](FrontEndScreenShots/loginPage.png)
+  - Frontend login page: [View Screenshot](screen_shots/loginPage.png)
 - Status Codes:
   - 200 OK: Page loaded successfully.
   - 404 Not Found: Cannot find the request page.
@@ -260,7 +260,7 @@ Base URL: http://localhost:8080/ems
 
 #### GET: `/main`
 - Description: Display the main page of the service.
-  - Frontend login page: [View Screenshot](FrontEndScreenShots/mainPage.png)
+  - Frontend login page: [View Screenshot](screen_shots/mainPage.png)
 - Status Codes:
   - 200 OK: Page loaded successfully.
   - 404 Not Found: Cannot find the request page.
@@ -268,7 +268,7 @@ Base URL: http://localhost:8080/ems
 
 #### GET: `/welcome`
 - Description: Display the welcome pag.
-  - Frontend login page: [View Screenshot](FrontEndScreenShots/welcomePage.png)
+  - Frontend login page: [View Screenshot](screen_shots/welcomePage.png)
 - Status Codes:
   - 200 OK: Page loaded successfully.
   - 404 Not Found: Cannot find the request page.
