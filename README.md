@@ -7,26 +7,29 @@ A comprehensive service that can be integrated by clients to manage all aspects 
 [![codecov](https://codecov.io/gh/nehCG/ems/branch/main/graph/badge.svg)](https://codecov.io/gh/nehCG/ems)
 
 ## Table of Contents
-- [Build and Run](#build-and-run-the-service-using-docker)
+- [Build and Run the Service](#build-and-run-the-service-using-docker)
   - [Prerequisites](#prerequisites)
   - [1. Clone the Repo](#1-clone-the-repository)
   - [2. Build the Docker Image](#2-build-the-docker-image)
   - [3. Run the Service using Docker](#3-run-the-service-using-docker)
   - [4. Access the Service](#4-access-the-service)
   - [Troubleshooting](#troubleshooting)
+- [About the Client App](#about-the-client-app)
+  - [Access the Client App](#access-the-client-app)
+  - [How to Build Your Own Client](#how-to-build-your-own-client-using-the-service)
 - [Unit Tests](#unit-tests-of-the-service)
 - [Integration Tests](#integration-tests-of-the-service)
 - [System Tests](#system-tests-corresponding-to-api)
   - [API Entry Point Test](#system-level-tests-of-every-api-entry-point)
   - [Multiple Clients Test](#system-level-tests-of-multiple-clients)
 - [End-to-End Testing Checklist](#end-to-end-testing-checklist)
-- [Testing for Multiple Simultaneous Requests](#testing-for-multiple-simultaneous-requests)
+- [Multiple Simultaneous Client Instances Tests](#multiple-simultaneous-client-instances-tests)
 - [Style Checker](#style-checker)
 - [Bug Finder](#bug-finder)
 - [API Documentation](#api-documentation)
-- [Persistent Data Storage](#persistent-data-storage-of-our-service)
 - [Change In API Implementation From Proposal](#change-in-api-implementation-from-proposal)
-- [About Our Client App](#about-our-client-app)
+- [Persistent Data Storage](#persistent-data-storage-of-our-service)
+- [Third Party Code References](#third-party-code-references)
 
 ## Build and Run the Service using Docker
 
@@ -69,6 +72,55 @@ Then, the service will run on [`http://localhost:8080/ems`](http://localhost:808
 - Ensure your Docker daemon is running before executing Docker commands.
 - Check application logs in the Docker container for any issues related to the Spring Boot application.
 
+## About the Client App
+
+Our client app is an application tailored for pre-K school internal management.
+It provides a centralized platform for administrators, teachers, and other school roles to collaborate and manage various aspects of the pre-K education experience.
+Key Features:
+
+- Announcement board: the announcement board uses CRUD APIs from /announcement in our service.
+  Pre-K school teachers and administrators can post announcements, which will be visible to all Pre-K school employees.
+  The announcement board serves as an effective notification platform.
+
+
+- Role management: the authorization of each role can be customized.
+  This functionality uses /role/list, /role/toAddOrUpdateRolePage, /role/delete, and /module/toAddGrantPage.
+  The administrators or other authorized roles are able to manage the authorization of each role in the Pre-K school.
+  They are also able to create/delete/edit each role.
+  This role management functionality helps to manage the scope of roles within Pre-K school.
+
+
+- User management: users can be added, edited, or removed by authorized entities.
+  The user management uses CRUD APIs from /user.
+  The administrators or other authorized roles are able to manage all employees within the Pre-K school.
+  This user management functionality provides the flexibility for adding new teachers or employees.
+
+
+- User setting: users are able to update their password.
+  This functionality uses /updatePwd from /user in our service
+  After login, individual can change the default password to their choice.
+  This user setting helps Pre-K school individual to customize their password and provides data security.
+
+The users of our app can have comprehensive role management and user management functionalities,
+while before they may only can communicate using their internal app.
+
+### Access the Client App
+
+Once you build and run the Service, the client app will run on [`http://localhost:8080/ems/index`](http://localhost:8080/ems/index) automatically.
+
+You can use our admin account to log in and use our client.
+
+```
+Username: admin
+Password: 123456
+```
+
+### How to Build Your Own Client Using the Service
+
+Our front-end code files are stored under `src/main/java/resources`. 
+You can make appropriate modifications or refactor the entire front-end. 
+If you want to develop more front-end functions, you can refer to our [API Documentation](#api-documentation).
+
 ## Unit Tests of the Service
 
 ### Run all unit tests
@@ -90,22 +142,23 @@ If you want to generate a test coverage report, you can choose the following two
 ./mvnw clean install -Dcheckstyle.skip=true -Dspotbugs.skip=true
 ```
 
-Our unit tests have 98.6% code coverage. [Codecov report](https://app.codecov.io/gh/nehCG/ems)
+Our unit tests have 99.54% code coverage. [Codecov report](https://app.codecov.io/gh/nehCG/ems)
 
 ## Integration Tests of the Service
 We employed the Big Bang Integration Testing approach, where the integration of multiple units are tested 
 simultaneously. Then, the entire system is tested as a whole. 
 
 ### Internal Integration Test
+
 In this phase, we focused on two key integration. The first one is the interaction between Controller Layer and Service Layer, which involved mocking the HTTP request and allow the service layer to process. The second one is the interaction between Service Layer and Repository Layer, which involved mocking the database. 
 After these targeted tests, we proceeded to the External Integration Test, where we examined the entire service through RESTful API testing.
 
 ### External Integration Test
-Our services has two external components, which are RESTFul API and the MySQL database. Thus, we tested the 
+Our service has two external components, which are RESTFul API and the MySQL database. Thus, we tested the 
 interaction between the Mapper files and the external MySQL database. Next, we used @RestTemplate
 to call each API endpoints, where the service is tested as a whole. 
 
-Both Internal and External Integration Tests are located in src/test/java, which will be run automatically during CI. The folder containing external integration tests is excluded for the 'mvn test' build during CI.  
+Both Internal and External Integration Tests are located in `src/test/java`, which will be run automatically during CI. The folder containing external integration tests is excluded for the 'mvn test' build during CI.  
 
 ## System Tests Corresponding to API
 ### System-level Tests of every API Entry Point
@@ -143,10 +196,10 @@ We performed several API functional and performance tests that may face multiple
 
 
 ## End-to-End Testing Checklist
-Please see details in [E2E Testing Checklist](/E2E-Testing-Checklist.md)
+Please see details in [E2E Testing Checklist](./E2E-Testing-Checklist.md)
 
 
-## Testing for Multiple Simultaneous Requests
+## Multiple Simultaneous Client Instances Tests
 
 To ensure robust performance under high load, we used Apache JMeter for performance testing on key endpoints.
 
@@ -200,14 +253,26 @@ Base URL: http://localhost:8080/ems
 #### GET: `/index`
 - Description: Display the login page.
   - Frontend login page: [View Screenshot](FrontEndScreenShots/loginPage.png)
+- Status Codes:
+  - 200 OK: Page loaded successfully.
+  - 404 Not Found: Cannot find the request page.
+  - 500 Internal Server Error: The server encountered an error
 
 #### GET: `/main`
 - Description: Display the main page of the service.
   - Frontend login page: [View Screenshot](FrontEndScreenShots/mainPage.png)
+- Status Codes:
+  - 200 OK: Page loaded successfully.
+  - 404 Not Found: Cannot find the request page.
+  - 500 Internal Server Error: The server encountered an error
 
 #### GET: `/welcome`
 - Description: Display the welcome pag.
   - Frontend login page: [View Screenshot](FrontEndScreenShots/welcomePage.png)
+- Status Codes:
+  - 200 OK: Page loaded successfully.
+  - 404 Not Found: Cannot find the request page.
+  - 500 Internal Server Error: The server encountered an error
 
 ### User Management Entry Points
 
@@ -224,6 +289,7 @@ Base URL: `http://localhost:8080/ems/user`
   - 200 OK: Authentication successful.
   - 400 BAD REQUEST: If `userName` or `userPwd` is empty, or if credentials are incorrect.
   - 300 CUSTOM CODE: Represents business logic errors.
+  - 500 Internal Server Error: The server encountered an error
 - **Postman API tests**:
   - Login success: [View Screenshot](postman_API_tests/user/login/Login_success.png)
   - User does not exist: [View Screenshot](postman_API_tests/user/login/Login_user_dne.png)
@@ -245,6 +311,7 @@ Base URL: `http://localhost:8080/ems/user`
     - 200 OK: Password updated successfully.
     - 400 BAD REQUEST: If `userId` does not exist, `oldPassword` is incorrect, or new passwords do not match/are empty.
     - 300 CUSTOM CODE: Represents business logic errors.
+    - 500 Internal Server Error: The server encountered an error
 - **Postman API tests**:
   - Reset password success: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_success.png)
   - Record does not exist: [View Screenshot](postman_API_tests/user/updatePwd/ResetPwd_record_dne.png)
@@ -268,6 +335,7 @@ Base URL: `http://localhost:8080/ems/user`
     - 200 OK: User added successfully.
     - 400 BAD REQUEST: If input parameters are invalid or missing, or if the username already exists.
     - 300 CUSTOM CODE: Represents business logic errors.
+    - 500 Internal Server Error: The server encountered an error
 - **Postman API tests**:
   - Add user success: [View Screenshot](postman_API_tests/user/add/AddUser_success.png)
   - Username is empty: [View Screenshot](postman_API_tests/user/add/AddUser_username_empty.png)
@@ -288,6 +356,7 @@ Base URL: `http://localhost:8080/ems/user`
     - 200 OK: User updated successfully.
     - 400 BAD REQUEST: If the `User` object is invalid, the user does not exist, or if the updated username already exists.
     - 300 CUSTOM CODE: Represents business logic errors.
+    - 500 Internal Server Error: The server encountered an error
 - **Postman API tests**:
   - Update records success: [View Screenshot](postman_API_tests/user/update/UpdateUser_success.png)
   - Update user does not exist: [View Screenshot](postman_API_tests/user/update/UpdateUser_user_dne.png)
@@ -307,6 +376,7 @@ Base URL: `http://localhost:8080/ems/user`
     - 200 OK: Users deleted successfully.
     - 400 BAD REQUEST: If the `ids` array is empty or if any of the `ids` do not correspond to existing users.
     - 300 CUSTOM CODE: Represents business logic errors.
+    - 500 Internal Server Error: The server encountered an error
 - **Postman API tests**:
   - Delete users success: [View Screenshot](postman_API_tests/user/delete/DeleteUser_success.png)
   - Delete user does not exist: [View Screenshot](postman_API_tests/user/delete/DeleteUser_records_dne.png)
@@ -324,6 +394,7 @@ Base URL: `http://localhost:8080/ems/user`
 - Response: Map with user information.
 - Status Codes:
     - 200 OK: Request successful.
+    - 500 Internal Server Error: The server encountered an error
 - **Postman API tests**:
   - Get all users success: [View Screenshot](postman_API_tests/user/list/Get_all_user.png)
 
@@ -332,14 +403,18 @@ Base URL: `http://localhost:8080/ems/user`
 - Description: Direct to the main user page.
 - Response: A string representing the path the main user management page.
 - Status Codes:
-  - 200 OK: Request successful.
+  - 200 OK: Page loaded successfully.
+  - 404 Not Found: Cannot find the request page.
+  - 500 Internal Server Error: The server encountered an error
 
 #### GET `/toPasswordPage`
 
 - Description: Direct to the password management page.
 - Response: A string representing the path to the password management page.
 - Status Codes:
-  - 200 OK: Request successful.
+  - 200 OK: Page loaded successfully.
+  - 404 Not Found: Cannot find the request page.
+  - 500 Internal Server Error: The server encountered an error
 
 #### GET `/toAddOrUpdateUserPage`
 
@@ -348,7 +423,9 @@ Base URL: `http://localhost:8080/ems/user`
   - `roleId` (Integer): The ID of the user to be updated, or null if adding a new user. *Optional*
 - Response: A string representing the path to the view for adding a new user or updating an existing one.
 - Status Codes:
-  - 200 OK: Request successful.
+  - 200 OK: Page loaded successfully.
+  - 404 Not Found: Cannot find the request page.
+  - 500 Internal Server Error: The server encountered an error
 
 ### Role Management Entry Points
 
@@ -362,6 +439,7 @@ Base URL: `http://localhost:8080/ems/role`
 - Response: A list of maps, each representing a role and its information.
 - Status Codes:
   - 200 OK: Request successful.
+  - 500 Internal Server Error: The server encountered an error
 
 #### GET `/list`
 
@@ -371,6 +449,7 @@ Base URL: `http://localhost:8080/ems/role`
 - Response: Map with user information.
 - Status Codes:
   - 200 OK: Request successful.
+  - 500 Internal Server Error: The server encountered an error
 
 #### POST `/add`
 
@@ -383,6 +462,7 @@ Base URL: `http://localhost:8080/ems/role`
   - 200 OK: Role added successfully.
   - 400 BAD REQUEST: If input parameters are invalid or missing, or if the rolename already exists.
   - 300 CUSTOM CODE: Represents business logic errors.
+  - 500 Internal Server Error: The server encountered an error
 
 #### POST `/update`
 
@@ -396,6 +476,7 @@ Base URL: `http://localhost:8080/ems/role`
   - 200 OK: Role updated successfully.
   - 400 BAD REQUEST: If the `Role` object is invalid, the roleID does not exist, or if the updated rolename already exists.
   - 300 CUSTOM CODE: Represents business logic errors.
+  - 500 Internal Server Error: The server encountered an error
 
 #### POST `/delete`
 
@@ -408,6 +489,7 @@ Base URL: `http://localhost:8080/ems/role`
   - 200 OK: Role deleted successfully.
   - 400 BAD REQUEST: If the `roleId` is empty or if the `roleId` does not correspond to existing users.
   - 300 CUSTOM CODE: Represents business logic errors.
+  - 500 Internal Server Error: The server encountered an error
 
 #### POST `/addGrant`
 
@@ -421,13 +503,16 @@ Base URL: `http://localhost:8080/ems/role`
   - 200 OK: Role deleted successfully.
   - 400 BAD REQUEST: If the `roleId` is empty or if the `roleId` does not correspond to existing users.
   - 300 CUSTOM CODE: Represents business logic errors.
+  - 500 Internal Server Error: The server encountered an error
 
 #### GET `/index`
 
 - Description: Direct to the role index page.
 - Response: A string representing the path to the role index view.
 - Status Codes:
-  - 200 OK: Request successful.
+  - 200 OK: Page loaded successfully.
+  - 404 Not Found: Cannot find the request page.
+  - 500 Internal Server Error: The server encountered an error
 
 #### GET `/toAddOrUpdateRolePage`
 
@@ -436,7 +521,9 @@ Base URL: `http://localhost:8080/ems/role`
   - `roleId`(Integer): The ID of the role to edit, or null for adding a new role.
 - Response: A string representing the path to the role index view.
 - Status Codes:
-  - 200 OK: Request successful.
+  - 200 OK: Page loaded successfully.
+  - 404 Not Found: Cannot find the request page.
+  - 500 Internal Server Error: The server encountered an error
 
 ### Module Operations Entry Points
 
@@ -450,6 +537,7 @@ Base URL: `http://localhost:8080/ems/module`
 - Response: List of TreeModel representing Module Information.
 - Status Codes:
   - 200 OK: Request successful.
+  - 500 Internal Server Error: The server encountered an error
 
 #### GET `/toAddGrantPage`
 
@@ -458,7 +546,9 @@ Base URL: `http://localhost:8080/ems/module`
   - `roleId` (Integer): The ID of the role to add grants to. *Default: 1*
 - Response: The path to the "grant" view under the "role" directory.
 - Status Codes:
-  - 200 OK: Request successful.
+  - 200 OK: Page loaded successfully.
+  - 404 Not Found: Cannot find the request page.
+  - 500 Internal Server Error: The server encountered an error
 
 ### Shared Space Entry Points
 
@@ -472,6 +562,7 @@ Base URL: `http://localhost:8080/ems/announcement`
 - Status Codes:
     - 200 OK: Successfully added.
     - 400 BAD REQUEST: If the `SharedDataModel` object is null, or `subject` or `content` is null/empty.
+    - 500 Internal Server Error: The server encountered an error
 - **Postman API tests**:
   - Add shared data without content: [View Screenshot](postman_API_tests/announcement/post/Ann_content_empty.png)
   - Add shared data without subject: [View Screenshot](postman_API_tests/announcement/post/Ann_subject_empty.png)
@@ -486,6 +577,7 @@ Base URL: `http://localhost:8080/ems/announcement`
 - Status Codes:
     - 200 OK: Successfully retrieved.
     - 400 BAD REQUEST: If `id` does not exist.
+    - 500 Internal Server Error: The server encountered an error
 - **Postman API tests**:
   - Get shared data success: [View Screenshot](postman_API_tests/announcement/{id}/Get_ann_by_id.png)
   - Get not exist shared data: [View Screenshot](postman_API_tests/announcement/{id}/Get_by_id_dne.png)
@@ -496,6 +588,7 @@ Base URL: `http://localhost:8080/ems/announcement`
 - Response: Map with `SharedDataModel` objects.
 - Status Codes:
   - 200 OK: Successfully retrieved.
+  - 500 Internal Server Error: The server encountered an error
 - **Postman API tests**:
   - Get all shared data success: [View Screenshot](postman_API_tests/announcement/all/Get_all_ann.png)
 
@@ -508,6 +601,7 @@ Base URL: `http://localhost:8080/ems/announcement`
 - Status Codes:
     - 200 OK: Successfully updated.
     - 400 BAD REQUEST: If `id` does not exist, or the `SharedDataModel` object is null, or `uid` is null, or `subject` or `content` is null/empty.
+    - 500 Internal Server Error: The server encountered an error
 - **Postman API tests**:
   - Update with valid ID, userID, subject, and contents: [View Screenshot](postman_API_tests/announcement/update/Update_ann_success.png)
   - Proof of update subject and contents success: [View Screenshot](postman_API_tests/announcement/update/Update_ann_proof.png)
@@ -524,6 +618,7 @@ Base URL: `http://localhost:8080/ems/announcement`
 - Status Codes:
     - 204 NO CONTENT: Successfully deleted.
     - 400 BAD REQUEST: If `id` does not exist.
+    - 500 Internal Server Error: The server encountered an error
 - **Postman API tests**:
   - Delete with valid ID: [View Screenshot](postman_API_tests/announcement/delete/Delete_ann_by_id_success.png)
   - Proof of delete with valid ID success: [View Screenshot](postman_API_tests/announcement/delete/Delete_ann_proof.png)
@@ -533,7 +628,32 @@ Base URL: `http://localhost:8080/ems/announcement`
 - Description: Direct to the shared space index page.
 - Response: A string representing the path to the shared space index view.
 - Status Codes:
-  - 200 OK: Request successful.
+  - 200 OK: Page loaded successfully.
+  - 404 Not Found: Cannot find the request page.
+  - 500 Internal Server Error: The server encountered an error
+
+
+## Change In API Implementation From Proposal
+
+We decided to make the following changes to our API implementation, which are different from our proposal:
+
+1. **Add role management**:
+
+   Role management allows for the definition of roles, each with specific permissions. 
+   This is crucial in an entity management system to control who can perform certain actions on entities.
+   For data protection, different roles should have different levels of access to sensitive information. 
+   Role management ensures that only authorized individuals can view or modify specific entities, contributing to data security.
+
+2. **Remove customizable workflow**:
+
+   Our entity management system focuses on handling and organizing data related to entities (e.g., information of the entities, roles) 
+   and we decided not to add the complexity of managing intricate workflows.
+
+3. **Remove multi-language translation**:
+
+   We found that many browsers on the market support translation functions. For example, Chrome browser supports the use of Google Translate. 
+   Therefore, we did not introduce translation functionality into our service and focused more on core management functionality.
+
 
 ## Persistent Data Storage of our Service
 
@@ -554,54 +674,34 @@ with the persistent data layer. Our meticulous testing approach ensures that our
 requests as expected but also effectively manages the underlying data in a reliable and consistent manner.
 
 
-## Change In API Implementation From Proposal
+## Third Party Code References
 
-We decided to make the following changes to our API implementation, which are different from our proposal:
+We use some third-party code in our frontend scripts under `src/main/resources/public`
 
-1. Add role management:
-   Role management allows for the definition of roles, each with specific permissions. 
-   This is crucial in an entity management system to control who can perform certain actions on entities.
-   For data protection, different roles should have different levels of access to sensitive information. 
-   Role management ensures that only authorized individuals can view or modify specific entities, contributing to data security.
+### Font Awesome 4.7.0
+- **Purpose**: Provides scalable vector icons that can instantly be customized — size, color, drop shadow, and anything that can be done with the power of CSS.
+- **License**: SIL OFL 1.1 for the font, and MIT License for the CSS.
+- **Website**: [Font Awesome](https://fontawesome.com/v4.7.0/)
+- **Usage Example**: Icons are used in buttons, forms, and as standalone graphics.
 
-2. Remove customizable workflow:
-   Our entity management system focuses on handling and organizing data related to entities (e.g., information of the entities, roles) 
-   and we decided not to add the complexity of managing intricate workflows.
+### jq-Module
+- **Purpose**: A lightweight module for handling DOM manipulation, event handling, and AJAX.
+- **License**: MIT License.
+- **Documentation**: [jq-Module GitHub](https://github.com/your-link-to-jq-module)
+- **Usage Example**: Used for creating dynamic content and managing DOM elements efficiently.
 
-3. Remove multi-language translation
-   Once again, our entity management system prioritizes the core functionalities related to entities (e.g., CRUD of entities, roles).
-   And there various multi-language translation API provided by major technology companies, 
-   such as Google Cloud Translation API, Microsoft Translator API, and DeepL API.
+### jQuery 3.4.1
+- **Purpose**: A fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, and animation much simpler with an easy-to-use API that works across a multitude of browsers.
+- **License**: MIT License.
+- **Website**: [jQuery](https://jquery.com/)
+- **Usage Example**: AJAX calls for asynchronous data fetching, and manipulating HTML elements.
 
+### Layui v2.5.5
+- **Purpose**: A UI framework for building web interfaces, providing a range of components and widgets.
+- **License**: MIT License.
+- **Website**: [Layui](https://www.layui.com/)
+- **Usage Example**: Used for building the UI layout and integrating various UI components like tables, forms, etc.
 
-## About Our Client App
-
-Our client app is an application tailored for pre-K school internal management. 
-It provides a centralized platform for administrators, teachers, and other school roles to collaborate and manage various aspects of the pre-K education experience.
-Key Features:
-
-- Announcement board: the announcement board uses CRUD APIs from /announcement in our service.
-Pre-K school teachers and administrators can post announcements, which will be visible to all Pre-K school employees.
-The announcement board serves as an effective notification platform.
-
-
-- Role management: the authorization of each role can be customized.
-This functionality uses /role/list, /role/toAddOrUpdateRolePage, /role/delete, and /module/toAddGrantPage.
-The administrators or other authorized roles are able to manage the authorization of each role in the Pre-K school.
-They are also able to create/delete/edit each role. 
-This role management functionality helps to manage the scope of roles within Pre-K school.
-
-
-- User management: users can be added, edited, or removed by authorized entities. 
-The user management uses CRUD APIs from /user.
-The administrators or other authorized roles are able to manage all employees within the Pre-K school.
-This user management functionality provides the flexibility for adding new teachers or employees.
-
-
-- User setting: users are able to update their password. 
-This functionality uses /updatePwd from /user in our service
-After login, individual can change the default password to their choice.
-This user setting helps Pre-K school individual to customize their password and provides data security.
-
-The users of our app can have comprehensive role management and user management functionalities, 
-while before they may only can communicate using their internal app.
+### Licensing and Compliance
+All the libraries used in this project are under MIT License, except for Font Awesome which is under SIL OFL 1.1 for the font, 
+and MIT License for the CSS. We ensure compliance with these licenses in our use of these libraries.
