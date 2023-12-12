@@ -1,39 +1,58 @@
-layui.use(['table', 'layer','jquery', 'jquery_cookie'], function() {
+layui.use(['table', 'layer', 'jquery', 'jquery_cookie'], function() {
     var layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery,
         table = layui.table,
         cookie = layui.jquery_cookie($);
-    // Function to get logged-in user's information
+
     function getLoggedInUserName() {
         return $.cookie('userName');
     }
+
     var loggedInUserName = getLoggedInUserName();
-    // Initialize userMap to hold userID: userName pairs
     var userMap = {};
     var tableIns;
 
-    function fetchUserData(callback) {
-        $.ajax({
-            url: ctx + '/user/list',
-            type: 'GET',
-            async: false,
-            success: function(response) {
-                var users = response.data;
-                for (var i = 0; i < users.length; i++) {
-                    userMap[users[i].id] = users[i].userName;
-                }
-                // Once data is loaded, call the callback function
-                if (typeof callback === "function") {
-                    callback();
-                }
-            },
-            error: function(err) {
-                console.error("Error fetching users:", err);
-            }
-        });
+    async function fetchUserData() {
+        try {
+            let response = await $.ajax({
+                url: ctx + '/user/list',
+                type: 'GET'
+            });
+
+            response.data.forEach(user => {
+                userMap[user.id] = user.userName;
+            });
+
+            let loggedInUserId = Object.keys(userMap).find(key => userMap[key] === loggedInUserName);
+            return loggedInUserId;
+        } catch (err) {
+            console.error("Error fetching users:", err);
+            return null;
+        }
     }
 
-    function renderTable() {
+    async function checkIfAdmin(userId) {
+        try {
+            let data = await $.ajax({
+                type: "GET",
+                url: ctx + `/role/queryAllRoles?userId=${userId}`
+            });
+            return data.some(role => role.roleName === 'admin' && role.selected === 'selected');
+        } catch (error) {
+            console.error('Error fetching roles:', error);
+            return false;
+        }
+    }
+
+    async function initializeTable() {
+        let loggedInUserId = await fetchUserData();
+        let isAdmin = false;
+        if (loggedInUserId) {
+            isAdmin = await checkIfAdmin(loggedInUserId);
+        }
+        renderTable(isAdmin);
+    }
+    function renderTable(isAdmin) {
         tableIns = table.render({
             id: 'announcementTable',
             elem: '#announcementList',
@@ -73,7 +92,8 @@ layui.use(['table', 'layer','jquery', 'jquery_cookie'], function() {
                         }
                     }},
                 {title:'Operate', templet: function(d) {
-                        if (userMap[d.uid] === loggedInUserName) {
+                        if (userMap[d.uid] === loggedInUserName || isAdmin) {
+                            console.log("uid",d.uid, "loggedinUserName",loggedInUserName, $.cookie())
                             return '<a class="layui-btn layui-btn-xs" lay-event="edit">Edit</a>' +
                                 '<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">Delete</a>';
                         } else {
@@ -83,11 +103,13 @@ layui.use(['table', 'layer','jquery', 'jquery_cookie'], function() {
             ]]
         });
 
-        return tableIns;
     }
 
+
+
 // Fetch user data, then render the table
-    fetchUserData(renderTable);
+    initializeTable();
+
     window.userMap = userMap;
     top.userMap = userMap;
     console.log(userMap, window.userMap)
