@@ -1,29 +1,4 @@
 # Build in docker settings
-#server:
-#  port: 8080
-#  servlet:
-#    context-path: /ems
-#
-#spring:
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://mysql-db:3306/ems
-#    username: user
-#    password: password
-#
-#  freemarker:
-#    suffix: .ftl
-#    content-type: text/html
-#    charset: UTF-8
-#    template-loader-path: classpath:/views/
-#
-#mybatis:
-#  mapper-locations: classpath:/mappers/*.xml
-#  configuration:
-#    map-underscore-to-camel-case: true
-
-
-# Build locally settings
 server:
   port: 8080
   servlet:
@@ -32,16 +7,41 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ems
-    username: root #${env.MYSQL_USERNAME}
-    password: dbuserdbuser #${env.MYSQL_PASSWORD}
+    url: jdbc:mysql://mysql-db:3306/ems
+    username: user
+    password: password
 
   freemarker:
     suffix: .ftl
     content-type: text/html
     charset: UTF-8
     template-loader-path: classpath:/views/
+
 mybatis:
   mapper-locations: classpath:/mappers/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
+
+## Build locally settings
+#server:
+#  port: 8080
+#  servlet:
+#    context-path: /ems
+#
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/ems
+#    username: ${env.MYSQL_USERNAME}
+#    password: ${env.MYSQL_PASSWORD}
+#
+#  freemarker:
+#    suffix: .ftl
+#    content-type: text/html
+#    charset: UTF-8
+#    template-loader-path: classpath:/views/
+#mybatis:
+#  mapper-locations: classpath:/mappers/*.xml
+#  configuration:
+#    map-underscore-to-camel-case: true
